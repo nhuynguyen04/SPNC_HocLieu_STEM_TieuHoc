@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Nếu đã đăng nhập, chuyển hướng về trang chủ
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
@@ -20,7 +19,6 @@ try {
         $confirm_password = $_POST['confirm_password'];
         $class = isset($_POST['class']) ? trim($_POST['class']) : null;
         
-        // Validation
         $error = '';
         if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
             $error = "Vui lòng điền đầy đủ thông tin bắt buộc";
