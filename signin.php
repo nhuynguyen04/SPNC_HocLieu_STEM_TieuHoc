@@ -1,19 +1,32 @@
 <?php
 session_start();
-require_once 'controller/AuthController.php';
 
-$authController = new AuthController();
+// Nếu đã đăng nhập, chuyển hướng về trang chủ
+if (isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    
-    if ($authController->login($username, $password)) {
-        header('Location: index.php');
-        exit;
-    } else {
-        $error = "Tên đăng nhập hoặc mật khẩu không đúng";
+try {
+    require_once 'controller/AuthController.php';
+
+    $authController = new AuthController();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        
+        if ($authController->login($username, $password)) {
+            $_SESSION['success'] = "Đăng nhập thành công!";
+            header('Location: index.php');
+            exit;
+        } else {
+            $error = "Tên đăng nhập hoặc mật khẩu không đúng";
+        }
     }
+} catch (Exception $e) {
+    $error = "Hệ thống đang bảo trì. Vui lòng thử lại sau.";
+    error_log("Login error: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -21,29 +34,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - STEM Kids Việt</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <title>Đăng nhập - STEM Universe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="public/css/signin.css">
 </head>
 <body>
+    <!-- Simple Static Background -->
+    <div class="static-bg"></div>
+
+    <!-- Auth Container -->
     <div class="auth-container">
         <div class="auth-form">
-            <h2>Đăng nhập</h2>
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h1 class="auth-title">Đăng nhập</h1>
+                <p class="auth-subtitle">
+                    Tiếp tục hành trình khám phá vũ trụ STEM
+                </p>
+            </div>
+
             <?php if (isset($error)): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><?php echo $error; ?></p>
+                </div>
             <?php endif; ?>
-            <form method="POST">
-                <div class="form-group">
-                    <label for="username">Tên đăng nhập</label>
-                    <input type="text" id="username" name="username" required>
+
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <p><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></p>
                 </div>
+            <?php endif; ?>
+
+            <form method="POST" class="form">
                 <div class="form-group">
-                    <label for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" required>
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Tên đăng nhập
+                    </label>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Nhập tên đăng nhập"
+                           value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
                 </div>
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Mật khẩu
+                    </label>
+                    <div class="password-input-container">
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Nhập mật khẩu">
+                        <button type="button" class="toggle-password" data-target="password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember">
+                        <span class="checkmark"></span>
+                        Ghi nhớ đăng nhập
+                    </label>
+                    <a href="forgot-password.php" class="forgot-link">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng nhập
+                </button>
             </form>
-            <p>Chưa có tài khoản? <a href="signup.php">Đăng ký ngay</a></p>
+
+            <div class="auth-footer">
+                <div class="auth-link">
+                    <span>Chưa có tài khoản?</span>
+                    <a href="signup.php" class="link">
+                        <i class="fas fa-user-plus"></i>
+                        Đăng ký ngay
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script src="public/js/signin.js"></script>
 </body>
 </html>
