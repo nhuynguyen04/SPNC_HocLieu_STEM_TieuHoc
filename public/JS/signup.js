@@ -1,11 +1,9 @@
-// Signup functionality
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.querySelector('.form');
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirm_password');
     const passwordRequirements = document.querySelector('.password-requirements');
     
-    // Toggle password visibility
     const toggleButtons = document.querySelectorAll('.toggle-password');
     toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -25,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Show password requirements when focusing on password field
     if (passwordInput && passwordRequirements) {
         passwordInput.addEventListener('focus', function() {
             if (!areAllRequirementsMet(this.value)) {
@@ -35,18 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         passwordInput.addEventListener('blur', function() {
-            // Hide requirements if all are met or field is empty
             if (!this.value || areAllRequirementsMet(this.value)) {
                 passwordRequirements.classList.remove('show');
             }
         });
         
-        // Check password requirements in real-time
         passwordInput.addEventListener('input', function() {
             checkPasswordRequirements(this.value);
             validatePasswordMatch();
             
-            // Hide requirements if all are met
             if (areAllRequirementsMet(this.value)) {
                 passwordRequirements.classList.add('hidden');
                 passwordRequirements.classList.remove('show');
@@ -78,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
             special: /[^A-Za-z0-9]/.test(password)
         };
         
-        // Update requirement indicators
         Object.keys(requirements).forEach(requirement => {
             const element = document.querySelector(`[data-requirement="${requirement}"]`);
             if (element) {
@@ -113,16 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let isValid = true;
         
-        // Clear all errors first
         clearAllErrors();
         
-        // Validate fullname
         if (fullname.length < 2) {
             showFieldError('fullname', 'Họ tên phải có ít nhất 2 ký tự');
             isValid = false;
         }
         
-        // Validate username
         if (username.length < 3) {
             showFieldError('username', 'Tên đăng nhập phải có ít nhất 3 ký tự');
             isValid = false;
@@ -131,24 +121,20 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
         
-        // Validate email
         if (!isValidEmail(email)) {
             showFieldError('email', 'Email không hợp lệ');
             isValid = false;
         }
         
-        // Validate password
         if (password.length < 6) {
             showFieldError('password', 'Mật khẩu phải có ít nhất 6 ký tự');
             isValid = false;
         }
         
-        // Validate password match
         if (!validatePasswordMatch()) {
             isValid = false;
         }
         
-        // Validate terms agreement
         if (!agreeTerms.checked) {
             showFormError('Vui lòng đồng ý với điều khoản sử dụng');
             isValid = false;
@@ -164,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function showFieldError(fieldId, message) {
         const field = document.getElementById(fieldId);
-        const formGroup = field.parentElement.parentElement; // Account for password container
+        const formGroup = field.parentElement.parentElement; 
         
         formGroup.classList.add('error');
         
@@ -180,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function clearFieldError(fieldId) {
         const field = document.getElementById(fieldId);
-        const formGroup = field.parentElement.parentElement; // Account for password container
+        const formGroup = field.parentElement.parentElement; 
         
         if (formGroup.classList.contains('error')) {
             formGroup.classList.remove('error');
@@ -203,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showFormError(message) {
-        // Create or update error alert
         let errorAlert = document.querySelector('.alert-error');
         if (!errorAlert) {
             errorAlert = document.createElement('div');
@@ -227,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
         errorAlert.querySelector('.alert-content p').textContent = message;
     }
     
-    // Real-time validation for better UX
     const inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
     inputs.forEach(input => {
         input.addEventListener('blur', function() {
@@ -263,8 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Password confirmation real-time validation
     if (confirmPasswordInput) {
         confirmPasswordInput.addEventListener('blur', function() {
             validatePasswordMatch();
