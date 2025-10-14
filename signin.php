@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Nếu đã đăng nhập, chuyển hướng về trang chủ
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
