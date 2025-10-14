@@ -1,4 +1,3 @@
-/* Reset & Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +13,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Simple Static Background */
 .static-bg {
     position: fixed;
     top: 0;
@@ -53,7 +51,6 @@ body {
     background-repeat: repeat;
 }
 
-/* Auth Container */
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -73,7 +70,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Auth Header */
 .auth-header {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -108,7 +104,6 @@ body {
     line-height: 1.5;
 }
 
-/* Alerts */
 .alert {
     display: flex;
     align-items: center;
@@ -155,7 +150,6 @@ body {
     color: #2e7d32;
 }
 
-/* Form Styles */
 .form {
     margin-bottom: 2rem;
 }
@@ -200,7 +194,6 @@ body {
     box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
 }
 
-/* Password Input Container */
 .password-input-container {
     position: relative;
     display: flex;
@@ -228,7 +221,6 @@ body {
     background: rgba(0, 229, 255, 0.1);
 }
 
-/* Form Options */
 .form-options {
     display: flex;
     justify-content: space-between;
@@ -287,7 +279,6 @@ body {
     text-decoration: underline;
 }
 
-/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -315,7 +306,6 @@ body {
     box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
 }
 
-/* Auth Footer */
 .auth-footer {
     text-align: center;
 }
@@ -353,7 +343,6 @@ body {
     font-size: 0.8rem;
 }
 
-/* Field Errors */
 .form-group.error input {
     border-color: #ff4444;
     box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
@@ -366,7 +355,6 @@ body {
     font-weight: 500;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .auth-form {
         padding: 2rem 1.5rem;
@@ -423,7 +411,6 @@ body {
     }
 }
 
-/* Loading State */
 .btn.loading {
     pointer-events: none;
     opacity: 0.8;
