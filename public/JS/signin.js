@@ -1,9 +1,7 @@
-// Signin functionality
 document.addEventListener('DOMContentLoaded', function() {
     const signinForm = document.querySelector('.form');
     const passwordInput = document.getElementById('password');
     
-    // Toggle password visibility
     const toggleButtons = document.querySelectorAll('.toggle-password');
     toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -23,12 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form submission
     if (signinForm) {
         signinForm.addEventListener('submit', function(e) {
             if (!validateForm()) {
                 e.preventDefault();
-                // Focus on first error field
                 const firstError = document.querySelector('.form-group.error input');
                 if (firstError) {
                     firstError.focus();
@@ -48,16 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let isValid = true;
         
-        // Clear all errors first
         clearAllErrors();
         
-        // Validate username
         if (username.length < 3) {
             showFieldError('username', 'Tên đăng nhập phải có ít nhất 3 ký tự');
             isValid = false;
         }
         
-        // Validate password
         if (password.length < 1) {
             showFieldError('password', 'Vui lòng nhập mật khẩu');
             isValid = false;
@@ -68,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function showFieldError(fieldId, message) {
         const field = document.getElementById(fieldId);
-        const formGroup = field.parentElement.parentElement; // Account for password container
+        const formGroup = field.parentElement.parentElement;
         
         formGroup.classList.add('error');
         
@@ -84,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function clearFieldError(fieldId) {
         const field = document.getElementById(fieldId);
-        const formGroup = field.parentElement.parentElement; // Account for password container
+        const formGroup = field.parentElement.parentElement; 
         
         if (formGroup.classList.contains('error')) {
             formGroup.classList.remove('error');
@@ -106,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Real-time validation for better UX
     const usernameInput = document.getElementById('username');
     
     if (usernameInput) {
