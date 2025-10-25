@@ -8,7 +8,7 @@ $subjects = [
         'description' => 'Khám phá thế giới tự nhiên kỳ diệu',
         'lessons' => [
             ['title' => 'Thế giới màu sắc', 'type' => 'TLCH - TC', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Bí kíp ăn uống lành mạnh', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Mô hình các bộ phận của cây', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Ngày và đêm', 'type' => 'TLCH', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Cẩm nang phòng tránh hỏa hoạn', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Thùng rác thân thiện', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
@@ -23,7 +23,7 @@ $subjects = [
         'lessons' => [
             ['title' => 'Cây gia đình', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Em là họa sĩ máy tính', 'type' => 'Chia sẻ tác phẩm', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'An toàn trên Internet', 'type' => 'TLCH', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Em là người đánh máy', 'type' => 'TLCH', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Lập trình viên nhí với Scratch', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Các bộ phận của máy tính', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
@@ -39,7 +39,7 @@ $subjects = [
             ['title' => 'Hoa yêu thương nở rộ', 'type' => 'TC - TLCH', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Xây cầu giấy', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Chế tạo xe bong bóng', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Tháp giấy cao nhất', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Hệ thống lọc nước cơ bản', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ],
     'toan' => [
@@ -53,7 +53,7 @@ $subjects = [
             ['title' => 'Tangram 3D', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Đếm số', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Nhận biết hình học', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Siêu thị của bé', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Đồng hồ và thời gian', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ]
 ];
