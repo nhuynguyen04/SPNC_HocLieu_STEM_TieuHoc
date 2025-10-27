@@ -6,7 +6,6 @@ $subjects = [
         'color' => '#4CAF50',
         'gradient' => 'linear-gradient(135deg, #4CAF50 0%, #81C784 100%)',
         'icon' => '🔬',
-        'description' => 'Khám phá thế giới tự nhiên kỳ diệu',
         'lessons' => [
             ['title' => 'Thế giới màu sắc', 'type' => 'TLCH - TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Mô hình các bộ phận của cây', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
@@ -20,7 +19,6 @@ $subjects = [
         'color' => '#2196F3',
         'gradient' => 'linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)',
         'icon' => '💻',
-        'description' => 'Làm chủ công nghệ trong thời đại số',
         'lessons' => [
             ['title' => 'Cây gia đình', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Em là họa sĩ máy tính', 'type' => 'Chia sẻ tác phẩm', 'has_video' => true, 'status' => 'complete'],
@@ -34,7 +32,6 @@ $subjects = [
         'color' => '#FF9800',
         'gradient' => 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
         'icon' => '⚙️',
-        'description' => 'Sáng tạo và xây dựng những điều tuyệt vời',
         'lessons' => [
             ['title' => 'Dụng cụ gấp áo', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Hoa yêu thương nở rộ', 'type' => 'TC - TLCH', 'has_video' => true, 'status' => 'complete'],
@@ -48,7 +45,6 @@ $subjects = [
         'color' => '#9C27B0',
         'gradient' => 'linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%)',
         'icon' => '🔢',
-        'description' => 'Khám phá vẻ đẹp của những con số',
         'lessons' => [
             ['title' => 'Máy bắn đá mini', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Tangram 3D', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
@@ -201,7 +197,6 @@ require_once './template/header.php';
                                         <div class="subject-icon"><?php echo $subject['icon']; ?></div>
                                         <div class="subject-info">
                                             <h3><?php echo $subject['name']; ?></h3>
-                                            <p><?php echo $subject['description']; ?></p>
                                         </div>
                                     </div>
                                     <div class="card-content">
