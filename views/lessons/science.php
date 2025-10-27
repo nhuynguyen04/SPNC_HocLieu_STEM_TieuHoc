@@ -152,7 +152,7 @@ $_SESSION['science_visited'] = true;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $subject['name']; ?> - STEM Universe</title>
-    <link rel="stylesheet" href="/SPNC_HocLieu_STEM_TieuHoc/public/css/science.css">
+    <link rel="stylesheet" href="../../public/css/science.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
@@ -301,6 +301,6 @@ $_SESSION['science_visited'] = true;
         <div class="pulse-ring"></div>
     </button>
 
-    <script src="/SPNC_HocLieu_STEM_TieuHoc/public/js/science.js"></script>
+    <script src="../../public/js/science.js"></script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 session_start();
 
 try {
-    require_once __DIR__ . '/controllers/AuthController.php';
     require_once 'models/Database.php';
+    require_once 'models/User.php';
 
     $isLoggedIn = isset($_SESSION['user_id']);
     $userName = $isLoggedIn ? $_SESSION['full_name'] : '';
@@ -282,8 +282,6 @@ try {
         </section>
         <?php endif; ?>
     </main>
-    
-    <?php require_once './template/footer.php'; ?> 
 
     <script src="public/js/cosmic.js"></script>
 </body>
