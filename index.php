@@ -148,15 +148,17 @@ $base_url = rtrim($base_url, '/\\');
                             </div>
                             <div class="cosmic-actions">
                                 <?php if (!$isLoggedIn): ?>
-                                    <a href="<?php echo $base_url; ?>/views/signin.php" class="btn btn-neon btn-launch">
-                                        <i class="fas fa-rocket"></i>
-                                        <span>Bắt đầu phiêu lưu</span>
-                                        <div class="rocket-trail"></div>
-                                    </a>
-                                    <a href="<?php echo $base_url; ?>/views/signup.php" class="btn btn-cosmic">
-                                        <i class="fas fa-user-astronaut"></i>
-                                        Gia nhập phi hành đoàn
-                                    </a>
+                                    <div class="btn-group" style="display: flex; flex-direction: column; gap: 1.0rem;">
+                                        <a href="<?php echo $base_url; ?>/views/signin.php" class="btn btn-neon btn-launch" style="width: 100%; max-width: 280px; justify-content: center; margin: 0;">
+                                            <i class="fas fa-rocket"></i>
+                                            <span>Bắt đầu phiêu lưu</span>
+                                            <div class="rocket-trail"></div>
+                                        </a>
+                                        <a href="<?php echo $base_url; ?>/views/signup.php" class="btn btn-cosmic" style="width: 100%; max-width: 280px; justify-content: center; margin: 0;">
+                                            <i class="fas fa-user-astronaut"></i>
+                                            Gia nhập phi hành đoàn
+                                        </a>
+                                    </div>
                                 <?php else: ?>
                                     <div class="astronaut-welcome">
                                         <div class="astronaut-avatar">
