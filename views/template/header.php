@@ -33,8 +33,13 @@ $current_page = $current_page ?? 'home';
                 </div>
                 
                 <nav class="main-nav">
-                    <a href="/SPNC_HocLieu_STEM_TieuHoc/views/home.php" class="nav-link <?php echo $current_page === 'home.php' ? 'active' : ''; ?>">Trang chủ</a>
-                    <a href="/SPNC_HocLieu_STEM_TieuHoc/views/main_lesson.php" class="nav-link <?php echo $current_page === 'main_lesson.php' ? 'active' : ''; ?>">Bài học</a>
+                    <?php
+                    $basePath = str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\', '/', __DIR__) . '/../../');
+                    ?>
+
+                    <a href="<?= $basePath ?>views/home.php" class="nav-link <?php echo $current_page === 'home.php' ? 'active' : ''; ?>">Trang chủ</a>
+                    <a href="<?= $basePath ?>views/main_lesson.php" class="nav-link <?php echo $current_page === 'main_lesson.php' ? 'active' : ''; ?>">Bài học</a>
+                    <a href="<?= $basePath ?>views/achievements.php" class="nav-link" <?php echo $current_page === 'achievements.php' ? 'active' : ''; ?>">Thành tích</a>
                 </nav>
 
                 
