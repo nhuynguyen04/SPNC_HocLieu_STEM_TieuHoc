@@ -32,6 +32,10 @@ try {
     $dbError = true;
     error_log("Initialization error: " . $e->getMessage());
 }
+
+$base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+$base_url = rtrim($base_url, '/\\');
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -144,12 +148,12 @@ try {
                             </div>
                             <div class="cosmic-actions">
                                 <?php if (!$isLoggedIn): ?>
-                                    <a href="./views/signin.php" class="btn btn-neon btn-launch">
+                                    <a href="<?php echo $base_url; ?>/views/signin.php" class="btn btn-neon btn-launch">
                                         <i class="fas fa-rocket"></i>
                                         <span>Bắt đầu phiêu lưu</span>
                                         <div class="rocket-trail"></div>
                                     </a>
-                                    <a href="./views/signup.php" class="btn btn-cosmic">
+                                    <a href="<?php echo $base_url; ?>/views/signup.php" class="btn btn-cosmic">
                                         <i class="fas fa-user-astronaut"></i>
                                         Gia nhập phi hành đoàn
                                     </a>
