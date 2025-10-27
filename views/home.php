@@ -93,7 +93,7 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM Universe - Học liệu STEM Tiểu học</title>
-    <link rel="stylesheet" href="public/css/main.css">
+    <link rel="stylesheet" href="/stemtieuhoc/public/css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -119,7 +119,7 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
                 
                 <nav class="main-nav">
                     <a href="#" class="nav-link active">Trang chủ</a>
-                    <a href="#" class="nav-link">Bài học</a>
+                    <a href="./main_lesson.php" class="nav-link">Bài học</a>
                     <a href="#" class="nav-link">Thử thách</a>
                     <a href="#" class="nav-link">Thành tích</a>
                 </nav>
@@ -345,6 +345,6 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
         </div>
     </footer>
 
-    <script src="public/js/main.js"></script>
+    <script src="/stemtieuhoc/public/js/main.js"></script>
 </body>
 </html>
