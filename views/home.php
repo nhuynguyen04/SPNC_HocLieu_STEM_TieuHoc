@@ -1,4 +1,5 @@
 <?php
+
 $subjects = [
     'khoa_hoc' => [
         'name' => 'Khoa học',
@@ -61,12 +62,11 @@ $subjects = [
 $search_results = [];
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $search_term = strtolower($_GET['search']);
-    foreach ($subjects as $subject_id => $subject) {
+    foreach ($subjects as $subject) {
         foreach ($subject['lessons'] as $lesson) {
             if (strpos(strtolower($lesson['title']), $search_term) !== false) {
                 $search_results[] = [
                     'subject' => $subject['name'],
-                    'subject_color' => $subject['color'],
                     'subject_gradient' => $subject['gradient'],
                     'lesson' => $lesson
                 ];
@@ -75,17 +75,16 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     }
 }
 
-$total_lessons = 0;
-$completed_lessons = 0;
+$total = $done = 0;
 foreach ($subjects as $subject) {
-    $total_lessons += count($subject['lessons']);
+    $total += count($subject['lessons']);
     foreach ($subject['lessons'] as $lesson) {
-        if ($lesson['status'] === 'complete') {
-            $completed_lessons++;
-        }
+        if ($lesson['status'] === 'complete') $done++;
     }
 }
-$progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_lessons) * 100) : 0;
+$progress = $total ? round(($done / $total) * 100) : 0;
+
+require_once './template/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -93,7 +92,7 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM Universe - Học liệu STEM Tiểu học</title>
-    <link rel="stylesheet" href="/stemtieuhoc/public/css/home.css">
+    <link rel="stylesheet" href="../public/css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -105,37 +104,6 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
         <div class="bg-shape shape-1"></div>
         <div class="bg-shape shape-2"></div>
     </div>
-
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">🌟</div>
-                    <div class="logo-text">
-                        <h1>STEM Universe</h1>
-                        <p>Hành trình khám phá tri thức</p>
-                    </div>
-                </div>
-                
-                <nav class="main-nav">
-                    <a href="#" class="nav-link active">Trang chủ</a>
-                    <a href="./main_lesson.php" class="nav-link">Bài học</a>
-                    <a href="#" class="nav-link">Thử thách</a>
-                    <a href="#" class="nav-link">Thành tích</a>
-                </nav>
-                
-                <div class="header-actions">
-                    <form class="search-bar" method="GET">
-                        <input type="text" name="search" placeholder="Tìm bài học..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                        <button type="submit" class="search-btn">🔍</button>
-                    </form>
-                    <div class="user-avatar">
-                        <div class="avatar">👦</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <main class="container">
         <?php if (!empty($search_results)): ?>
@@ -177,15 +145,15 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
                         <p>Nơi những ý tưởng nhỏ trở thành phát minh lớn. Cùng khám phá thế giới STEM đầy màu sắc!</p>
                         <div class="hero-stats">
                             <div class="stat">
-                                <div class="stat-number"><?php echo $total_lessons; ?></div>
+                                <div class="stat-number"><?php echo $total; ?></div>
                                 <div class="stat-label">Bài học</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-number"><?php echo $completed_lessons; ?></div>
+                                <div class="stat-number"><?php echo $done; ?></div>
                                 <div class="stat-label">Đã hoàn thành</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-number"><?php echo $progress_percentage; ?>%</div>
+                                <div class="stat-number"><?php echo $progress; ?>%</div>
                                 <div class="stat-label">Tiến độ</div>
                             </div>
                         </div>
@@ -205,11 +173,11 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
                 <div class="progress-card">
                     <h3>Tiến độ học tập của bạn</h3>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: <?php echo $progress_percentage; ?>%"></div>
+                        <div class="progress-fill" style="width: <?php echo $progress; ?>%"></div>
                     </div>
                     <div class="progress-text">
-                        <span>Đã hoàn thành: <?php echo $completed_lessons; ?>/<?php echo $total_lessons; ?> bài học</span>
-                        <span><?php echo $progress_percentage; ?>%</span>
+                        <span>Đã hoàn thành: <?php echo $done; ?>/<?php echo $total; ?> bài học</span>
+                        <span><?php echo $progress; ?>%</span>
                     </div>
                 </div>
             </section>
@@ -307,44 +275,12 @@ $progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_l
         <?php endif; ?>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <div class="logo-icon">🌟</div>
-                        <span>STEM Universe</span>
-                    </div>
-                    <p>Nền tảng học liệu STEM cho học sinh tiểu học Việt Nam</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Liên kết nhanh</h4>
-                    <a href="#">Về chúng tôi</a>
-                    <a href="#">Đội ngũ giáo viên</a>
-                    <a href="#">Phụ huynh</a>
-                    <a href="#">Hỗ trợ</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Theo dõi chúng tôi</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-link" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 STEM Universe. Tất cả các quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="/stemtieuhoc/public/js/main.js"></script>
+    <?php require_once './template/footer.php'; ?>                                                       
+    <script src="../public/js/main.js"></script>
+    <script>
+    function openLesson(lessonTitle) {
+        window.location.href = `lesson.php?title=${encodeURIComponent(lessonTitle)}`;
+    }
+    </script>
 </body>
 </html>

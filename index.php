@@ -8,7 +8,6 @@ try {
     $isLoggedIn = isset($_SESSION['user_id']);
     $userName = $isLoggedIn ? $_SESSION['full_name'] : '';
 
-    // Lấy thông tin các lĩnh vực STEM
     $stemFields = [];
     $dbError = false;
     
@@ -44,7 +43,6 @@ try {
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
-    <!-- Cosmic Background -->
     <div class="cosmic-bg">
         <div class="nebula"></div>
         <div class="stars"></div>
@@ -55,15 +53,11 @@ try {
             <div class="shooting-star"></div>
         </div>
     </div>
-
-     <?php // include 'template/header.php'?>
     
     <main>
-        <!-- Hero Section -->
         <section class="cosmic-hero">
             <div class="cosmic-container">
                 <div class="hero-orbit">
-                    <!-- Central Planet -->
                     <div class="central-planet">
                         <div class="planet-glow"></div>
                         <div class="planet-surface">
@@ -72,8 +66,7 @@ try {
                             <div class="planet-crater"></div>
                         </div>
                     </div>
-                    
-                    <!-- Orbiting Moons -->
+
                     <div class="moon-orbit orbit-1">
                         <div class="moon science-moon" data-tooltip="Khoa học">
                             <i class="fas fa-flask"></i>
@@ -151,12 +144,12 @@ try {
                             </div>
                             <div class="cosmic-actions">
                                 <?php if (!$isLoggedIn): ?>
-                                    <a href="signin.php" class="btn btn-neon btn-launch">
+                                    <a href="./views/signin.php" class="btn btn-neon btn-launch">
                                         <i class="fas fa-rocket"></i>
                                         <span>Bắt đầu phiêu lưu</span>
                                         <div class="rocket-trail"></div>
                                     </a>
-                                    <a href="signup.php" class="btn btn-cosmic">
+                                    <a href="./views/signup.php" class="btn btn-cosmic">
                                         <i class="fas fa-user-astronaut"></i>
                                         Gia nhập phi hành đoàn
                                     </a>
@@ -184,7 +177,6 @@ try {
         </section>
 
         <?php if (!$dbError && !empty($stemFields)): ?>
-        <!-- STEM Planets Section -->
         <section class="planets-section">
             <div class="cosmic-container">
                 <div class="section-header">
@@ -235,7 +227,6 @@ try {
             </div>
         </section>
 
-        <!-- Cosmic Features Section -->
         <section class="cosmic-features">
             <div class="cosmic-container">
                 <div class="section-header">
@@ -292,7 +283,7 @@ try {
         <?php endif; ?>
     </main>
     
-    <?php include 'template/footer.php'; ?>
+    <?php require_once './template/footer.php'; ?> 
 
     <script src="public/js/cosmic.js"></script>
 </body>

@@ -7,7 +7,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 try {
-    require_once 'controller/AuthController.php';
+    require_once '../controllers/AuthController.php';
 
     $authController = new AuthController();
 
@@ -35,13 +35,11 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - STEM Universe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="public/css/signin.css">
+    <link rel="stylesheet" href="../public/css/signin.css">
 </head>
 <body>
-    <!-- Simple Static Background -->
     <div class="static-bg"></div>
 
-    <!-- Auth Container -->
     <div class="auth-container">
         <div class="auth-form">
             <div class="auth-header">
@@ -120,6 +118,6 @@ try {
         </div>
     </div>
 
-    <script src="public/js/signin.js"></script>
+    <script src="../public/js/signin.js"></script>
 </body>
 </html>
