@@ -6,12 +6,11 @@ $subjects = [
         'color' => '#4CAF50',
         'gradient' => 'linear-gradient(135deg, #4CAF50 0%, #81C784 100%)',
         'icon' => '🔬',
-        'description' => 'Khám phá thế giới tự nhiên kỳ diệu',
         'lessons' => [
             ['title' => 'Thế giới màu sắc', 'type' => 'TLCH - TC', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Mô hình các bộ phận của cây', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Bí kíp ăn uống lành mạnh', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Ngày và đêm', 'type' => 'TLCH', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Cẩm nang phòng tránh hỏa hoạn', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Cẩm nang phòng tránh hỏa hoạn khi ở nhà', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Thùng rác thân thiện', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
         ]
     ],
@@ -20,11 +19,10 @@ $subjects = [
         'color' => '#2196F3',
         'gradient' => 'linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)',
         'icon' => '💻',
-        'description' => 'Làm chủ công nghệ trong thời đại số',
         'lessons' => [
             ['title' => 'Cây gia đình', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Em là họa sĩ máy tính', 'type' => 'Chia sẻ tác phẩm', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Em là người đánh máy', 'type' => 'TLCH', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'An toàn trên Internet', 'type' => 'TLCH', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Lập trình viên nhí với Scratch', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Các bộ phận của máy tính', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
@@ -34,13 +32,12 @@ $subjects = [
         'color' => '#FF9800',
         'gradient' => 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
         'icon' => '⚙️',
-        'description' => 'Sáng tạo và xây dựng những điều tuyệt vời',
         'lessons' => [
             ['title' => 'Dụng cụ gấp áo', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Hoa yêu thương nở rộ', 'type' => 'TC - TLCH', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Xây cầu giấy', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Chế tạo xe bong bóng', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Hệ thống lọc nước cơ bản', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Tháp giấy cao nhất', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ],
     'toan' => [
@@ -48,13 +45,12 @@ $subjects = [
         'color' => '#9C27B0',
         'gradient' => 'linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%)',
         'icon' => '🔢',
-        'description' => 'Khám phá vẻ đẹp của những con số',
         'lessons' => [
             ['title' => 'Máy bắn đá mini', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Tangram 3D', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Đếm số', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Nhận biết hình học', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Đồng hồ và thời gian', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Siêu thị của bé', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ]
 ];
@@ -201,7 +197,6 @@ require_once './template/header.php';
                                         <div class="subject-icon"><?php echo $subject['icon']; ?></div>
                                         <div class="subject-info">
                                             <h3><?php echo $subject['name']; ?></h3>
-                                            <p><?php echo $subject['description']; ?></p>
                                         </div>
                                     </div>
                                     <div class="card-content">
