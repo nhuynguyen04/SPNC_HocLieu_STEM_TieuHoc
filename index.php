@@ -2,8 +2,8 @@
 session_start();
 
 try {
-    require_once 'controller/AuthController.php';
-    require_once 'model/Database.php';
+    require_once __DIR__ . '/controllers/AuthController.php';
+    require_once 'models/Database.php';
 
     $isLoggedIn = isset($_SESSION['user_id']);
     $userName = $isLoggedIn ? $_SESSION['full_name'] : '';
@@ -56,7 +56,7 @@ try {
         </div>
     </div>
 
-    <?php include 'template/header.php'; ?>
+     <?php // include 'template/header.php'?>
     
     <main>
         <!-- Hero Section -->
