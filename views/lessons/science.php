@@ -265,7 +265,25 @@ $_SESSION['science_visited'] = true;
                             </div>
                             
                             <div class="island-action">
-                                <?php if ($topic['status'] == 'completed'): ?>
+                                <?php
+                                $game_link = '';
+                                if ($topic['id'] == 1) { // ID 1 là "Thế giới màu sắc"
+                                    $game_link = '/SPNC_HocLieu_STEM_TieuHoc/science/color-game';
+                                } elseif ($topic['id'] == 2) { // ID 2 là "Bí kíp ăn uống"
+                                    $game_link = '/SPNC_HocLieu_STEM_TieuHoc/science/nutrition';
+                                }
+
+                                // Tạo nút dựa trên link
+                                if (!empty($game_link)):
+                                ?>
+                                    <button class="island-btn <?php echo $topic['status'] == 'completed' ? 'review' : 'start'; ?>" 
+                                            onclick="window.location.href='<?php echo $game_link; ?>'">
+                                        <i class="fas <?php echo $topic['status'] == 'completed' ? 'fa-redo' : 'fa-play'; ?>"></i>
+                                        <span><?php echo $topic['status'] == 'completed' ? 'Chơi lại' : 'Chơi game'; ?></span>
+                                    </button>
+                                <?php
+                                elseif ($topic['status'] == 'completed'): 
+                                ?>
                                     <button class="island-btn review" onclick="reviewTopic(<?php echo $topic['id']; ?>)">
                                         <i class="fas fa-redo"></i>
                                         <span>Ôn tập lại</span>
@@ -282,7 +300,7 @@ $_SESSION['science_visited'] = true;
                                     </button>
                                 <?php endif; ?>
                             </div>
-                        </div>
+                             </div>
                     </div>
 
                     <div class="ocean-waves">
