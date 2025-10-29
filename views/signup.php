@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -12,8 +12,8 @@ try {
     $authController = new AuthController();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $fullname = trim($_POST['fullname']);
-        $username = trim($_POST['username']);
+    $fullname = trim($_POST['fullname']);
+    $username = trim($_POST['username']);
         $email = trim($_POST['email']);
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
@@ -22,6 +22,8 @@ try {
         $error = '';
         if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
             $error = "Vui lòng điền đầy đủ thông tin bắt buộc";
+        } elseif (strlen($username) < 3) {
+            $error = "Tên đăng nhập phải có ít nhất 3 ký tự";
         } elseif ($password !== $confirm_password) {
             $error = "Mật khẩu xác nhận không khớp";
         } elseif (strlen($password) < 6) {
@@ -31,18 +33,19 @@ try {
         }
         
         if (empty($error)) {
-            if ($authController->register($fullname, $username, $email, $password, $class)) {
-                $_SESSION['success'] = "Đăng ký thành công! Vui lòng đăng nhập.";
-                header('Location: signin.php');
-                exit;
+             if ($authController->register($fullname, $username, $email, $password, $class)) {
+        $_SESSION['success'] = "Đăng ký thành công! Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra hộp thư và xác thực trước khi đăng nhập.";
+        header('Location: signin.php');
+        exit;
             } else {
-                $error = "Tên đăng nhập hoặc email đã tồn tại";
+        $error = "Tên đăng nhập hoặc email đã tồn tại";
             }
         }
     }
 } catch (Exception $e) {
-    $error = "Hệ thống đang bảo trì. Vui lòng thử lại sau.";
-    error_log("Signup error: " . $e->getMessage());
+    // Show actual error in development
+    $error = "Lỗi đăng ký: " . $e->getMessage();
+    error_log("Signup error: " . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
 }
 ?>
 <!DOCTYPE html>
@@ -92,8 +95,8 @@ try {
                         <i class="fas fa-at"></i>
                         Tên đăng nhập
                     </label>
-                    <input type="text" id="username" name="username" required 
-                           placeholder="Chọn tên đăng nhập"
+                    <input type="text" id="username" name="username" required minlength="3"
+                           placeholder="Chọn tên đăng nhập (ít nhất 3 ký tự)" title="Tên đăng nhập phải có ít nhất 3 ký tự"
                            value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
                 </div>
 

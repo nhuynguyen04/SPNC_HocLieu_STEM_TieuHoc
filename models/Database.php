@@ -60,16 +60,20 @@ class Database {
     // Tạo các bảng theo sơ đồ
     private function createTables() {
         $sql = [
-            // Bảng người dùng (Người đúng) - GIỮ NGUYÊN
+            // Bảng người dùng
             "CREATE TABLE IF NOT EXISTS users (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(50) UNIQUE NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 first_name NVARCHAR(100),
                 last_name NVARCHAR(100),
-                age INT,
-                gender ENUM('male', 'female', 'other'),
+                class VARCHAR(10),
+                role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
                 avatar VARCHAR(255),
+                email_verified TINYINT(1) DEFAULT 0,
+                verification_code VARCHAR(10),
+                verification_expires DATETIME,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )",
 
@@ -152,6 +156,20 @@ class Database {
                 year INT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )",
+
+            // Bảng lưu token ghi nhớ đăng nhập với cơ chế selector/validator
+            "CREATE TABLE IF NOT EXISTS remember_tokens (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                selector VARCHAR(24) UNIQUE NOT NULL,
+                hashed_validator VARCHAR(128) NOT NULL,
+                user_agent VARCHAR(255) NULL,
+                ip VARCHAR(45) NULL,
+                expires_at DATETIME NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                INDEX idx_selector (selector)
             )"
         ];
 
@@ -175,14 +193,13 @@ class Database {
             $check = $this->conn->query("SELECT COUNT(*) as count FROM users")->fetch(PDO::FETCH_ASSOC);
             
             if ($check['count'] == 0) {
-                // Tạo tài khoản admin mặc định (mật khẩu: 123456)
+                // Tạo tài khoản admin và user mặc định (mật khẩu: 123456)
                 $hashed_password = password_hash('123456', PASSWORD_DEFAULT);
-                $this->conn->exec("INSERT INTO users (username, password, first_name, last_name, age, gender) VALUES
-                ('admin', '$hashed_password', 'Admin', 'System', 30, 'male'),
-                ('student1', '$hashed_password', 'Minh', 'Nguyễn', 12, 'male'),
-                ('student2', '$hashed_password', 'Lan', 'Trần', 11, 'female')");
-
-                // Chèn chủ đề mẫu - DÙNG stem_fields thay vì topics
+                $this->conn->exec("INSERT INTO users (username, email, password, first_name, last_name, class, role, email_verified) VALUES
+                ('admin', 'admin@stem.edu.vn', '$hashed_password', 'Admin', 'System', NULL, 'admin', 1),
+                ('student1', 'student1@stem.edu.vn', '$hashed_password', 'Minh', 'Nguyễn', '5A1', 'user', 1),
+                ('student2', 'student2@stem.edu.vn', '$hashed_password', 'Lan', 'Trần', '5A2', 'user', 1)");
+`
                 $this->conn->exec("INSERT INTO stem_fields (name, description, icon, color) VALUES
                 ('Toán học', 'Môn học về số học và hình học', '📊', '#A594F9'),
                 ('Khoa học', 'Khám phá thế giới tự nhiên', '🔬', '#FF9E6D'),
