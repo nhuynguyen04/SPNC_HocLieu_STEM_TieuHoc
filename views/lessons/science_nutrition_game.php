@@ -30,13 +30,19 @@ require_once __DIR__ . '/../template/header.php';
         </div>
 
         <div id="pyramid">
-            <img src="<?= $base_url ?>/public/images/nutrition_pyramid.png" alt="Tháp dinh dưỡng" class="pyramid-bg">
-            
-            <div class="pyramid-level dropzone" id="level4" data-group="4" title="Tầng 1: Dầu, Mỡ, Đường"></div>
-            <div class="pyramid-level dropzone" id="level3" data-group="3" title="Tầng 2: Đạm, Sữa"></div>
-            <div class="pyramid-level dropzone" id="level2" data-group="2" title="Tầng 3: Rau & Trái cây"></div>
-            <div class="pyramid-level dropzone" id="level1" data-group="1" title="Tầng 4: Ngũ cốc"></div>
-        </div>
+            <div class="pyramid-level" id="level4" data-group="4">
+                <span>Tầng 1: Hạn chế</span>
+            </div>
+            <div class="pyramid-level" id="level3" data-group="3">
+                <span>Tầng 2: Ăn vừa phải</span>
+            </div>
+            <div class="pyramid-level" id="level2" data-group="2">
+                <span>Tầng 3: Ăn nhiều</span>
+            </div>
+            <div class="pyramid-level" id="level1" data-group="1">
+                <span>Tầng 4: Ăn đủ</span>
+            </div>
+        </div> 
     </div>
 </div>
 

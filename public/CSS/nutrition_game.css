@@ -1,6 +1,6 @@
 .game-wrapper {
     width: 95%;
-    max-width: 1200px;
+    max-width: 1200px; 
     margin: 20px auto;
     font-family: 'Segoe UI', sans-serif;
     line-height: 1.6;
@@ -48,16 +48,16 @@
 
 .game-wrapper #gameContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
     margin-top: 20px;
     align-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
 }
 
 /* 1. Hàng chờ đồ ăn */
 .game-wrapper #foodBank {
-    width: 100%;
-    max-width: 300px;
+    width: 100%; 
+    max-width: 300px; 
     border: 2px solid #bdc3c7;
     border-radius: 8px;
     padding: 10px;
@@ -67,7 +67,7 @@
     justify-content: center;
     max-height: 700px; 
     overflow-y: auto; 
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px auto; 
 }
 .game-wrapper #foodBank h3 {
     width: 100%;
@@ -76,6 +76,7 @@
     color: #34495e;
 }
 
+/* 2. Kiểu món ăn */
 .game-wrapper .food-item {
     padding: 5px;
     margin: 5px;
@@ -96,7 +97,7 @@
     width: 100%;
     height: 60px;
     object-fit: contain; 
-    pointer-events: none;
+    pointer-events: none; 
 }
 .game-wrapper .food-item span {
     font-size: 12px;
@@ -104,7 +105,6 @@
     pointer-events: none;
     color: #333;
 }
-
 .game-wrapper .food-item:hover {
     background: #fdf9e7;
     border-color: #f39c12;
@@ -122,68 +122,103 @@
     opacity: 0.7;
 }
 
-/* 2. Tháp dinh dưỡng */
+/* 3. Tháp dinh dưỡng */
 .game-wrapper #pyramid {
     width: 100%;
-    max-width: 800px;
-    position: relative;
+    max-width: 800px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0 auto;
 }
-.game-wrapper .pyramid-bg {
-    width: 100%;
-    height: auto;
-    display: block;
-}
 
-/* Khu vực thả */
-.game-wrapper .dropzone {
-    position: absolute; 
-    width: 100%;
-    border: 2px dashed transparent;
+.game-wrapper .pyramid-level {
+    border: 2px solid #555;
+    min-height: 110px; 
+    padding: 10px 10px;
+    margin-bottom: 5px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; 
     align-content: flex-start;
-    padding: 10px;
-    box-sizing: border-box; 
-    border-radius: 5px;
-    transition: background-color 0.2s, border-color 0.2s;
+    justify-content: center;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+    color: #2c3e50;
+    border-radius: 10px;
 }
 
-/* Định vị 4 khu vực thả */
-.game-wrapper #level4 { top: 0; height: 18%; }
-.game-wrapper #level3 { top: 18%; height: 23%; }
-.game-wrapper #level2 { top: 41%; height: 28%; }
-.game-wrapper #level1 { top: 69%; height: 31%; }
+/* Khi kéo 1 món ăn LÊN TRÊN level */
+.game-wrapper .pyramid-level.drag-over {
+    background: rgba(0, 150, 255, 0.2) !important;
+    border-style: dashed;
+}
 
-/* Khi kéo 1 món ăn LÊN TRÊN khu vực */
-.game-wrapper .dropzone.drag-over {
-    background: rgba(0, 150, 255, 0.2);
-    border-color: #007bff;
+/* Tầng 1: Đỉnh tháp */
+.game-wrapper #level4 {
+    width: 60%;
+    background: #fadedb;
+    z-index: 4;
+    min-height: 130px;
+}
+ /* Tầng 2: Đạm */
+.game-wrapper #level3 {
+    width: 75%;
+    background: #fef9e7;
+    z-index: 3;
+    min-height: 130px;
+}
+/* Tầng 3: Rau củ */
+.game-wrapper #level2 { 
+    width: 87%;
+    background: #e8f8f5;
+    z-index: 2;
+    min-height: 130px;
+}
+/* Tầng 4: Đáy */
+.game-wrapper #level1 { 
+    width: 100%;
+    background: #ebf5fb;
+    z-index: 1;
+    min-height: 130px;
+}
+
+.game-wrapper .pyramid-level span {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    text-shadow: none;
+    margin-bottom: 10px;
+    display: block; 
 }
 
 /* Thu nhỏ món ăn khi đã thả vào tháp */
-.game-wrapper .dropzone .food-item {
-    width: 60px;
-    height: 70px;
-    margin: 2px;
+.game-wrapper .pyramid-level .food-item {
+    width: 55px;
+    height: 65px;
+    margin: 4px;
+    background-color: rgba(255,255,255,0.8);
+    border-color: rgba(44,62,80,0.3);
 }
-.game-wrapper .dropzone .food-item img {
+.game-wrapper .pyramid-level .food-item img {
     height: 45px;
 }
-.game-wrapper .dropzone .food-item span {
+.game-wrapper .pyramid-level .food-item span {
     font-size: 10px;
+    color: #333;
 }
 
+/* Responsive cho Desktop */
 @media (min-width: 992px) {
     .game-wrapper #gameContainer {
-        flex-wrap: nowrap;
+        flex-wrap: nowrap; 
     }
     .game-wrapper #foodBank {
-        width: 25%;
-        margin: 0;
+        width: 30%;
+        margin: 0; 
     }
     .game-wrapper #pyramid {
-        width: 70%;
-        margin: 0;
+        width: 65%;
+        margin: 0; 
     }
 }
