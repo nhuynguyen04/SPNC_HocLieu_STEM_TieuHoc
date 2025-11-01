@@ -9,8 +9,10 @@ require_once __DIR__ . '/../template/header.php';
     <p>Hãy kéo các bộ phận bên phải vào đúng vị trí trên cây.</p>
     
     <div class="score-board">Điểm: <span id="score"><?= $_SESSION['plant_score'] ?></span></div>
-    
     <div id="plant-feedback"></div>
+
+    <button id="plantResetButton" class="reset-button">Chơi lại</button>
+
     <hr>
 
     <div id="plantGameContainer">
@@ -21,18 +23,18 @@ require_once __DIR__ . '/../template/header.php';
                 <div class="draggable-part" 
                      draggable="true" 
                      id="<?= $part['id'] ?>" 
-                     data-part-name="<?= $part['name'] ?>"
-                     data-attempt="1"> <img src="<?= $base_url ?>/public/images/plants/<?= $part['img'] ?>" alt="<?= $part['name'] ?>">
+                     data-part-name="<?= $part['name'] ?>" data-attempt="1"> 
+                    
+                    <img src="<?= $base_url ?>/public/images/plants/<?= $part['img'] ?>" alt="<?= $part['name'] ?>">
                 </div>
             <?php endforeach; ?>
         </div>
 
         <div id="plantTarget">
             <img src="<?= $base_url ?>/public/images/plants/plant_silhouette.png" alt="Cây xám" class="plant-silhouette">
+
             <div class="dropzone" data-target-part="hoa" id="drop-hoa"></div>
-            <div class="dropzone" data-target-part="la" id="drop-la1"></div>
-            <div class="dropzone" data-target-part="la" id="drop-la2"></div>
-            <div class="dropzone" data-target-part="than" id="drop-than"></div>
+            <div class="dropzone" data-target-part="la1" id="drop-la1"></div> <div class="dropzone" data-target-part="la2" id="drop-la2"></div> <div class="dropzone" data-target-part="than" id="drop-than"></div>
             <div class="dropzone" data-target-part="re" id="drop-re"></div>
         </div>
         
@@ -42,7 +44,6 @@ require_once __DIR__ . '/../template/header.php';
 <script>
     const baseUrl = "<?= $base_url ?>";
 </script>
-
 <script src="<?= $base_url ?>/public/JS/plant_game.js"></script>
 
 <?php

@@ -169,8 +169,8 @@ class LessonController {
 
         $plantParts = [
             ['id' => 'part-hoa', 'name' => 'hoa', 'img' => 'plant_hoa.png'],
-            ['id' => 'part-la1', 'name' => 'la', 'img' => 'plant_la1.png'],
-            ['id' => 'part-la2', 'name' => 'la', 'img' => 'plant_la2.png'], 
+            ['id' => 'part-la1', 'name' => 'la1', 'img' => 'plant_la1.png'],
+            ['id' => 'part-la2', 'name' => 'la2', 'img' => 'plant_la2.png'], 
             ['id' => 'part-than', 'name' => 'than', 'img' => 'plant_than.png'],
             ['id' => 'part-re', 'name' => 're', 'img' => 'plant_re.png'],
         ];

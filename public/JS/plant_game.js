@@ -3,15 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const draggableParts = document.querySelectorAll(".draggable-part");
     const dropzones = document.querySelectorAll(".dropzone");
     const feedbackBox = document.getElementById("plant-feedback");
-    const scoreDisplay = document.getElementById("score"); // Thêm mới
+    const scoreDisplay = document.getElementById("score"); 
     
-    // Biến 'baseUrl' đã được nạp từ thẻ <script>
+    // *** Lấy nút reset ***
+    const resetButton = document.getElementById("plantResetButton");
+    
     let draggedItem = null;
     let correctDrops = 0;
-    
-    // Đếm số dropzone có tên (bỏ qua lá 2, vì dùng chung tên 'la') - CHỈNH LẠI
-    const totalDrops = document.querySelectorAll('.dropzone[data-target-part]').length;
-
+    const totalDrops = dropzones.length;
 
     // 1. Xử lý kéo
     draggableParts.forEach(part => {
@@ -35,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dropzones.forEach(zone => {
         zone.addEventListener("dragover", (e) => {
             e.preventDefault(); 
-            if (zone.dataset.targetPart !== "filled") {
+            if (zone.dataset.targetPart !== "filled") { 
                 zone.classList.add("drag-over");
             }
         });
@@ -57,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetName = zone.dataset.targetPart;
             let attempt = parseInt(droppedItem.dataset.attempt, 10);
 
-            // KIỂM TRA ĐÁP ÁN
             if (partName === targetName) {
                 // ĐÚNG
                 const img = droppedItem.querySelector('img');
@@ -67,40 +65,55 @@ document.addEventListener("DOMContentLoaded", () => {
                 droppedItem.setAttribute("draggable", "false");
                 
                 zone.classList.add("correct");
-                zone.dataset.targetPart = "filled"; // Đánh dấu là đã đầy
+                zone.dataset.targetPart = "filled"; 
 
                 if (attempt === 1) {
-                    // Lần 1 đúng -> 10 điểm
                     showFeedback("Chính xác! Bạn nhận được 10 điểm.", "win");
                     updateScore(10);
                 } else {
-                    // Lần 2 (hoặc hơn) mới đúng -> 0 điểm
                     showFeedback("Đúng rồi!", "win");
-                    // Không cộng điểm
                 }
 
-                correctDrops++;
+                correctDrops++; 
+                
                 if (correctDrops === totalDrops) {
-                    showFeedback("Chúc mừng! Bạn đã ghép hoàn chỉnh cái cây!", "win");
+                    showFeedback("🎉 Chúc mừng! Bạn đã ghép hoàn chỉnh cái cây!", "win");
                 }
                 
             } else if (targetName === "filled") {
                 showFeedback("Vị trí này đã được ghép đúng rồi!", "hint");
             } else {
                 // SAI
-                // Tăng số lần thử (để lần sau 0 điểm)
                 droppedItem.dataset.attempt = attempt + 1;
                 
-                // Hiển thị gợi ý
-                let partNameVietnamese = partName;
-                if(partName === 'hoa') partNameVietnamese = 'Hoa';
-                if(partName === 'la') partNameVietnamese = 'Lá';
-                if(partName === 'than') partNameVietnamese = 'Thân';
-                if(partName === 're') partNameVietnamese = 'Rễ';
+                let targetNameVietnamese = targetName;
+                if(targetName === 'hoa') targetNameVietnamese = 'Hoa';
+                if(targetName === 'la1') targetNameVietnamese = 'Lá bên trái';
+                if(targetName === 'la2') targetNameVietnamese = 'Lá bên phải';
+                if(targetName === 'than') targetNameVietnamese = 'Thân';
+                if(targetName === 're') targetNameVietnamese = 'Rễ';
                 
-                showFeedback(`Sai vị trí! Gợi ý: Đây là '${partNameVietnamese}'.`, "wrong");
+                showFeedback(`Sai vị trí! Vị trí này là dành cho '${targetNameVietnamese}'.`, "wrong");
             }
         });
+    });
+
+    // *** Logic cho nút Reset ***
+    resetButton.addEventListener('click', () => {
+        // Gọi API để reset điểm trong session
+        fetch(`${baseUrl}/science/update-plant-score`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'reset' })
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); 
+            } else {
+                alert("Lỗi! Không thể chơi lại.");
+            }
+        })
+        .catch(error => console.error('Lỗi reset:', error));
     });
 
     // Hàm hiển thị thông báo
@@ -117,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // *** Hàm cập nhật điểm ***
+    // Hàm cập nhật điểm
     async function updateScore(points) {
         try {
             const response = await fetch(`${baseUrl}/science/update-plant-score`, {
