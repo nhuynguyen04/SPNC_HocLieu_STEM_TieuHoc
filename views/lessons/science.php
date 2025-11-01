@@ -1,4 +1,7 @@
 <?php
+session_start();
+$base_url = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/\\');
+
 
 $science_data = [
     'name' => 'KHÁM PHÁ KHOA HỌC',
@@ -6,23 +9,23 @@ $science_data = [
     'gradient' => 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
     'icon' => '🔬',
     'description' => 'Cùng khám phá thế giới diệu kỳ!',
-    'total_xp' => 250,
+    'total_xp' => 280, // Tăng XP tổng
     'completed_xp' => 100,
     'current_streak' => 7,
     'character' => [
         'name' => 'Bạn Khủng Long Khoa Học',
         'avatar' => '🦖',
         'color' => '#10B981',
-        'welcome_message' => 'Chào bạn nhỏ! Mình là Khủng Long Khoa Học! Cùng mình khám phá 5 chủ đề siêu thú vị nhé! 🦖✨'
+        'welcome_message' => 'Chào bạn nhỏ! Mình là Khủng Long Khoa Học! Cùng mình khám phá các chủ đề siêu thú vị nhé! 🦖✨'
     ],
     'stats' => [
         'completed' => 2,
         'current' => 1,
-        'upcoming' => 2,
+        'upcoming' => 3, // Tăng upcoming
         'total_xp' => 100
     ],
     'topics' => [
-        [
+        [ // Topic 1
             'id' => 1,
             'title' => 'THẾ GIỚI MÀU SẮC',
             'icon' => '🎨',
@@ -31,25 +34,11 @@ $science_data = [
             'description' => 'Khám phá bí mật của màu sắc qua các hoạt động thú vị',
             'learning_time' => '15 phút',
             'activities' => [
-                [
-                    'type' => 'question',
-                    'title' => 'TRẢ LỜI CÂU HỎI',
-                    'icon' => '❓',
-                    'description' => 'Kiểm tra kiến thức về màu sắc',
-                    'status' => 'completed',
-                    'xp' => 25
-                ],
-                [
-                    'type' => 'game',
-                    'title' => 'TRÒ CHƠI PHA MÀU',
-                    'icon' => '🎮',
-                    'description' => 'Pha trộn màu sắc tạo màu mới',
-                    'status' => 'completed',
-                    'xp' => 25
-                ]
+                [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'completed', 'xp' => 25 ],
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHA MÀU', 'icon' => '🎮', 'status' => 'completed', 'xp' => 25 ]
             ]
         ],
-        [
+        [ // Topic 2
             'id' => 2,
             'title' => 'BÍ KÍP ĂN UỐNG LÀNH MẠNH',
             'icon' => '🍎',
@@ -58,17 +47,10 @@ $science_data = [
             'description' => 'Học cách chọn thực phẩm tốt cho sức khỏe',
             'learning_time' => '20 phút',
             'activities' => [
-                [
-                    'type' => 'game',
-                    'title' => 'TRÒ CHƠI DINH DƯỠNG',
-                    'icon' => '🧩',
-                    'description' => 'Phân loại thực phẩm tốt cho sức khỏe',
-                    'status' => 'completed',
-                    'xp' => 50
-                ]
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI DINH DƯỠNG', 'icon' => '🧩', 'status' => 'completed', 'xp' => 50 ]
             ]
         ],
-        [
+        [ // Topic 3
             'id' => 3,
             'title' => 'NGÀY VÀ ĐÊM',
             'icon' => '🌓',
@@ -77,17 +59,10 @@ $science_data = [
             'description' => 'Khám phá bí mật của thời gian và thiên văn',
             'learning_time' => '12 phút',
             'activities' => [
-                [
-                    'type' => 'question',
-                    'title' => 'TRẢ LỜI CÂU HỎI',
-                    'icon' => '🌞',
-                    'description' => 'Câu hỏi về Mặt Trời và Mặt Trăng',
-                    'status' => 'current',
-                    'xp' => 50
-                ]
+                [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '🌞', 'status' => 'current', 'xp' => 50 ]
             ]
         ],
-        [
+        [ // Topic 4
             'id' => 4,
             'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN',
             'icon' => '🚒',
@@ -96,17 +71,10 @@ $science_data = [
             'description' => 'Học cách phòng tránh và xử lý khi có hỏa hoạn',
             'learning_time' => '18 phút',
             'activities' => [
-                [
-                    'type' => 'game',
-                    'title' => 'TRÒ CHƠI THOÁT HIỂM',
-                    'icon' => '🏃‍♂️',
-                    'description' => 'Thực hành tình huống thoát hiểm an toàn',
-                    'status' => 'locked',
-                    'xp' => 50
-                ]
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI THOÁT HIỂM', 'icon' => '🏃‍♂️', 'status' => 'locked', 'xp' => 50 ]
             ]
         ],
-        [
+        [ // Topic 5
             'id' => 5,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
@@ -115,21 +83,28 @@ $science_data = [
             'description' => 'Học cách phân loại rác bảo vệ môi trường',
             'learning_time' => '16 phút',
             'activities' => [
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHÂN LOẠI', 'icon' => '♻️', 'status' => 'locked', 'xp' => 30 ],
+                [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'locked', 'xp' => 20 ]
+            ]
+        ],
+        
+        // *** TOPIC 6 (GAME GHÉP CÂY) ***
+        [
+            'id' => 6,
+            'title' => 'CÁC BỘ PHẬN CỦA CÂY',
+            'icon' => '🌱',
+            'status' => 'current',
+            'color' => '#16a085',
+            'description' => 'Học cách nhận biết các bộ phận của cây',
+            'learning_time' => '10 phút',
+            'activities' => [
                 [
                     'type' => 'game',
-                    'title' => 'TRÒ CHƠI PHÂN LOẠI',
-                    'icon' => '♻️',
-                    'description' => 'Phân loại rác vào đúng thùng',
-                    'status' => 'locked',
+                    'title' => 'TRÒ CHƠI LẮP GHÉP',
+                    'icon' => '🌿',
+                    'description' => 'Lắp ghép các bộ phận của cây',
+                    'status' => 'current',
                     'xp' => 30
-                ],
-                [
-                    'type' => 'question',
-                    'title' => 'TRẢ LỜI CÂU HỎI',
-                    'icon' => '❓',
-                    'description' => 'Kiểm tra kiến thức về bảo vệ môi trường',
-                    'status' => 'locked',
-                    'xp' => 20
                 ]
             ]
         ]
@@ -138,10 +113,7 @@ $science_data = [
 
 $subject = $science_data;
 $current_page = 'science';
-
 $progress_percentage = ($subject['completed_xp'] / $subject['total_xp']) * 100;
-
-session_start();
 $first_visit = !isset($_SESSION['science_visited']);
 $_SESSION['science_visited'] = true;
 ?>
@@ -152,7 +124,9 @@ $_SESSION['science_visited'] = true;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $subject['name']; ?> - STEM Universe</title>
-    <link rel="stylesheet" href="../../public/css/science.css">
+    
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/css/science.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
@@ -186,7 +160,7 @@ $_SESSION['science_visited'] = true;
     <main class="science-container">
         <header class="science-header">
             <div class="header-content">
-                <a href="../main_lesson.php" class="back-button">
+                <a href="<?php echo $base_url; ?>/views/main_lesson.php" class="back-button">
                     <i class="fas fa-home"></i>
                 </a>
                 
@@ -257,32 +231,39 @@ $_SESSION['science_visited'] = true;
                             
                             <div class="island-activities">
                                 <?php foreach ($topic['activities'] as $activity): ?>
-                                <div class="activity-badge <?php echo $activity['status']; ?>">
-                                    <span class="activity-emoji"><?php echo $activity['icon']; ?></span>
-                                    <span class="activity-text"><?php echo $activity['title']; ?></span>
-                                </div>
+                                    <?php
+                                    $activity_game_link = '';
+                                    $activity_title = strtoupper($activity['title']);
+                                    $is_unlocked = ($topic['status'] == 'completed' || $topic['status'] == 'current'); // Kiểm tra topic có mở khóa không
+
+                                    if ($activity_title == 'TRÒ CHƠI PHA MÀU') {
+                                        $activity_game_link = $base_url . '/science/color-game';
+                                    } elseif ($activity_title == 'TRÒ CHƠI DINH DƯỠNG') {
+                                        $activity_game_link = $base_url . '/science/nutrition';
+                                    } elseif ($activity_title == 'TRÒ CHƠI LẮP GHÉP') {
+                                        $activity_game_link = $base_url . '/science/plant-game';
+                                    }
+                                    
+                                    if (!empty($activity_game_link) && $is_unlocked && $activity['status'] != 'locked'):
+                                    ?>
+                                        <a href="<?php echo $activity_game_link; ?>" class="activity-badge <?php echo $activity['status']; ?>" title="Bấm để chơi game">
+                                            <span class="activity-emoji"><?php echo $activity['icon']; ?></span>
+                                            <span class="activity-text"><?php echo $activity['title']; ?></span>
+                                        </a>
+                                    <?php else: ?>
+                                        <div class="activity-badge <?php echo $activity['status']; ?>">
+                                            <span class="activity-emoji"><?php echo $activity['icon']; ?></span>
+                                            <span class="activity-text"><?php echo $activity['title']; ?></span>
+                                        </div>
+                                    <?php endif; ?>
+
                                 <?php endforeach; ?>
                             </div>
                             
+                            
                             <div class="island-action">
                                 <?php
-                                $game_link = '';
-                                if ($topic['id'] == 1) { // ID 1 là "Thế giới màu sắc"
-                                    $game_link = '/SPNC_HocLieu_STEM_TieuHoc/science/color-game';
-                                } elseif ($topic['id'] == 2) { // ID 2 là "Bí kíp ăn uống"
-                                    $game_link = '/SPNC_HocLieu_STEM_TieuHoc/science/nutrition';
-                                }
-
-                                // Tạo nút dựa trên link
-                                if (!empty($game_link)):
-                                ?>
-                                    <button class="island-btn <?php echo $topic['status'] == 'completed' ? 'review' : 'start'; ?>" 
-                                            onclick="window.location.href='<?php echo $game_link; ?>'">
-                                        <i class="fas <?php echo $topic['status'] == 'completed' ? 'fa-redo' : 'fa-play'; ?>"></i>
-                                        <span><?php echo $topic['status'] == 'completed' ? 'Chơi lại' : 'Chơi game'; ?></span>
-                                    </button>
-                                <?php
-                                elseif ($topic['status'] == 'completed'): 
+                                if ($topic['status'] == 'completed'): 
                                 ?>
                                     <button class="island-btn review" onclick="reviewTopic(<?php echo $topic['id']; ?>)">
                                         <i class="fas fa-redo"></i>
@@ -300,7 +281,8 @@ $_SESSION['science_visited'] = true;
                                     </button>
                                 <?php endif; ?>
                             </div>
-                             </div>
+                             
+                         </div>
                     </div>
 
                     <div class="ocean-waves">
@@ -319,6 +301,14 @@ $_SESSION['science_visited'] = true;
         <div class="pulse-ring"></div>
     </button>
 
-    <script src="../../public/js/science.js"></script>
+    <script src="<?php echo $base_url; ?>/public/js/science.js"></script>
+    <script>
+        function reviewTopic(id) {
+            console.log("Ôn tập topic: " + id);
+        }
+        function startTopic(id) {
+            console.log("Bắt đầu topic: " + id);
+        }
+    </script>
 </body>
 </html>

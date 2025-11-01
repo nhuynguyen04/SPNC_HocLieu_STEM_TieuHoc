@@ -2,23 +2,19 @@
 session_start();
 
 // 1. TẢI CÁC FILE CẦN THIẾT
-// (Đảm bảo đường dẫn này đúng)
 require_once 'models/Database.php';
 require_once 'models/User.php';
-require_once 'controllers/LessonController.php'; // Rất quan trọng!
+require_once 'controllers/LessonController.php';
 
 // 2. PHÂN TÍCH URL
 $request_uri = $_SERVER['REQUEST_URI'];
 
 // Xóa tên thư mục con khỏi URL
-// Ví dụ: /SPNC_HocLieu_STEM_TieuHoc/science/color-game
-// Chúng ta muốn lấy: /science/color-game
 $base_path = dirname($_SERVER['SCRIPT_NAME']);
-$base_path = rtrim($base_path, '/\\'); // Xóa dấu / cuối
+$base_path = rtrim($base_path, '/\\');
 
 $route = str_replace($base_path, '', $request_uri);
 
-// Xóa query string (ví dụ: ?next=1)
 if (strpos($route, '?') !== false) {
     $route = substr($route, 0, strpos($route, '?'));
 }
@@ -28,7 +24,7 @@ if (empty($route)) {
 }
 
 // 3. ĐIỀU HƯỚNG (ROUTING)
-// Chúng ta sẽ tái tạo logic từ tệp 'routes.php' của bạn ở đây
+// Tái tạo logic từ tệp 'routes.php'
 
 $lessonController = new LessonController();
 
@@ -47,13 +43,17 @@ switch ($route) {
             $lessonController->updateNutritionScore();
         }
         break;
-        
-    // --- ROUTE CHO CÁC TRANG KHÁC (VÍ DỤ) ---
-    // (Bạn có thể thêm các trang khác như /views/home.php ở đây)
-    // case '/home':
-    //    require 'views/home.php';
-    //    break;
+    
+    case '/science/plant-game':
+        $lessonController->showPlantGame();
+        break;
 
+    case '/science/update-plant-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updatePlantScore();
+        }
+        break;
+        
     // --- ROUTE CHO TRANG CHỦ ---
     case '/':
     case '/index.php':
@@ -62,7 +62,7 @@ switch ($route) {
         break;
         
     default:
-        // 404 Not Found (đơn giản)
+        // 404 Not Found
         // Hiển thị trang chủ nếu không tìm thấy
         showHomePage();
         break;
@@ -70,10 +70,9 @@ switch ($route) {
 
 /**
  * HÀM HIỂN THỊ TRANG CHỦ
- * (Đây là toàn bộ code cũ từ file index.php của bạn)
  */
 function showHomePage() {
-    // Các biến này giờ nằm trong phạm vi (scope) của hàm
+    // Các biến nằm trong phạm vi (scope) của hàm
     $isLoggedIn = isset($_SESSION['user_id']);
     $userName = $isLoggedIn ? $_SESSION['full_name'] : '';
 
@@ -100,7 +99,6 @@ function showHomePage() {
     $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
     $base_url = rtrim($base_url, '/\\');
     
-    // Bắt đầu copy HTML từ đây
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -358,5 +356,5 @@ function showHomePage() {
 </body>
 </html>
 <?php
-} // Kết thúc hàm showHomePage()
+}
 ?>

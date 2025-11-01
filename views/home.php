@@ -1,5 +1,6 @@
 <?php
-
+$base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
+$base_url = rtrim($base_url, '/\\');
 $subjects = [
     'khoa_hoc' => [
         'name' => 'Khoa học',
@@ -88,7 +89,7 @@ require_once './template/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM Universe - Học liệu STEM Tiểu học</title>
-    <link rel="stylesheet" href="../public/css/home.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -271,7 +272,7 @@ require_once './template/header.php';
     </main>
 
     <?php require_once './template/footer.php'; ?>                                                       
-    <script src="../public/js/main.js"></script>
+    <script src="<?php echo $base_url; ?>/public/js/main_lesson.js"></script>
     <script>
     function openLesson(lessonTitle) {
         window.location.href = `lesson.php?title=${encodeURIComponent(lessonTitle)}`;

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
     const form = document.getElementById('forgotPasswordForm');
     const emailInput = document.getElementById('email');
     const submitBtn = document.getElementById('submitBtn');
@@ -10,9 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const successMessage = document.getElementById('successMessage');
     const emailError = document.getElementById('emailError');
 
-    // Show alert function
     function showAlert(alertElement, message = '') {
-        // Hide all alerts first
+
         hideAllAlerts();
         
         if (message) {
@@ -26,14 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
         alertElement.style.animation = 'alertSlideIn 0.3s ease';
     }
 
-    // Hide all alerts
     function hideAllAlerts() {
         errorAlert.style.display = 'none';
         successAlert.style.display = 'none';
         infoAlert.style.display = 'none';
     }
 
-    // Show error for specific field
     function showFieldError(input, message) {
         const formGroup = input.closest('.form-group');
         formGroup.classList.add('error');
@@ -44,8 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         input.focus();
     }
-
-    // Clear field error
     function clearFieldError(input) {
         const formGroup = input.closest('.form-group');
         formGroup.classList.remove('error');
@@ -54,14 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
             emailError.textContent = '';
         }
     }
-
-    // Validate email format
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-
-    // Real-time validation
     emailInput.addEventListener('blur', function() {
         if (!this.value.trim()) {
             showFieldError(this, 'Vui lòng nhập email');
@@ -78,15 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Clear previous errors
         hideAllAlerts();
         clearFieldError(emailInput);
         
-        // Validate form
         let isValid = true;
         
         if (!emailInput.value.trim()) {
@@ -101,39 +88,30 @@ document.addEventListener('DOMContentLoaded', function() {
             showAlert(errorAlert, 'Vui lòng kiểm tra thông tin đã nhập');
             return;
         }
-
-        // Show loading state
         submitBtn.classList.add('loading');
         submitBtn.innerHTML = '<i class="fas fa-spinner"></i> Đang xử lý...';
 
         try {
-            // Simulate API call - Replace with actual API call
             await simulateAPICall(emailInput.value.trim());
             
-            // Show success message
             showAlert(successAlert, 'Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn!');
             showAlert(infoAlert);
             
-            // Reset form
             form.reset();
             
-            // Add countdown timer
             startCountdown();
             
         } catch (error) {
             showAlert(errorAlert, error.message || 'Có lỗi xảy ra. Vui lòng thử lại sau.');
         } finally {
-            // Remove loading state
             submitBtn.classList.remove('loading');
             submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi liên kết đặt lại';
         }
     });
 
-    // Simulate API call - Replace with actual fetch/axios call
     function simulateAPICall(email) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                // Simulate random success/failure for demo
                 const isSuccess = Math.random() > 0.3;
                 
                 if (isSuccess) {
@@ -145,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Countdown timer for resend
     function startCountdown() {
         const authFooter = document.querySelector('.auth-footer');
         let existingCountdown = document.querySelector('.countdown');
@@ -174,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
 
-    // Add input animations
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
@@ -188,14 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add keyboard shortcut
     document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.key === 'Enter') {
             form.dispatchEvent(new Event('submit'));
         }
     });
 
-    // Initialize form animations
     setTimeout(() => {
         document.querySelectorAll('.form-group').forEach((group, index) => {
             group.style.animationDelay = `${index * 0.1}s`;

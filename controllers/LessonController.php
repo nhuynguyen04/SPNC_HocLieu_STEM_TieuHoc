@@ -151,4 +151,58 @@ class LessonController {
         echo json_encode(['newScore' => $_SESSION['nutrition_score']]);
         exit();
     }
+
+    /**
+     * TRÒ CHƠI LẮP GHÉP BỘ PHẬN CÂY
+     */
+    public function showPlantGame() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // *** Khởi tạo điểm cho game ***
+        if (!isset($_SESSION['plant_score'])) {
+            $_SESSION['plant_score'] = 0;
+        }
+
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        $plantParts = [
+            ['id' => 'part-hoa', 'name' => 'hoa', 'img' => 'plant_hoa.png'],
+            ['id' => 'part-la1', 'name' => 'la1', 'img' => 'plant_la1.png'],
+            ['id' => 'part-la2', 'name' => 'la2', 'img' => 'plant_la2.png'], 
+            ['id' => 'part-than', 'name' => 'than', 'img' => 'plant_than.png'],
+            ['id' => 'part-re', 'name' => 're', 'img' => 'plant_re.png'],
+        ];
+        
+        shuffle($plantParts); 
+
+        require_once __DIR__ . '/../views/lessons/science_plant_game.php';
+    }
+
+    /**
+     * API Cập nhật điểm cho Game Ghép Bộ Phận Cây ***
+     */
+    public function updatePlantScore() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['plant_score'])) {
+            $_SESSION['plant_score'] = 0;
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if ($data) {
+            if ($data['action'] === 'add_points' && isset($data['points'])) {
+                $_SESSION['plant_score'] += (int)$data['points'];
+            } elseif ($data['action'] === 'reset') {
+                $_SESSION['plant_score'] = 0;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['newScore' => $_SESSION['plant_score']]);
+        exit();
+    }
 }
