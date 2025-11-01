@@ -199,7 +199,7 @@ class Database {
                 ('admin', 'admin@stem.edu.vn', '$hashed_password', 'Admin', 'System', NULL, 'admin', 1),
                 ('student1', 'student1@stem.edu.vn', '$hashed_password', 'Minh', 'Nguyễn', '5A1', 'user', 1),
                 ('student2', 'student2@stem.edu.vn', '$hashed_password', 'Lan', 'Trần', '5A2', 'user', 1)");
-`
+
                 $this->conn->exec("INSERT INTO stem_fields (name, description, icon, color) VALUES
                 ('Toán học', 'Môn học về số học và hình học', '📊', '#A594F9'),
                 ('Khoa học', 'Khám phá thế giới tự nhiên', '🔬', '#FF9E6D'),

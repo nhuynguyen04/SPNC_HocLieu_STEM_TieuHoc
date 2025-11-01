@@ -45,7 +45,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - STEM Universe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/signin.css">
+    <link rel="stylesheet" href="../public/CSS/signin.css">
 </head>
 <body>
     <div class="static-bg"></div>
@@ -128,6 +128,6 @@ try {
         </div>
     </div>
 
-    <script src="../public/js/signin.js"></script>
+    <script src="../public/JS/signin.js"></script>
 </body>
 </html>
