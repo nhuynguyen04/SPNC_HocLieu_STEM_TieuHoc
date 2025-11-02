@@ -166,7 +166,7 @@ class LessonController {
 
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
         
-        $plantType = $_GET['type'] ?? 'hoa'; // Mặc định là cây hoa
+        $plantType = $_GET['type'] ?? 'hoa';
         
         // *** TOÀN BỘ DỮ LIỆU 5 LOẠI CÂY MỚI ***
         $allPlantsData = [
@@ -181,7 +181,7 @@ class LessonController {
                     ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân'],
                     ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
-                'dropzones' => [ // Tọa độ (top, left, width, height)
+                'dropzones' => [
                     ['target' => 'hoa', 'top' => '15%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
                     ['target' => 'la', 'top' => '40%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
                     ['target' => 'than', 'top' => '30%', 'left' => '45%', 'width' => '10%', 'height' => '40%'],
@@ -275,8 +275,7 @@ class LessonController {
     }
 
     /**
-     * PHƯƠNG THỨC 5: API Cập nhật điểm (cho Game Ghép Cây)
-     * (Giữ nguyên)
+     * API Cập nhật điểm (cho Game Ghép Cây)
      */
     public function updatePlantScore() {
         if (session_status() == PHP_SESSION_NONE) {

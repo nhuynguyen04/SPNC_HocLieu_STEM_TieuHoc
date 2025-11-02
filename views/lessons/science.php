@@ -240,7 +240,7 @@ $_SESSION['science_visited'] = true;
                                         $activity_game_link = $base_url . '/science/color-game';
                                     } elseif ($activity_title == 'TRÒ CHƠI DINH DƯỠNG') {
                                         $activity_game_link = $base_url . '/science/nutrition';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY HOA') { // Game cây hoa
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY HOA') {
                                         $activity_game_link = $base_url . '/science/plant-game?type=hoa';
                                     } elseif ($activity_title == 'TRÒ CHƠI CÂY CỔ THỤ') {
                                         $activity_game_link = $base_url . '/science/plant-game?type=cothu';

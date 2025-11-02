@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 // SAI
                 droppedItem.dataset.attempt = attempt + 1;
                 
-                // *** ĐÃ CẬP NHẬT GỢI Ý ***
                 let targetNameVietnamese = targetName;
                 if(targetName === 'hoa') targetNameVietnamese = 'Hoa';
                 else if(targetName === 'la') targetNameVietnamese = 'Lá';
