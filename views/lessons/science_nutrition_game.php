@@ -4,6 +4,8 @@ require_once __DIR__ . '/../template/header.php';
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/nutrition_game.css">
 
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
+
 <div class="game-wrapper"> 
     <h1>Trò chơi: Sắp xếp Tháp Dinh Dưỡng  pyramid</h1>
     <p>Hãy kéo các món ăn vào đúng nhóm của chúng trên tháp.</p>

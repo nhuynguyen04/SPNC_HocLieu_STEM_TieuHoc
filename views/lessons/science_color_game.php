@@ -2,6 +2,8 @@
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/color_mixing_game.css"> 
 
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
+
 <div class="color-game-wrapper"> 
     <h1>Trò chơi pha màu</h1>
     <div class="score-box">Điểm: <span id="totalScore"><?= $_SESSION['total_score'] ?></span></div>

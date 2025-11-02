@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../template/header.php';
 ?>
 
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
+
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/plant_game.css">
 
 <div class="game-wrapper plant-game">
