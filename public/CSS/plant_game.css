@@ -1,3 +1,4 @@
+/* CSS cho game gọi tên bộ phận cây */
 .plant-game {
     width: 95%;
     max-width: 1000px;
@@ -28,6 +29,19 @@
 #plant-feedback.wrong { color: #e74c3c; }
 #plant-feedback.hint { color: #e67e22; }
 
+.plant-game .reset-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.plant-game .reset-button:hover { background-color: #c0392b; }
+
 #plantGameContainer {
     display: flex;
     justify-content: space-between;
@@ -36,7 +50,7 @@
     flex-wrap: wrap;
 }
 
-/* 1. Hộp chứa các bộ phận */
+/* 1. Hộp chứa các nhãn tên */
 #partsBank {
     width: 20%;
     min-width: 150px;
@@ -56,35 +70,32 @@
     color: #34495e;
 }
 
-.draggable-part {
+/* Kiểu cho nhãn tên */
+.draggable-label {
     width: 90%;
-    height: 80px;
+    padding: 15px 10px;
     background: white;
     border: 2px solid #95a5a6;
     border-radius: 8px;
     cursor: grab;
     transition: all 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    color: #34495e;
 }
-.draggable-part:hover {
+.draggable-label:hover {
     border-color: #3498db;
     transform: scale(1.05);
 }
-.draggable-part.dragging {
+.draggable-label.dragging {
     opacity: 0.5;
     border-style: dashed;
 }
-.draggable-part img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+.draggable-label.dropped {
+    opacity: 0.2;
     pointer-events: none;
-}
-.draggable-part.dropped {
-    opacity: 0;
-    pointer-events: none;
+    background: #dfe6e9;
 }
 
 
@@ -97,95 +108,52 @@
     border: 2px solid #bdc3c7;
     border-radius: 8px;
     overflow: hidden;
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.plant-silhouette {
+.plant-image-bg {
     width: 100%;
     height: 100%;
     object-fit: contain; 
     position: absolute;
+    left: 0;
+    top: 0;
     z-index: 1;
-    opacity: 0.9;
 }
 
 /* Khu vực thả */
 .dropzone {
     position: absolute;
-    border: 2px dashed rgba(0,0,0,0.2);
+    z-index: 10;
+    border: 2px dashed rgba(0, 150, 255, 0.5); /* Viền xanh */
     border-radius: 10px;
     transition: all 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px); /* Hiệu ứng mờ */
 }
 .dropzone.drag-over {
     background: rgba(0, 150, 255, 0.2);
     border-color: #3498db;
 }
+/* Khi thả đúng */
 .dropzone.correct {
-    border: none;
-    background: transparent;
+    border: 2px solid #2ecc71;
+    background: rgba(46, 204, 113, 0.2);
 }
-.dropzone img {
+/* Nhãn tên khi đã được thả vào */
+.dropzone .draggable-label {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-}
-
-/* --- ĐỊNH VỊ CÁC KHU VỰC THẢ (ĐÃ SỬA TỌA ĐỘ VÀ Z-INDEX) --- */
-
-#drop-hoa {
-    top: 13.2%;
-    left: 37.7%;
-    width: 25.1%;
-    height: 25.1%;
-    z-index: 13;
-}
-#drop-la1 { /* Lá trái */
-    top: 44.1%;
-    left: 36.5%;
-    width: 12.6%;
-    height: 12.6%;
-    z-index: 12;
-}
-#drop-la2 { /* Lá phải */
-    top: 38.5%;
-    left: 49%;
-    width: 12.8%;
-    height: 12.8%;
-    z-index: 12;
-}
-#drop-than {
-    top: 36.35%;
-    left: 33.5%;
-    width: 31.7%;
-    height: 31.7%;
-    z-index: 11;
-}
-#drop-re {
-    top: 67.27%;
-    left: 38.05%;
-    width: 24.3%;
-    height: 24.3%;
-    z-index: 10;
-}
-
-.plant-game .reset-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.plant-game .reset-button:hover {
-    background-color: #c0392b;
+    margin: 0;
+    padding: 5px; /* Giảm padding */
+    font-size: 1em; /* Giảm cỡ chữ */
+    box-shadow: none;
+    opacity: 1;
+    pointer-events: none; /* Không cho kéo ra nữa */
+    background: #fff;
 }

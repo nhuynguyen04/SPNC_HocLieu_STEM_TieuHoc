@@ -160,28 +160,123 @@ class LessonController {
             session_start();
         }
         
-        // *** Khởi tạo điểm cho game ***
         if (!isset($_SESSION['plant_score'])) {
             $_SESSION['plant_score'] = 0;
         }
 
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-
-        $plantParts = [
-            ['id' => 'part-hoa', 'name' => 'hoa', 'img' => 'plant_hoa.png'],
-            ['id' => 'part-la1', 'name' => 'la1', 'img' => 'plant_la1.png'],
-            ['id' => 'part-la2', 'name' => 'la2', 'img' => 'plant_la2.png'], 
-            ['id' => 'part-than', 'name' => 'than', 'img' => 'plant_than.png'],
-            ['id' => 'part-re', 'name' => 're', 'img' => 'plant_re.png'],
+        
+        $plantType = $_GET['type'] ?? 'hoa'; // Mặc định là cây hoa
+        
+        // *** TOÀN BỘ DỮ LIỆU 5 LOẠI CÂY MỚI ***
+        $allPlantsData = [
+            
+            // === 1. CÂY HOA ===
+            'hoa' => [
+                'title' => 'Cây Hoa',
+                'image_bg' => 'plant_hoa_bg.png',
+                'parts' => [
+                    ['id' => 'label-hoa', 'name' => 'hoa', 'text' => 'Hoa'],
+                    ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
+                    ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
+                ],
+                'dropzones' => [ // Tọa độ (top, left, width, height)
+                    ['target' => 'hoa', 'top' => '15%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
+                    ['target' => 'la', 'top' => '40%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
+                    ['target' => 'than', 'top' => '30%', 'left' => '45%', 'width' => '10%', 'height' => '40%'],
+                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                ]
+            ],
+            
+            // === 2. CÂY CỔ THỤ ===
+            'cothu' => [
+                'title' => 'Cây Cổ Thụ',
+                'image_bg' => 'plant_cothu_bg.png',
+                'parts' => [
+                    ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
+                    ['id' => 'label-canh', 'name' => 'canh', 'text' => 'Cành'],
+                    ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
+                ],
+                'dropzones' => [
+                    ['target' => 'la', 'top' => '10%', 'left' => '60%', 'width' => '30%', 'height' => '20%'],
+                    ['target' => 'canh', 'top' => '25%', 'left' => '30%', 'width' => '25%', 'height' => '15%'],
+                    ['target' => 'than', 'top' => '20%', 'left' => '45%', 'width' => '10%', 'height' => '50%'],
+                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                ]
+            ],
+            
+            // === 3. CÂY CỦ ===
+            'cu' => [
+                'title' => 'Cây Củ',
+                'image_bg' => 'plant_cu_bg.png',
+                'parts' => [
+                    ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
+                    ['id' => 'label-cu', 'name' => 'cu', 'text' => 'Củ'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ con'],
+                ],
+                'dropzones' => [
+                    ['target' => 'la', 'top' => '10%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                    ['target' => 'cu', 'top' => '35%', 'left' => '40%', 'width' => '20%', 'height' => '30%'],
+                    ['target' => 're', 'top' => '65%', 'left' => '45%', 'width' => '10%', 'height' => '20%'],
+                ]
+            ],
+            
+            // === 4. CÂY ĂN QUẢ ===
+            'anqua' => [
+                'title' => 'Cây Ăn Quả',
+                'image_bg' => 'plant_anqua_bg.png',
+                'parts' => [
+                    ['id' => 'label-qua', 'name' => 'qua', 'text' => 'Quả'],
+                    ['id' => 'label-hoa', 'name' => 'hoa', 'text' => 'Hoa'],
+                    ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
+                    ['id' => 'label-canh', 'name' => 'canh', 'text' => 'Cành'],
+                    ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
+                ],
+                'dropzones' => [
+                    ['target' => 'qua', 'top' => '20%', 'left' => '60%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'hoa', 'top' => '15%', 'left' => '20%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'la', 'top' => '30%', 'left' => '40%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'canh', 'top' => '25%', 'left' => '30%', 'width' => '25%', 'height' => '15%'],
+                    ['target' => 'than', 'top' => '20%', 'left' => '45%', 'width' => '10%', 'height' => '50%'],
+                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                ]
+            ],
+            
+            // === 5. CÂY DÂY LEO ===
+            'dayleo' => [
+                'title' => 'Cây Dây Leo',
+                'image_bg' => 'plant_dayleo_bg.png',
+                'parts' => [
+                    ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
+                    ['id' => 'label-hoa', 'name' => 'hoa', 'text' => 'Hoa'],
+                    ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân (dây)'],
+                    ['id' => 'label-qua', 'name' => 'qua', 'text' => 'Quả'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
+                ],
+                'dropzones' => [
+                    ['target' => 'la', 'top' => '30%', 'left' => '20%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'hoa', 'top' => '15%', 'left' => '40%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'than', 'top' => '10%', 'left' => '50%', 'width' => '10%', 'height' => '70%'],
+                    ['target' => 'qua', 'top' => '50%', 'left' => '60%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 're', 'top' => '80%', 'left' => '45%', 'width' => '20%', 'height' => '15%'],
+                ]
+            ],
         ];
         
-        shuffle($plantParts); 
+        // Chọn dữ liệu cây dựa trên $plantType
+        $plantData = $allPlantsData[$plantType] ?? $allPlantsData['hoa']; 
+        
+        shuffle($plantData['parts']); 
 
         require_once __DIR__ . '/../views/lessons/science_plant_game.php';
     }
 
     /**
-     * API Cập nhật điểm cho Game Ghép Bộ Phận Cây ***
+     * PHƯƠNG THỨC 5: API Cập nhật điểm (cho Game Ghép Cây)
+     * (Giữ nguyên)
      */
     public function updatePlantScore() {
         if (session_status() == PHP_SESSION_NONE) {
@@ -190,17 +285,14 @@ class LessonController {
         if (!isset($_SESSION['plant_score'])) {
             $_SESSION['plant_score'] = 0;
         }
-
         $data = json_decode(file_get_contents('php://input'), true);
-
         if ($data) {
             if ($data['action'] === 'add_points' && isset($data['points'])) {
                 $_SESSION['plant_score'] += (int)$data['points'];
-            } elseif ($data['action'] === 'reset') {
+            } elseif ($data['action'] === 'reset') { 
                 $_SESSION['plant_score'] = 0;
             }
         }
-
         header('Content-Type: application/json');
         echo json_encode(['newScore' => $_SESSION['plant_score']]);
         exit();

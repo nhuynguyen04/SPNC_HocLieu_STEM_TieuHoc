@@ -240,10 +240,18 @@ $_SESSION['science_visited'] = true;
                                         $activity_game_link = $base_url . '/science/color-game';
                                     } elseif ($activity_title == 'TRÒ CHƠI DINH DƯỠNG') {
                                         $activity_game_link = $base_url . '/science/nutrition';
-                                    } elseif ($activity_title == 'TRÒ CHƠI LẮP GHÉP') {
-                                        $activity_game_link = $base_url . '/science/plant-game';
-                                    }
-                                    
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY HOA') { // Game cây hoa
+                                        $activity_game_link = $base_url . '/science/plant-game?type=hoa';
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY CỔ THỤ') {
+                                        $activity_game_link = $base_url . '/science/plant-game?type=cothu';
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY CỦ') {
+                                        $activity_game_link = $base_url . '/science/plant-game?type=cu';
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY ĂN QUẢ') {
+                                        $activity_game_link = $base_url . '/science/plant-game?type=anqua';
+                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY DÂY LEO') {
+                                        $activity_game_link = $base_url . '/science/plant-game?type=dayleo';
+                                    } 
+
                                     if (!empty($activity_game_link) && $is_unlocked && $activity['status'] != 'locked'):
                                     ?>
                                         <a href="<?php echo $activity_game_link; ?>" class="activity-badge <?php echo $activity['status']; ?>" title="Bấm để chơi game">
