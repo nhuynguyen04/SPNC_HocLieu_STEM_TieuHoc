@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 droppedItem.classList.add("dropped");
                 droppedItem.setAttribute("draggable", "false");
                 
-                zone.classList.add("correct");
                 zone.dataset.targetPart = "filled"; 
 
                 let points = 0;

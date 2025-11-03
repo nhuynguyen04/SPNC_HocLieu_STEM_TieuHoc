@@ -1,3 +1,4 @@
+/* CSS cho game gọi tên bộ phận cây */
 .plant-game {
     width: 95%;
     max-width: 1000px;
@@ -126,26 +127,19 @@
 .dropzone {
     position: absolute;
     z-index: 10;
-    border: 2px dashed rgba(0, 150, 255, 0.5);
+    /* border: 2px dashed rgba(0, 150, 255, 0.5); dùng để chỉnh vị trí */
     border-radius: 10px;
     transition: all 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(2px);
 }
 .dropzone.drag-over {
     background: rgba(0, 150, 255, 0.2);
     border-color: #3498db;
 }
 
-/* Khi thả đúng */
-.dropzone.correct {
-    border: 2px solid #2ecc71;
-    background: rgba(46, 204, 113, 0.2);
-}
-
+/* Nhãn tên khi đã được thả vào */
 .dropzone .draggable-label {
     width: 100%;
     height: 100%;
@@ -155,5 +149,5 @@
     box-shadow: none;
     opacity: 1;
     pointer-events: none;
-    background: #fff;
+    background: none;
 }

@@ -182,10 +182,10 @@ class LessonController {
                     ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
                 'dropzones' => [
-                    ['target' => 'hoa', 'top' => '15%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
-                    ['target' => 'la', 'top' => '40%', 'left' => '55%', 'width' => '25%', 'height' => '15%'],
-                    ['target' => 'than', 'top' => '30%', 'left' => '45%', 'width' => '10%', 'height' => '40%'],
-                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                    ['target' => 'hoa', 'top' => '26%', 'left' => '61.2%', 'width' => '9%', 'height' => '8%'],
+                    ['target' => 'la', 'top' => '45.5%', 'left' => '61.4%', 'width' => '8%', 'height' => '10%'],
+                    ['target' => 'than', 'top' => '58.5%', 'left' => '37.5%', 'width' => '8%', 'height' => '8%'],
+                    ['target' => 're', 'top' => '78.3%', 'left' => '60.3%', 'width' => '8.8%', 'height' => '8.6%'],
                 ]
             ],
             
@@ -200,10 +200,10 @@ class LessonController {
                     ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
                 'dropzones' => [
-                    ['target' => 'la', 'top' => '10%', 'left' => '60%', 'width' => '30%', 'height' => '20%'],
-                    ['target' => 'canh', 'top' => '25%', 'left' => '30%', 'width' => '25%', 'height' => '15%'],
-                    ['target' => 'than', 'top' => '20%', 'left' => '45%', 'width' => '10%', 'height' => '50%'],
-                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                    ['target' => 'la', 'top' => '27.5%', 'left' => '66.5%', 'width' => '9%', 'height' => '9.5%'],
+                    ['target' => 'canh', 'top' => '35%', 'left' => '28%', 'width' => '9.2%', 'height' => '10.5%'],
+                    ['target' => 'than', 'top' => '56%', 'left' => '34.5%', 'width' => '8.5%', 'height' => '10.3%'],
+                    ['target' => 're', 'top' => '77.5%', 'left' => '63%', 'width' => '8%', 'height' => '10%'],
                 ]
             ],
             
@@ -214,12 +214,12 @@ class LessonController {
                 'parts' => [
                     ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
                     ['id' => 'label-cu', 'name' => 'cu', 'text' => 'Củ'],
-                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ con'],
+                    ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
                 'dropzones' => [
-                    ['target' => 'la', 'top' => '10%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
-                    ['target' => 'cu', 'top' => '35%', 'left' => '40%', 'width' => '20%', 'height' => '30%'],
-                    ['target' => 're', 'top' => '65%', 'left' => '45%', 'width' => '10%', 'height' => '20%'],
+                    ['target' => 'la', 'top' => '27%', 'left' => '59.5%', 'width' => '9%', 'height' => '10%'],
+                    ['target' => 'cu', 'top' => '58%', 'left' => '55%', 'width' => '8.5%', 'height' => '10%'],
+                    ['target' => 're', 'top' => '77%', 'left' => '59%', 'width' => '8%', 'height' => '10%'],
                 ]
             ],
             
@@ -229,19 +229,17 @@ class LessonController {
                 'image_bg' => 'plant_anqua_bg.png',
                 'parts' => [
                     ['id' => 'label-qua', 'name' => 'qua', 'text' => 'Quả'],
-                    ['id' => 'label-hoa', 'name' => 'hoa', 'text' => 'Hoa'],
                     ['id' => 'label-la', 'name' => 'la', 'text' => 'Lá'],
                     ['id' => 'label-canh', 'name' => 'canh', 'text' => 'Cành'],
                     ['id' => 'label-than', 'name' => 'than', 'text' => 'Thân'],
                     ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
                 'dropzones' => [
-                    ['target' => 'qua', 'top' => '20%', 'left' => '60%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 'hoa', 'top' => '15%', 'left' => '20%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 'la', 'top' => '30%', 'left' => '40%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 'canh', 'top' => '25%', 'left' => '30%', 'width' => '25%', 'height' => '15%'],
-                    ['target' => 'than', 'top' => '20%', 'left' => '45%', 'width' => '10%', 'height' => '50%'],
-                    ['target' => 're', 'top' => '70%', 'left' => '30%', 'width' => '40%', 'height' => '25%'],
+                    ['target' => 'qua', 'top' => '50.5%', 'left' => '57.5%', 'width' => '8.8%', 'height' => '9.7%'],
+                    ['target' => 'la', 'top' => '29%', 'left' => '67.7%', 'width' => '9%', 'height' => '9.5%'],
+                    ['target' => 'canh', 'top' => '9%', 'left' => '25.7%', 'width' => '9%', 'height' => '10.7%'],
+                    ['target' => 'than', 'top' => '56.5%', 'left' => '32.5%', 'width' => '9%', 'height' => '10%'],
+                    ['target' => 're', 'top' => '77.5%', 'left' => '57.7%', 'width' => '8%', 'height' => '10.2%'],
                 ]
             ],
             
@@ -257,11 +255,11 @@ class LessonController {
                     ['id' => 'label-re', 'name' => 're', 'text' => 'Rễ'],
                 ],
                 'dropzones' => [
-                    ['target' => 'la', 'top' => '30%', 'left' => '20%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 'hoa', 'top' => '15%', 'left' => '40%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 'than', 'top' => '10%', 'left' => '50%', 'width' => '10%', 'height' => '70%'],
-                    ['target' => 'qua', 'top' => '50%', 'left' => '60%', 'width' => '20%', 'height' => '15%'],
-                    ['target' => 're', 'top' => '80%', 'left' => '45%', 'width' => '20%', 'height' => '15%'],
+                    ['target' => 'la', 'top' => '11%', 'left' => '49.5%', 'width' => '12.5%', 'height' => '10.5%'],
+                    ['target' => 'hoa', 'top' => '22%', 'left' => '3.1%', 'width' => '14%', 'height' => '11%'],
+                    ['target' => 'than', 'top' => '57%', 'left' => '3.1%', 'width' => '16%', 'height' => '12%'],
+                    ['target' => 'qua', 'top' => '38%', 'left' => '82.5%', 'width' => '14.5%', 'height' => '12.5%'],
+                    ['target' => 're', 'top' => '80.5%', 'left' => '41.5%', 'width' => '15.5%', 'height' => '12%'],
                 ]
             ],
         ];
