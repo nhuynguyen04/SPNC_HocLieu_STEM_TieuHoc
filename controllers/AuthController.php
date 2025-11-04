@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../models/Database.php';
 require_once __DIR__ . '/../models/User.php';
+// PHPMailer will be required when needed by methods below
+// Composer autoload is checked inside methods that send email to avoid breaking environments without composer
 
 class AuthController {
     private $userModel;
@@ -150,6 +152,153 @@ class AuthController {
         } catch (Exception $e) {
             error_log("Register error in AuthController: " . $e->getMessage() . "\n" . $e->getTraceAsString());
             throw $e; // Re-throw to be handled by signup.php
+        }
+    }
+
+    // -----------------------------
+    // Forgot password related APIs
+    // -----------------------------
+    public function sendResetCode() {
+        try {
+            header('Content-Type: application/json');
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
+
+            $email = $_POST['email'] ?? '';
+            if (empty($email)) {
+                throw new Exception('Vui lòng nhập email');
+            }
+
+            // Tạo mã xác nhận (lưu vào DB)
+            $resetCode = $this->userModel->createResetCode($email);
+            if (!$resetCode) {
+                throw new Exception('Email không tồn tại trong hệ thống');
+            }
+
+            // Read SMTP config
+            $configPath = __DIR__ . '/../config/mail.php';
+            if (!file_exists($configPath)) {
+                throw new Exception('Mail configuration file not found');
+            }
+            $smtpConfig = require $configPath;
+
+            // Ensure composer autoload and PHPMailer available
+            $vendorAutoload = __DIR__ . '/../vendor/autoload.php';
+            if (!file_exists($vendorAutoload)) {
+                throw new Exception('Composer autoload not found. Please run: composer require phpmailer/phpmailer');
+            }
+            require_once $vendorAutoload;
+
+            // Use PHPMailer
+            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+            // Minimal required config, reuse same SSL options as register
+            if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
+                $mail->SMTPDebug = 0;
+                $mail->Debugoutput = function($str, $level) {
+                    error_log("PHPMailer Debug [$level]: $str");
+                };
+            }
+
+            $mail->isSMTP();
+            $mail->Host = $smtpConfig['host'];
+            $mail->SMTPAuth = true;
+            $mail->Username = $smtpConfig['username'];
+            $mail->Password = $smtpConfig['password'];
+            $mail->Port = $smtpConfig['port'];
+            if (!empty($smtpConfig['secure'])) {
+                $mail->SMTPSecure = $smtpConfig['secure'];
+            }
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+
+            $mail->CharSet = 'UTF-8';
+            $mail->setFrom($smtpConfig['from_email'] ?? $smtpConfig['username'], $smtpConfig['from_name'] ?? 'STEM Universe');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Mã xác nhận đặt lại mật khẩu - STEM Universe';
+            $mail->Body = "<h2>Yêu cầu đặt lại mật khẩu</h2>\n<p>Bạn vừa yêu cầu đặt lại mật khẩu cho tài khoản STEM Universe.</p>\n<p>Mã xác nhận của bạn là: <strong style='font-size:24px;color:#4c6ef5;'>{$resetCode}</strong></p>\n<p>Mã này sẽ hết hạn sau 15 phút.</p>";
+
+            $mail->send();
+
+            return json_encode([
+                'success' => true,
+                'message' => 'Mã xác nhận đã được gửi đến email của bạn'
+            ]);
+
+        } catch (Exception $e) {
+            return json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function verifyResetCode() {
+        try {
+            header('Content-Type: application/json');
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
+
+            $email = $_POST['email'] ?? '';
+            $code = $_POST['code'] ?? '';
+            if (empty($email) || empty($code)) {
+                throw new Exception('Vui lòng nhập đầy đủ thông tin');
+            }
+
+            if (!$this->userModel->verifyResetCode($email, $code)) {
+                throw new Exception('Mã xác nhận không đúng hoặc đã hết hạn');
+            }
+
+            return json_encode([
+                'success' => true,
+                'message' => 'Mã xác nhận hợp lệ'
+            ]);
+        } catch (Exception $e) {
+            return json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function resetPassword() {
+        try {
+            header('Content-Type: application/json');
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new Exception('Invalid request method');
+            }
+
+            $email = $_POST['email'] ?? '';
+            $code = $_POST['code'] ?? '';
+            $password = $_POST['password'] ?? '';
+            if (empty($email) || empty($code) || empty($password)) {
+                throw new Exception('Vui lòng nhập đầy đủ thông tin');
+            }
+            if (strlen($password) < 6) {
+                throw new Exception('Mật khẩu phải có ít nhất 6 ký tự');
+            }
+
+            if ($this->userModel->resetPassword($email, $code, $password)) {
+                return json_encode([
+                    'success' => true,
+                    'message' => 'Đặt lại mật khẩu thành công'
+                ]);
+            }
+
+            throw new Exception('Không thể đặt lại mật khẩu. Vui lòng thử lại');
+
+        } catch (Exception $e) {
+            return json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
         }
     }
 

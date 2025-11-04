@@ -74,6 +74,8 @@ class Database {
                 email_verified TINYINT(1) DEFAULT 0,
                 verification_code VARCHAR(10),
                 verification_expires DATETIME,
+                reset_code VARCHAR(6),
+                reset_code_expires DATETIME,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )",
 

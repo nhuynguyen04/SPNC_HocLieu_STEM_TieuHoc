@@ -221,6 +221,128 @@ class User {
         }
     }
 
+    public function createResetCode($email) {
+        try {
+            error_log("Creating reset code for email: " . $email);
+            
+            // Kiểm tra email tồn tại
+            $stmt = $this->conn->prepare("SELECT id FROM " . $this->table_name . " WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() == 0) {
+                error_log("Email not found: " . $email);
+                return false;
+            }
+
+            // Tạo mã xác nhận 6 số
+            $code = '';
+            for ($i = 0; $i < 6; $i++) {
+                $code .= random_int(0, 9);
+            }
+
+            // Thời gian hết hạn (15 phút)
+            $expires = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+
+            error_log("Generated reset code: " . $code);
+            error_log("Expires at: " . $expires);
+
+            // Lưu mã và thời gian hết hạn
+            $stmt = $this->conn->prepare("UPDATE " . $this->table_name . " 
+                                        SET reset_code = :code, reset_code_expires = :expires 
+                                        WHERE email = :email");
+            $stmt->execute([
+                ':code' => $code,
+                ':expires' => $expires,
+                ':email' => $email
+            ]);
+
+            // Verify the code was saved correctly
+            $verify = $this->conn->prepare("SELECT reset_code FROM " . $this->table_name . " WHERE email = :email");
+            $verify->execute([':email' => $email]);
+            $saved = $verify->fetch(PDO::FETCH_ASSOC);
+            
+            if ($saved['reset_code'] !== $code) {
+                error_log("Warning: Saved code doesn't match generated code!");
+                error_log("Generated: " . $code);
+                error_log("Saved: " . $saved['reset_code']);
+            }
+
+            return $code;
+        } catch (PDOException $e) {
+            error_log("Create reset code error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function verifyResetCode($email, $code) {
+        try {
+            // Kiểm tra mã trong database
+            $stmt = $this->conn->prepare("SELECT id, reset_code, reset_code_expires FROM " . $this->table_name . " 
+                                        WHERE email = :email");
+            $stmt->execute([':email' => $email]);
+            
+            if ($stmt->rowCount() == 0) {
+                error_log("Reset code verify failed: Email not found: " . $email);
+                return false;
+            }
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Log để debug
+            error_log("Reset code verification:");
+            error_log("Email: " . $email);
+            error_log("Submitted code: " . $code);
+            error_log("Stored code: " . $row['reset_code']);
+            error_log("Expires: " . $row['reset_code_expires']);
+            error_log("Current time: " . date('Y-m-d H:i:s'));
+
+            // Kiểm tra từng điều kiện riêng biệt
+            if ($row['reset_code'] !== $code) {
+                error_log("Reset code verify failed: Code mismatch");
+                return false;
+            }
+
+            if (strtotime($row['reset_code_expires']) < time()) {
+                error_log("Reset code verify failed: Code expired");
+                return false;
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            error_log("Verify reset code error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function resetPassword($email, $code, $newPassword) {
+        try {
+            // Kiểm tra mã xác nhận
+            if (!$this->verifyResetCode($email, $code)) {
+                return false;
+            }
+
+            // Hash mật khẩu mới
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Cập nhật mật khẩu và xóa mã reset
+            $stmt = $this->conn->prepare("UPDATE " . $this->table_name . " 
+                                        SET password = :password, 
+                                            reset_code = NULL, 
+                                            reset_code_expires = NULL 
+                                        WHERE email = :email");
+            $stmt->execute([
+                ':password' => $hashedPassword,
+                ':email' => $email
+            ]);
+
+            return true;
+        } catch (PDOException $e) {
+            error_log("Reset password error: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function checkRememberToken($cookieValue) {
         try {
             // Tách selector và validator từ cookie

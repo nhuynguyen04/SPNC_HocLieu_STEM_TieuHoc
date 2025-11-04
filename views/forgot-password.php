@@ -145,3 +145,10 @@
     <script src="../public/js/forgot-password.js"></script>
 </body>
 </html>
+
+<script>
+    // Set app base path for JS (e.g. '/SPNC_HocLieu_STEM_TieuHoc')
+    var APP_BASE = '<?php echo rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'])), "\\/"); ?>';
+    // Ensure root slash
+    if (!APP_BASE || APP_BASE === '.') APP_BASE = '';
+</script>

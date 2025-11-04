@@ -5,6 +5,7 @@ session_start();
 require_once 'models/Database.php';
 require_once 'models/User.php';
 require_once 'controllers/LessonController.php';
+require_once 'controllers/AuthController.php';
 
 // 2. PHÂN TÍCH URL
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -41,6 +42,34 @@ switch ($route) {
     case '/science/update-score':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->updateNutritionScore();
+        }
+        break;
+
+    // --- FORGOT PASSWORD VIEW ---
+    case '/forgot-password':
+        // serve view directly
+        require __DIR__ . '/views/forgot-password.php';
+        break;
+
+    // --- AUTH APIs (forgot password) ---
+    case '/auth/forgot-password/send-code':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new AuthController();
+            echo $auth->sendResetCode();
+        }
+        break;
+
+    case '/auth/forgot-password/verify-code':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new AuthController();
+            echo $auth->verifyResetCode();
+        }
+        break;
+
+    case '/auth/forgot-password/reset':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $auth = new AuthController();
+            echo $auth->resetPassword();
         }
         break;
     

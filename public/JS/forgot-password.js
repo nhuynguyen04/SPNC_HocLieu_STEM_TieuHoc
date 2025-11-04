@@ -290,42 +290,103 @@ document.addEventListener('DOMContentLoaded', function() {
         return password.length >= 6;
     }
 
+    // Real API calls to backend endpoints
     async function sendVerificationCode(email) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const isSuccess = Math.random() > 0.2;
-                if (isSuccess) {
-                    resolve({ success: true });
-                } else {
-                    reject(new Error('Không tìm thấy tài khoản với email này'));
-                }
-            }, 1500);
+        const formData = new FormData();
+        formData.append('email', email);
+
+        const url = (typeof APP_BASE !== 'undefined' ? APP_BASE : '') + '/auth/forgot-password/send-code';
+        const resp = await fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
         });
+
+        if (!resp.ok) {
+            const text = await resp.text();
+            try {
+                const data = JSON.parse(text);
+                throw new Error(data.message || 'Không thể gửi mã xác nhận');
+            } catch (e) {
+                console.error('Response:', text);
+                throw new Error('Có lỗi xảy ra khi gửi mã');
+            }
+        }
+
+        const data = await resp.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Không thể gửi mã xác nhận');
+        }
+        return data;
     }
 
     async function verifyCode(code) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const isValid = code === '123456';
-                if (isValid) {
-                    resolve({ success: true });
-                } else {
-                    reject(new Error('Mã xác nhận không đúng'));
-                }
-            }, 1000);
+        const formData = new FormData();
+        formData.append('email', userEmail);
+        formData.append('code', code);
+
+        const url = (typeof APP_BASE !== 'undefined' ? APP_BASE : '') + '/auth/forgot-password/verify-code';
+        const resp = await fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
         });
+
+        if (!resp.ok) {
+            const text = await resp.text();
+            try {
+                const data = JSON.parse(text);
+                throw new Error(data.message || 'Mã xác nhận không đúng');
+            } catch (e) {
+                console.error('Response:', text);
+                throw new Error('Có lỗi xảy ra khi xác thực mã');
+            }
+        }
+
+        const data = await resp.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Mã xác nhận không đúng');
+        }
+        return data;
     }
 
     async function resetPassword(newPassword) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const isSuccess = Math.random() > 0.1;
-                if (isSuccess) {
-                    resolve({ success: true });
-                } else {
-                    reject(new Error('Có lỗi xảy ra khi đặt lại mật khẩu'));
-                }
-            }, 1500);
+        const formData = new FormData();
+        formData.append('email', userEmail);
+        formData.append('code', verificationCode || updateVerificationCode());
+        formData.append('password', newPassword);
+
+        const url = (typeof APP_BASE !== 'undefined' ? APP_BASE : '') + '/auth/forgot-password/reset';
+        const resp = await fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
         });
+
+        if (!resp.ok) {
+            const text = await resp.text();
+            try {
+                const data = JSON.parse(text);
+                throw new Error(data.message || 'Không thể đặt lại mật khẩu');
+            } catch (e) {
+                console.error('Response:', text);
+                throw new Error('Có lỗi xảy ra khi đặt lại mật khẩu');
+            }
+        }
+
+        const data = await resp.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Không thể đặt lại mật khẩu');
+        }
+        return data;
     }
 });
