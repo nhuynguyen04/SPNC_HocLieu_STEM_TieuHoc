@@ -82,6 +82,15 @@ switch ($route) {
             $lessonController->updatePlantScore();
         }
         break;
+
+    case '/science/trash-game': // Route để chơi game
+        $lessonController->showTrashGame();
+        break;
+    case '/science/update-trash-score': // API để cập nhật điểm
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateTrashScore();
+        }
+        break;
         
     // --- ROUTE CHO TRANG CHỦ ---
     case '/':

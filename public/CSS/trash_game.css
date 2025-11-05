@@ -1,0 +1,143 @@
+.trash-game {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f9ff;
+    padding: 20px;
+    border-radius: 10px;
+}
+.trash-game h1, .trash-game p { text-align: center; }
+
+.trash-game .score-board {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+#feedback {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    min-height: 25px;
+    margin: 10px 0;
+}
+#feedback.win { color: #2ecc71; }
+#feedback.wrong { color: #e74c3c; }
+#feedback.hint { color: #e67e22; }
+
+.trash-game .reset-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.trash-game .reset-button:hover { background-color: #c0392b; }
+
+#trashGameContainer {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Chiều cao của khu vực game */
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fdfaf4; /* Màu nền*/
+}
+
+.game-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Phủ đầy khung */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Hộp chứa các thùng rác */
+#binContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+.trash-bin {
+    width: 120px;
+    height: 150px;
+    border: 3px dashed #555;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    transition: all 0.2s;
+}
+.trash-bin img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    pointer-events: none;
+}
+.trash-bin span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Màu sắc cho từng thùng */
+.bin-huuco { border-color: #27ae60; }
+.bin-taiche { border-color: #f39c12; }
+.bin-voco { border-color: #e74c3c; }
+
+/* Hiệu ứng khi kéo qua */
+.trash-bin.drag-over {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1);
+    border-style: solid;
+}
+.bin-huuco.drag-over { box-shadow: 0 0 20px #27ae60; }
+.bin-taiche.drag-over { box-shadow: 0 0 20px #f39c12; }
+.bin-voco.drag-over { box-shadow: 0 0 20px #e74c3c; }
+
+
+/* Các món rác */
+#trashItems {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.trash-item {
+    position: absolute;
+    width: 60px; /* Kích thước rác */
+    height: 60px;
+    object-fit: contain;
+    cursor: grab;
+    transition: all 0.2s;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
+}
+.trash-item:hover {
+    transform: scale(1.2);
+}
+.trash-item.dragging {
+    opacity: 0.5;
+    filter: none;
+}
+/* Ẩn rác đi khi đã thả đúng */
+.trash-item.dropped {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0);
+}

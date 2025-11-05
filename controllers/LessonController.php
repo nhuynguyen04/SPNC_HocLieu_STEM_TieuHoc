@@ -294,4 +294,79 @@ class LessonController {
         echo json_encode(['newScore' => $_SESSION['plant_score']]);
         exit();
     }
+
+    /**
+     * Hiển thị TRÒ CHƠI PHÂN LOẠI RÁC
+     */
+    public function showTrashGame() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if (!isset($_SESSION['trash_score'])) {
+            $_SESSION['trash_score'] = 0;
+        }
+
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Định nghĩa các loại rác
+        $trashItems = [
+            // Rác Vô Cơ
+            ['id' => 'trash1', 'name' => 'Bao tay rách', 'group' => 'voco', 'img' => 'bao_tay_rach.png', 'top' => '70%', 'left' => '65%'],
+            ['id' => 'trash2', 'name' => 'Túi nilon rách', 'group' => 'voco', 'img' => 'tui_nilon_rach.png', 'top' => '90%', 'left' => '8%'],
+            ['id' => 'trash3', 'name' => 'Chai thủy tinh vỡ', 'group' => 'voco', 'img' => 'chai_vo.png', 'top' => '90%', 'left' => '3%'],
+            ['id' => 'trash4', 'name' => 'Cốc vỡ', 'group' => 'voco', 'img' => 'coc_vo.png', 'top' => '72%', 'left' => '50%'],
+            ['id' => 'trash5', 'name' => 'Áo mưa rách', 'group' => 'voco', 'img' => 'ao_mua_rach.png', 'top' => '65%', 'left' => '35%'],
+            ['id' => 'trash6', 'name' => 'Dép hỏng', 'group' => 'voco', 'img' => 'dep_hong.png', 'top' => '75%', 'left' => '10%'],
+            ['id' => 'trash7', 'name' => 'Bàn chải gãy', 'group' => 'voco', 'img' => 'ban_chai.png', 'top' => '18%', 'left' => '65%'],
+            
+            // Rác Hữu Cơ
+            ['id' => 'trash8', 'name' => 'Vỏ trứng', 'group' => 'huuco', 'img' => 'vo_trung.png', 'top' => '60%', 'left' => '40%'],
+            ['id' => 'trash9', 'name' => 'Vỏ chuối', 'group' => 'huuco', 'img' => 'vo_chuoi.png', 'top' => '85%', 'left' => '88%'],
+            ['id' => 'trash10', 'name' => 'Ruột táo', 'group' => 'huuco', 'img' => 'ruot_tao.png', 'top' => '80%', 'left' => '15%'],
+            ['id' => 'trash11', 'name' => 'Xương cá', 'group' => 'huuco', 'img' => 'xuong_ca.png', 'top' => '35%', 'left' => '85%'],
+            ['id' => 'trash12', 'name' => 'Pizza thừa', 'group' => 'huuco', 'img' => 'pizza.png', 'top' => '20%', 'left' => '60%'],
+            ['id' => 'trash13', 'name' => 'Vỏ dưa hấu', 'group' => 'huuco', 'img' => 'vo_dua_hau.png', 'top' => '75%', 'left' => '55%'],
+            ['id' => 'trash14', 'name' => 'Lá cây', 'group' => 'huuco', 'img' => 'la_cay.png', 'top' => '80%', 'left' => '45%'],
+
+            // Rác Tái Chế
+            ['id' => 'trash15', 'name' => 'Áo', 'group' => 'taiche', 'img' => 'ao.png', 'top' => '30%', 'left' => '30%'],
+            ['id' => 'trash16', 'name' => 'Thùng carton', 'group' => 'taiche', 'img' => 'thung_carton.png', 'top' => '65%', 'left' => '20%'],
+            ['id' => 'trash17', 'name' => 'Túi giấy', 'group' => 'taiche', 'img' => 'tui_giay.png', 'top' => '60%', 'left' => '90%'],
+            ['id' => 'trash18', 'name' => 'Vở', 'group' => 'taiche', 'img' => 'vo_sach.png', 'top' => '25%', 'left' => '55%'],
+            ['id' => 'trash19', 'name' => 'Lon nước', 'group' => 'taiche', 'img' => 'lon_nuoc.png', 'top' => '60%', 'left' => '5%'],
+            ['id' => 'trash20', 'name' => 'Chai thủy tinh', 'group' => 'taiche', 'img' => 'chai_thuy_tinh.png', 'top' => '55%', 'left' => '68%'],
+            ['id' => 'trash21', 'name' => 'Túi nilon', 'group' => 'taiche', 'img' => 'tui_nilon.png', 'top' => '85%', 'left' => '50%'],
+        ];
+        
+        shuffle($trashItems); 
+
+        require_once __DIR__ . '/../views/lessons/science_trash_game.php';
+    }
+
+    /**
+     * API Cập nhật điểm (cho Game Rác)
+     */
+    public function updateTrashScore() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['trash_score'])) {
+            $_SESSION['trash_score'] = 0;
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if ($data) {
+            if ($data['action'] === 'add_points' && isset($data['points'])) {
+                $_SESSION['trash_score'] += (int)$data['points'];
+            } elseif ($data['action'] === 'reset') { 
+                $_SESSION['trash_score'] = 0;
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['newScore' => $_SESSION['trash_score']]);
+        exit();
+    }
 }
