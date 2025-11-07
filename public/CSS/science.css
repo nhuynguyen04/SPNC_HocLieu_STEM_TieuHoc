@@ -1,12 +1,12 @@
 :root {
-    --primary: #6366F1;
-    --primary-light: #818CF8;
-    --primary-dark: #4F46E5;
+    --primary: #22C55E;
+    --primary-light: #4ADE80;
+    --primary-dark: #16A34A;
     --secondary: #F59E0B;
     --accent: #10B981;
     --danger: #EF4444;
     --success: #22C55E;
-    --cosmic: #8B5CF6;
+    --cosmic: #84CC16;
     
     --bg-space: #0F0F23;
     --bg-deep: #1A1A2E;
@@ -15,11 +15,11 @@
     
     --text-primary: #FFFFFF;
     --text-secondary: #CBD5E1;
-    --text-accent: #60A5FA;
+    --text-accent: #4ADE80;
     
-    --border-glow: rgba(99, 102, 241, 0.5);
-    --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
-    --shadow-cosmic: 0 0 50px rgba(139, 92, 246, 0.4);
+    --border-glow: rgba(34, 197, 94, 0.5);
+    --shadow-glow: 0 0 30px rgba(34, 197, 94, 0.3);
+    --shadow-cosmic: 0 0 50px rgba(132, 204, 22, 0.4);
     
     --radius: 24px;
     --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,7 +40,6 @@ body {
     overflow-x: hidden;
 }
 
-/* ===== COSMIC BACKGROUND ===== */
 .cosmic-universe {
     position: fixed;
     top: 0;
@@ -49,8 +48,8 @@ body {
     height: 100%;
     z-index: -3;
     background: 
-        radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(132, 204, 22, 0.1) 0%, transparent 50%),
         radial-gradient(ellipse at 40% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
         linear-gradient(135deg, #0F0F23 0%, #1A1A2E 50%, #16213E 100%);
 }
@@ -76,7 +75,6 @@ body {
     50% { opacity: 1; }
 }
 
-/* ===== MAIN CONTAINER ===== */
 .universe-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -85,7 +83,6 @@ body {
     z-index: 1;
 }
 
-/* ===== COSMIC HEADER ===== */
 .cosmic-header {
     background: var(--bg-glass);
     backdrop-filter: blur(20px);
@@ -144,7 +141,7 @@ body {
     background: linear-gradient(135deg, var(--primary), var(--cosmic));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+    text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
 }
 
 .mission-title p {
@@ -192,7 +189,6 @@ body {
 .xp-orb .stat-value { color: var(--accent); }
 .streak-orb .stat-value { color: var(--secondary); }
 
-/* ===== 3D SOLAR SYSTEM ===== */
 .solar-system {
     position: relative;
     height: 600px;
@@ -238,7 +234,6 @@ body {
 .orbit-4 { width: 500px; height: 500px; }
 .orbit-5 { width: 600px; height: 600px; }
 
-/* Planet Styles */
 .planet {
     position: absolute;
     border-radius: 50%;
@@ -278,7 +273,6 @@ body {
     50% { box-shadow: 0 0 40px currentColor; }
 }
 
-/* Planet Positions and Styles */
 .planet-1 {
     width: 70px;
     height: 70px;
@@ -296,7 +290,7 @@ body {
 .planet-3 {
     width: 75px;
     height: 75px;
-    background: radial-gradient(circle at 50% 50%, #3B82F6, #2563EB);
+    background: radial-gradient(circle at 50% 50%, #22C55E, #16A34A);
     animation: orbit-3 45s linear infinite;
 }
 
@@ -314,7 +308,6 @@ body {
     animation: orbit-5 65s linear infinite;
 }
 
-/* Orbit Animations - Fixed positions */
 @keyframes orbit-1 {
     0% { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg) translateX(100px) rotate(-360deg); }
@@ -340,7 +333,6 @@ body {
     100% { transform: translate(-50%, -50%) rotate(648deg) translateX(300px) rotate(-648deg); }
 }
 
-/* Planet Status Indicators */
 .planet.completed::after {
     content: '✓';
     position: absolute;
@@ -385,7 +377,6 @@ body {
     50% { transform: scale(1.2); }
 }
 
-/* ===== PLANET INFO PANEL - CENTERED ===== */
 .planet-info-overlay {
     position: fixed;
     top: 0;
@@ -510,7 +501,6 @@ body {
     color: var(--accent);
 }
 
-/* Activities Section */
 .activities-section {
     margin-bottom: 25px;
 }
@@ -645,7 +635,6 @@ body {
     transform: rotate(90deg);
 }
 
-/* ===== COSMIC CHARACTER ===== */
 .cosmic-character {
     position: fixed;
     bottom: 30px;
@@ -671,7 +660,6 @@ body {
     box-shadow: 0 0 60px rgba(16, 185, 129, 0.6);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .universe-container {
         padding: 15px;

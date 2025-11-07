@@ -228,7 +228,7 @@ $_SESSION['science_visited'] = true;
         🦖
     </button>
 
-    <script src="<?php echo $base_url; ?>/public/JS/science.js" defer></script>
+    <script src="<?php echo $base_url; ?>/public/JS/science.js"></script>
 
 
 </body>

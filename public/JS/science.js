@@ -1,4 +1,3 @@
-// Planet Data with Activities
 const planets = {
     1: {
         name: "THẾ GIỚI MÀU SẮC",
@@ -59,11 +58,9 @@ const planets = {
     }
 };
 
-// Hàm khởi tạo
 function initScienceSystem() {
     console.log('🚀 Initializing Science System...');
     
-    // DOM Elements
     const planetInfoOverlay = document.getElementById('planetInfoOverlay');
     const infoIcon = document.getElementById('infoIcon');
     const infoName = document.getElementById('infoName');
@@ -77,7 +74,6 @@ function initScienceSystem() {
     const closeInfo = document.getElementById('closeInfo');
     const characterBtn = document.getElementById('characterBtn');
 
-    // Kiểm tra xem các element có tồn tại không
     const elements = {
         planetInfoOverlay, infoIcon, infoName, infoStatus, infoDescription,
         infoTime, infoXp, activitiesGrid, actionStart, actionClose, closeInfo, characterBtn
@@ -92,7 +88,6 @@ function initScienceSystem() {
 
     console.log('✅ Tất cả elements đã được tìm thấy');
 
-    // Planet Click Handler
     document.querySelectorAll('.planet').forEach(planet => {
         planet.addEventListener('click', function() {
             const planetId = this.getAttribute('data-planet');
@@ -105,14 +100,12 @@ function initScienceSystem() {
                 return;
             }
             
-            // Update info panel
             infoIcon.textContent = planetData.icon;
             infoName.textContent = planetData.name;
             infoDescription.textContent = planetData.description;
             infoTime.textContent = planetData.time;
             infoXp.textContent = planetData.xp;
             
-            // Update status
             let statusText = '';
             let statusClass = '';
             
@@ -130,7 +123,6 @@ function initScienceSystem() {
             infoStatus.textContent = statusText;
             infoStatus.className = 'status ' + statusClass;
             
-            // Update activities
             activitiesGrid.innerHTML = '';
             planetData.activities.forEach(activity => {
                 const activityElement = document.createElement('div');
@@ -146,7 +138,6 @@ function initScienceSystem() {
                 activitiesGrid.appendChild(activityElement);
             });
             
-            // Update action button
             if (planetData.status === 'completed') {
                 actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
                 actionStart.className = 'action-button action-primary';
@@ -160,12 +151,10 @@ function initScienceSystem() {
                 actionStart.className = 'action-button action-locked';
                 actionStart.disabled = true;
             }
-            
-            // Show info panel
+
             planetInfoOverlay.classList.add('show');
             console.log('📱 Info panel shown');
-            
-            // Add visual feedback to planet
+         
             this.style.transform = 'scale(1.3)';
             setTimeout(() => {
                 this.style.transform = '';
@@ -173,7 +162,6 @@ function initScienceSystem() {
         });
     });
 
-    // Close Info Panel
     function closeInfoPanel() {
         planetInfoOverlay.classList.remove('show');
         console.log('📱 Info panel closed');
@@ -182,30 +170,25 @@ function initScienceSystem() {
     closeInfo.addEventListener('click', closeInfoPanel);
     actionClose.addEventListener('click', closeInfoPanel);
 
-    // Start Action
     actionStart.addEventListener('click', function() {
         if (!this.disabled) {
             const planetName = infoName.textContent;
             console.log(`🎮 Starting: ${planetName}`);
             alert(`Bắt đầu học: ${planetName}`);
-            // Add your navigation logic here
         }
     });
 
-    // Character Interaction
     characterBtn.addEventListener('click', function() {
         console.log('🦖 Character clicked');
         alert('Chào nhà khoa học nhí! Mình là Khủng Long Vũ Trụ! 🦖\nHãy chọn một hành tinh để bắt đầu khám phá!');
     });
 
-    // Close overlay when clicking outside
     planetInfoOverlay.addEventListener('click', function(e) {
         if (e.target === this) {
             closeInfoPanel();
         }
     });
 
-    // Pause animations on hover for better interaction
     document.querySelectorAll('.planet').forEach(planet => {
         planet.addEventListener('mouseenter', function() {
             this.style.animationPlayState = 'paused';
@@ -220,7 +203,6 @@ function initScienceSystem() {
     return true;
 }
 
-// Khởi tạo khi DOM ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initScienceSystem);
 } else {
