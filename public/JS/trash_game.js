@@ -1,15 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Lấy các phần tử game
     const trashItems = document.querySelectorAll(".trash-item");
     const dropzones = document.querySelectorAll(".trash-bin");
-    const feedbackBox = document.getElementById("feedback");
     const scoreDisplay = document.getElementById("score"); 
     const resetButton = document.getElementById("trashResetButton");
+
+    // *** Lấy các phần tử cốt truyện ***
+    const introModal = document.getElementById("intro-modal");
+    const startGameButton = document.getElementById("startGameButton");
+    const tamDialogueBox = document.getElementById("tam-dialogue-box");
+    const tamDialogueText = document.getElementById("tam-dialogue-text");
     
     // Biến 'baseUrl' đã được nạp từ thẻ <script>
     let draggedItem = null;
     let correctDrops = 0;
     const totalDrops = trashItems.length; // Tổng số rác
+    let feedbackTimer; // Biến hẹn giờ
+
+    startGameButton.addEventListener('click', () => {
+        introModal.style.display = 'none';
+    });
 
     // 1. Xử lý kéo
     trashItems.forEach(item => {
@@ -56,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // KIỂM TRA ĐÁP ÁN
             if (itemGroup === binType) {
                 // ĐÚNG
-                droppedItem.classList.add("dropped"); // Ẩn món rác đi
+                droppedItem.classList.add("dropped");
                 correctDrops++;
                 let points = 0;
 
@@ -66,12 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 
                 if (correctDrops === totalDrops) {
-                    showFeedback("🎉 Hoan hô! Tấm cảm ơn bạn đã dọn sạch sân nhà!", "win");
+                    showFeedback("🎉 Hoan hô! Tấm cảm ơn bạn đã dọn sạch sân nhà!", "win", true); // Giữ thông báo
                 } else {
                     if (points > 0) {
-                        showFeedback(`Chính xác! Bạn được 10 điểm.`, "win");
+                        showFeedback("Tuyệt vời! Bạn được 10 điểm.", "win");
                     } else {
-                        showFeedback("Đúng rồi!", "win");
+                        showFeedback("Tốt lắm!", "win");
                     }
                 }
                 
@@ -79,13 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 // SAI
                 droppedItem.dataset.attempt = attempt + 1;
                 
-                // Gợi ý
                 let correctBinName = "";
-                if(itemGroup === 'huuco') correctBinName = 'Hữu Cơ (màu xanh lá)';
-                else if(itemGroup === 'taiche') correctBinName = 'Tái Chế (màu vàng)';
-                else if(itemGroup === 'voco') correctBinName = 'Vô Cơ (màu đỏ)';
+                if(itemGroup === 'huuco') correctBinName = 'Hữu Cơ (xanh lá)';
+                else if(itemGroup === 'taiche') correctBinName = 'Tái Chế (vàng)';
+                else if(itemGroup === 'voco') correctBinName = 'Vô Cơ (đỏ)';
                 
-                showFeedback(`Sai rồi! "${droppedItem.alt}" phải bỏ vào thùng ${correctBinName}.`, "wrong");
+                showFeedback(`Ôi sai rồi! "${droppedItem.alt}" phải bỏ vào thùng ${correctBinName}.`, "wrong");
             }
         });
     });
@@ -107,16 +117,23 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Lỗi reset:', error));
     });
 
-    // Hàm hiển thị thông báo
-    function showFeedback(message, type) {
-        feedbackBox.textContent = message;
-        feedbackBox.className = type;
+    // Hàm hiển thị thông báo trong hộp thoại của Tấm
+    function showFeedback(message, type, persist = false) {
+        // Xóa hẹn giờ cũ
+        clearTimeout(feedbackTimer);
+
+        tamDialogueText.textContent = message;
+        tamDialogueBox.className = type;
         
-        const duration = (type === 'wrong') ? 3000 : 2000;
-        setTimeout(() => {
-            feedbackBox.textContent = "";
-            feedbackBox.className = "";
-        }, duration);
+        // Hiện hộp thoại
+        tamDialogueBox.classList.remove("hidden");
+
+        // Tự động ẩn sau 3 giây, trừ khi có lệnh giữ lại (persist = true)
+        if (!persist) {
+            feedbackTimer = setTimeout(() => {
+                tamDialogueBox.classList.add("hidden");
+            }, 3000); // 3 giây
+        }
     }
 
     // Hàm cập nhật điểm
