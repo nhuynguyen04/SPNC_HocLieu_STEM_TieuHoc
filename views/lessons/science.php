@@ -1,7 +1,6 @@
 <?php
 session_start();
-$base_url = "http://" . $_SERVER['HTTP_HOST'] . "/SPNC_HocLieu_STEM_TieuHoc/public";
-
+$base_url = "http://" . $_SERVER['HTTP_HOST'] . "/SPNC_HocLieu_STEM_TieuHoc";
 
 $science_data = [
     'name' => 'KHÁM PHÁ KHOA HỌC',
@@ -9,7 +8,7 @@ $science_data = [
     'gradient' => 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
     'icon' => '🔬',
     'description' => 'Cùng khám phá thế giới diệu kỳ!',
-    'total_xp' => 280, // Tăng XP tổng
+    'total_xp' => 280, 
     'completed_xp' => 100,
     'current_streak' => 7,
     'character' => [
@@ -21,11 +20,11 @@ $science_data = [
     'stats' => [
         'completed' => 2,
         'current' => 1,
-        'upcoming' => 3, // Tăng upcoming
+        'upcoming' => 3, 
         'total_xp' => 100
     ],
     'topics' => [
-        [ // Topic 1
+        [
             'id' => 1,
             'title' => 'THẾ GIỚI MÀU SẮC',
             'icon' => '🎨',
@@ -38,7 +37,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHA MÀU', 'icon' => '🎮', 'status' => 'completed', 'xp' => 25 ]
             ]
         ],
-        [ // Topic 2
+        [ 
             'id' => 2,
             'title' => 'BÍ KÍP ĂN UỐNG LÀNH MẠNH',
             'icon' => '🍎',
@@ -50,7 +49,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI DINH DƯỠNG', 'icon' => '🧩', 'status' => 'completed', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 3
+        [
             'id' => 3,
             'title' => 'NGÀY VÀ ĐÊM',
             'icon' => '🌓',
@@ -62,7 +61,7 @@ $science_data = [
                 [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '🌞', 'status' => 'current', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 4
+        [ 
             'id' => 4,
             'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN',
             'icon' => '🚒',
@@ -74,7 +73,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI THOÁT HIỂM', 'icon' => '🏃‍♂️', 'status' => 'locked', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 5
+        [ 
             'id' => 5,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
@@ -87,8 +86,7 @@ $science_data = [
                 [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'locked', 'xp' => 20 ]
             ]
         ],
-        
-        // *** TOPIC 6 (GAME GHÉP CÂY) ***
+
         [
             'id' => 6,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
@@ -126,17 +124,14 @@ $_SESSION['science_visited'] = true;
     <title>Hệ Mặt Trời Khoa Học - STEM Universe</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/CSS/science.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/science.css">
 </head>
 <body>
-    <!-- Cosmic Background -->
     <div class="cosmic-universe">
         <div class="stars"></div>
     </div>
 
-    <!-- Main Container -->
     <div class="universe-container">
-        <!-- Cosmic Header -->
         <header class="cosmic-header">
             <div class="header-content">
                 <div class="mission-control">
@@ -163,19 +158,16 @@ $_SESSION['science_visited'] = true;
             </div>
         </header>
 
-        <!-- 3D Solar System -->
         <section class="solar-system">
-            <!-- Sun -->
+
             <div class="sun">🔬</div>
-            
-            <!-- Orbits -->
+
             <div class="orbit orbit-1"></div>
             <div class="orbit orbit-2"></div>
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
             
-            <!-- Planets -->
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
@@ -184,7 +176,6 @@ $_SESSION['science_visited'] = true;
         </section>
     </div>
 
-    <!-- Planet Info Overlay -->
     <div class="planet-info-overlay" id="planetInfoOverlay">
         <div class="planet-info">
             <button class="close-button" id="closeInfo">
@@ -217,7 +208,6 @@ $_SESSION['science_visited'] = true;
             <div class="activities-section">
                 <h4 class="activities-title">Hoạt động</h4>
                 <div class="activities-grid" id="activitiesGrid">
-                    <!-- Activities will be inserted here -->
                 </div>
             </div>
             
@@ -234,12 +224,11 @@ $_SESSION['science_visited'] = true;
         </div>
     </div>
 
-    <!-- Cosmic Character -->
     <button class="cosmic-character" id="characterBtn">
         🦖
     </button>
 
-    <script src="<?php echo $base_url; ?>/JS/science.js" defer></script>
+    <script src="<?php echo $base_url; ?>/public/JS/science.js" defer></script>
 
 
 </body>
