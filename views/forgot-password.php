@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quên mật khẩu - STEM Universe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/forgot-password.css">
+    <link rel="stylesheet" href="../public/CSS/forgot-password.css">
 </head>
 <body>
     <div class="static-bg"></div>
@@ -142,7 +142,7 @@
         </div>
     </div>
 
-    <script src="../public/js/forgot-password.js"></script>
+    <script src="../public/JS/forgot-password.js"></script>
 </body>
 </html>
 

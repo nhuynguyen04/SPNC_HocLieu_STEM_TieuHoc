@@ -20,9 +20,9 @@ class User {
     }
     
     public function login($username, $password, $remember = false) {
-        $query = "SELECT id, username, password, role, first_name, last_name, class, avatar, email_verified 
-                  FROM " . $this->table_name . " 
-                  WHERE username = :username OR email = :username";
+       $query = "SELECT id, username, email, password, role, first_name, last_name, class, avatar, email_verified 
+            FROM " . $this->table_name . " 
+            WHERE username = :username OR email = :username";
         
         try {
             $stmt = $this->conn->prepare($query);
@@ -42,6 +42,7 @@ class User {
                     // Cập nhật thông tin user
                     $this->id = $row['id'];
                     $this->username = $row['username'];
+                    $this->email = $row['email'] ?? null;        
                     $this->role = $row['role'];
                     $this->full_name = $row['first_name'] . ' ' . $row['last_name'];
                     $this->class = $row['class'];
@@ -63,54 +64,66 @@ class User {
     }
 
     private function createRememberToken() {
-        try {
-            // Tạo selector và validator ngẫu nhiên
-            $selector = bin2hex(random_bytes(9));
-            $validator = bin2hex(random_bytes(33));
-            $hashedValidator = hash('sha256', $validator);
-            
-            // Cấu hình thời gian hết hạn và thông tin bổ sung
-            $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
-            $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : null;
-            $ip = $_SERVER['REMOTE_ADDR'] ?? null;
+    try {
+        $selector = bin2hex(random_bytes(16));   // hex string
+        $validator = bin2hex(random_bytes(32));  // hex string
+        $hashedValidator = hash('sha256', $validator);
 
-            // Xóa các token cũ của user này (giới hạn 1 token/thiết bị)
-            $deleteOld = $this->conn->prepare("DELETE FROM remember_tokens WHERE user_id = :user_id");
-            $deleteOld->execute([':user_id' => $this->id]);
+        // Thời gian hết hạn (DATETIME)
+        $expires = date('Y-m-d H:i:s', strtotime('+30 days'));
+        $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
-            // Thêm token mới
-            $query = "INSERT INTO remember_tokens (user_id, selector, hashed_validator, user_agent, ip, expires_at) 
-                     VALUES (:user_id, :selector, :hashed_validator, :user_agent, :ip, :expires)";
-            
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute([
-                ':user_id' => $this->id,
-                ':selector' => $selector,
-                ':hashed_validator' => $hashedValidator,
-                ':user_agent' => $userAgent,
-                ':ip' => $ip,
-                ':expires' => $expires
-            ]);
+        $this->conn->beginTransaction();
 
-            // Set cookie với các flags bảo mật
-            $cookieValue = base64_encode($selector) . '.' . base64_encode($validator);
-            $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
-            
-            setcookie('remember', $cookieValue, [
-                'expires' => time() + 86400 * 30,
-                'path' => '/',
-                'domain' => '',
-                'secure' => $secure,
-                'httponly' => true,
-                'samesite' => 'Lax'
-            ]);
+        // Nếu bạn muốn giới hạn 1 token toàn cục cho user -> xóa tất cả token cũ
+        // Nếu muốn cho phép nhiều thiết bị thì comment dòng delete này hoặc thay bằng xóa token cũ theo user_agent/ip
+        $deleteOld = $this->conn->prepare("DELETE FROM remember_tokens WHERE user_id = :user_id");
+        $deleteOld->execute([':user_id' => $this->id]);
 
-            return true;
-        } catch(Exception $e) {
-            error_log("Create remember token error: " . $e->getMessage());
-            return false;
+        // Insert token mới
+        $query = "INSERT INTO remember_tokens (user_id, selector, hashed_validator, user_agent, ip, expires_at) 
+                  VALUES (:user_id, :selector, :hashed_validator, :user_agent, :ip, :expires)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([
+            ':user_id' => $this->id,
+            ':selector' => $selector,
+            ':hashed_validator' => $hashedValidator,
+            ':user_agent' => $userAgent,
+            ':ip' => $ip,
+            ':expires' => $expires
+        ]);
+
+        // Commit transaction
+        $this->conn->commit();
+
+        // Tạo cookie value: Lưu selector + validator vào cookie (validator là bản gốc, hashed lưu DB)
+        //  -> cookie format: base64(selector).base64(validator)
+        $cookieValue = base64_encode($selector) . '.' . base64_encode($validator);
+
+        $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+
+        // Set cookie an toàn
+        setcookie('remember', $cookieValue, [
+            'expires' => time() + 86400 * 30,
+            'path' => '/',
+            'domain' => '', // nếu cần, đặt domain cụ thể
+            'secure' => $secure,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+
+        return true;
+    } catch (Exception $e) {
+        // rollback nếu transaction đang mở
+        if ($this->conn->inTransaction()) {
+            $this->conn->rollBack();
         }
+        error_log("Create remember token error: " . $e->getMessage());
+        return false;
     }
+}
+
 
     public function register($username, $email, $password, $fullName, $class = null) {
         try {
@@ -359,11 +372,11 @@ class User {
             }
 
             // Tìm token trong database bằng selector
-            $query = "SELECT rt.*, u.username, u.role, u.first_name, u.last_name, u.class, u.avatar
-                     FROM remember_tokens rt
-                     INNER JOIN " . $this->table_name . " u ON rt.user_id = u.id
-                     WHERE rt.selector = :selector AND rt.expires_at > NOW()
-                     LIMIT 1";
+           $query = "SELECT rt.*, u.username, u.email, u.role, u.first_name, u.last_name, u.class, u.avatar
+                FROM remember_tokens rt
+                INNER JOIN " . $this->table_name . " u ON rt.user_id = u.id
+                WHERE rt.selector = :selector AND rt.expires_at > NOW()
+                LIMIT 1";
 
             $stmt = $this->conn->prepare($query);
             $stmt->execute([':selector' => $selector]);
@@ -378,6 +391,7 @@ class User {
             if (hash_equals($row['hashed_validator'], hash('sha256', $validator))) {
                 $this->id = $row['user_id'];
                 $this->username = $row['username'];
+                $this->email = $row['email'] ?? 
                 $this->role = $row['role'];
                 $this->full_name = $row['first_name'] . ' ' . $row['last_name'];
                 $this->class = $row['class'];
