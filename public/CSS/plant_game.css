@@ -1,8 +1,7 @@
-/* CSS cho game gọi tên bộ phận cây */
 .plant-game {
     width: 95%;
     max-width: 1000px;
-    margin: 20px auto;
+    margin: 110px auto 20px auto;
     font-family: 'Segoe UI', sans-serif;
     background: #f0f9ff;
     padding: 20px;
@@ -95,7 +94,8 @@
 .draggable-label.dropped {
     opacity: 0.2;
     pointer-events: none;
-    background: #dfe6e9;
+    background: none;
+    border: none;
 }
 
 
@@ -105,7 +105,6 @@
     height: 500px;
     position: relative;
     background: #fff;
-    border: 2px solid #bdc3c7;
     border-radius: 8px;
     overflow: hidden;
     display: flex;

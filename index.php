@@ -9,18 +9,32 @@ require_once 'controllers/AuthController.php';
 
 // 2. PHÂN TÍCH URL
 $request_uri = $_SERVER['REQUEST_URI'];
+$script_name = $_SERVER['SCRIPT_NAME'];
+$base_path = dirname($script_name);
 
-// Xóa tên thư mục con khỏi URL
-$base_path = dirname($_SERVER['SCRIPT_NAME']);
-$base_path = rtrim($base_path, '/\\');
-
-$route = str_replace($base_path, '', $request_uri);
-
-if (strpos($route, '?') !== false) {
-    $route = substr($route, 0, strpos($route, '?'));
+// Đảm bảo base_path không phải là dấu / đơn lẻ nếu chạy ở thư mục con
+if ($base_path === DIRECTORY_SEPARATOR) {
+    $base_path = '';
 }
-// Đặt route mặc định nếu rỗng
-if (empty($route)) {
+
+// Loại bỏ base_path khỏi request_uri để lấy route
+// Sử dụng strpos để đảm bảo chỉ loại bỏ phần đầu
+if (strpos($request_uri, $base_path) === 0) {
+    $route = substr($request_uri, strlen($base_path));
+} else {
+    $route = $request_uri;
+}
+
+// Loại bỏ query string (?next=1...)
+if (($pos = strpos($route, '?')) !== false) {
+    $route = substr($route, 0, $pos);
+}
+
+// *** QUAN TRỌNG: Sửa lỗi hai dấu gạch chéo // thành 1 dấu / ***
+$route = preg_replace('#/+#', '/', $route);
+
+// Đặt route mặc định
+if ($route === '' || $route === '/') {
     $route = '/';
 }
 
@@ -31,20 +45,7 @@ $lessonController = new LessonController();
 
 switch ($route) {
     // --- CÁC ROUTE CỦA GAME ---
-    case '/science/color-game':
-        $lessonController->showColorGame();
-        break;
-        
-    case '/science/nutrition':
-        $lessonController->showNutritionGame();
-        break;
     
-    case '/science/update-score':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $lessonController->updateNutritionScore();
-        }
-        break;
-
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly
@@ -73,20 +74,34 @@ switch ($route) {
         }
         break;
     
-    case '/science/plant-game':
+    case '/views/lessons/color-game':
+        $lessonController->showColorGame();
+        break;
+        
+    case '/views/lessons/nutrition':
+        $lessonController->showNutritionGame();
+        break;
+    
+    case '/views/lessons/update-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateNutritionScore();
+        }
+        break;
+
+    case '/views/lessons/plant-game':
         $lessonController->showPlantGame();
         break;
 
-    case '/science/update-plant-score':
+    case '/views/lessons/update-plant-score':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->updatePlantScore();
         }
         break;
 
-    case '/science/trash-game': // Route để chơi game
+    case '/views/lessons/trash-game':
         $lessonController->showTrashGame();
         break;
-    case '/science/update-trash-score': // API để cập nhật điểm
+    case '/views/lessons/update-trash-score':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->updateTrashScore();
         }

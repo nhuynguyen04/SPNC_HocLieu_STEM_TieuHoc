@@ -166,7 +166,8 @@ function handleCorrectAnswer() {
     // Cập nhật điểm hiển thị ngay lập tức
     totalScoreSpan.innerText = parseInt(totalScoreSpan.innerText) + points;
 
-    nextButton.href = `${baseUrl}/science/color-game?next=1&points=${points}`;
+    // *** ĐÃ SỬA ĐƯỜNG DẪN TẠI ĐÂY ***
+    nextButton.href = `${baseUrl}/views/lessons/color-game?next=1&points=${points}`;
     
     // Hiển thị/ẩn nút
     nextButton.style.display = "inline-block";
@@ -204,7 +205,7 @@ function handleWrongAnswer() {
     // Tự động làm mới bảng pha màu sau 1.5 giây
     setTimeout(() => {
         selectedColors = [];
-        updateCanvasAndSwatches(); // Làm mới màu
+        updateCanvasAndSwatches();
         resultBox.innerHTML = ""; // Xóa thông báo "Sai rồi"
     }, 1500); 
 }

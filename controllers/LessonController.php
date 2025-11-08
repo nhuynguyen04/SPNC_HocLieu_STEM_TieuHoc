@@ -63,7 +63,6 @@ class LessonController {
         }
 
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-
         // 6. TẢI VIEW (GIAO DIỆN)
         require_once __DIR__ . '/../views/lessons/science_color_game.php';
     }

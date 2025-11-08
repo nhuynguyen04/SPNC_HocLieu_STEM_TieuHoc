@@ -1,7 +1,7 @@
 .game-wrapper {
     width: 95%;
     max-width: 1200px; 
-    margin: 20px auto;
+    margin: 110px auto 20px auto;
     font-family: 'Segoe UI', sans-serif;
     line-height: 1.6;
     background: #f4f4f4;

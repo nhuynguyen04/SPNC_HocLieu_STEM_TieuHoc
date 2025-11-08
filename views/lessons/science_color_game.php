@@ -1,7 +1,6 @@
 <?php require_once __DIR__ . '/../template/header.php'; ?>
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/color_mixing_game.css"> 
-
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
 
 <div class="color-game-wrapper"> 
@@ -28,14 +27,11 @@
         <div class="controls">
             <button id="clearButton">Làm lại</button>
             
-            <a href="<?= $base_url ?>/science/color-game?next=1" id="nextButton" style="display:none;">Câu hỏi tiếp theo</a>
+            <a href="<?= $base_url ?>/views/lessons/color-game?next=1" id="nextButton" style="display:none;">Câu hỏi tiếp theo ➡️</a>
         </div>
 
         <script>
-            // Truyền $base_url sang JS
             const baseUrl = "<?= $base_url ?>"; 
-
-            // Các biến game
             const targetColor = <?= json_encode($target['rgb']) ?>;
             const correctPair = <?= json_encode($correct_colors_sorted) ?>; 
             let currentAttempt = <?= $current_attempt ?>;
@@ -44,10 +40,10 @@
         <script src="<?= $base_url ?>/public/JS/color_mixing_game.js"></script>
 
     <?php else: ?>
-        <p class="question">Chúc mừng! Bạn đã hoàn thành tất cả các câu hỏi!</p>
+        <p class="question">🎉 Chúc mừng! Bạn đã hoàn thành tất cả các câu hỏi!</p>
         <p class="final-score">Tổng điểm của bạn là: <?= $_SESSION['total_score'] ?></p>
         
-        <a href="<?= $base_url ?>/science/color-game?next=1" class="play-again">Chơi lại từ đầu</a>
+        <a href="<?= $base_url ?>/views/lessons/color-game?next=1" class="play-again">Chơi lại từ đầu</a>
     <?php endif; ?>
 </div>
 
