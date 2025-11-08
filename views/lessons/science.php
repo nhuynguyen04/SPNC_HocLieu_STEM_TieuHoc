@@ -1,7 +1,6 @@
 <?php
 session_start();
-$base_url = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/\\');
-
+$base_url = "http://" . $_SERVER['HTTP_HOST'] . "/SPNC_HocLieu_STEM_TieuHoc";
 
 $science_data = [
     'name' => 'KHÁM PHÁ KHOA HỌC',
@@ -9,7 +8,7 @@ $science_data = [
     'gradient' => 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
     'icon' => '🔬',
     'description' => 'Cùng khám phá thế giới diệu kỳ!',
-    'total_xp' => 280, // Tăng XP tổng
+    'total_xp' => 280, 
     'completed_xp' => 100,
     'current_streak' => 7,
     'character' => [
@@ -21,11 +20,11 @@ $science_data = [
     'stats' => [
         'completed' => 2,
         'current' => 1,
-        'upcoming' => 3, // Tăng upcoming
+        'upcoming' => 3, 
         'total_xp' => 100
     ],
     'topics' => [
-        [ // Topic 1
+        [
             'id' => 1,
             'title' => 'THẾ GIỚI MÀU SẮC',
             'icon' => '🎨',
@@ -38,7 +37,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHA MÀU', 'icon' => '🎮', 'status' => 'completed', 'xp' => 25 ]
             ]
         ],
-        [ // Topic 2
+        [ 
             'id' => 2,
             'title' => 'BÍ KÍP ĂN UỐNG LÀNH MẠNH',
             'icon' => '🍎',
@@ -50,7 +49,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI DINH DƯỠNG', 'icon' => '🧩', 'status' => 'completed', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 3
+        [
             'id' => 3,
             'title' => 'NGÀY VÀ ĐÊM',
             'icon' => '🌓',
@@ -62,7 +61,7 @@ $science_data = [
                 [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '🌞', 'status' => 'current', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 4
+        [ 
             'id' => 4,
             'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN',
             'icon' => '🚒',
@@ -74,7 +73,7 @@ $science_data = [
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI THOÁT HIỂM', 'icon' => '🏃‍♂️', 'status' => 'locked', 'xp' => 50 ]
             ]
         ],
-        [ // Topic 5
+        [ 
             'id' => 5,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
@@ -87,8 +86,7 @@ $science_data = [
                 [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'locked', 'xp' => 20 ]
             ]
         ],
-        
-        // *** TOPIC 6 (GAME GHÉP CÂY) ***
+
         [
             'id' => 6,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
@@ -123,200 +121,115 @@ $_SESSION['science_visited'] = true;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $subject['name']; ?> - STEM Universe</title>
-    
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/css/science.css">
-    
+    <title>Hệ Mặt Trời Khoa Học - STEM Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/science.css">
 </head>
 <body>
-    <div class="science-background">
-        <div class="floating-shapes">
-            <div class="shape shape-1">🌈</div>
-            <div class="shape shape-2">🍎</div>
-            <div class="shape shape-3">🔬</div>
-            <div class="shape shape-4">♻️</div>
-        </div>
-        <div class="background-pattern"></div>
+    <div class="cosmic-universe">
+        <div class="stars"></div>
     </div>
 
-    <div class="character-dialog <?php echo $first_visit ? 'show' : ''; ?>" id="characterDialog">
-        <div class="dialog-content">
-            <div class="character-avatar" style="background: <?php echo $subject['character']['color']; ?>">
-                <?php echo $subject['character']['avatar']; ?>
-            </div>
-            <div class="dialog-message">
-                <div class="character-name"><?php echo $subject['character']['name']; ?></div>
-                <p id="dialogText"><?php echo $subject['character']['welcome_message']; ?></p>
-                <button class="dialog-button" id="dialogButton">
-                    <span>Bắt đầu thôi!</span>
-                    <i class="fas fa-rocket"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <main class="science-container">
-        <header class="science-header">
+    <div class="universe-container">
+        <header class="cosmic-header">
             <div class="header-content">
-                <a href="<?php echo $base_url; ?>/views/main_lesson.php" class="back-button">
-                    <i class="fas fa-home"></i>
-                </a>
+                <div class="mission-control">
+                    <a href="<?php echo $base_url; ?>/views/main_lesson.php" class="nav-button">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </div>
                 
-                <div class="header-main">
-                    <div class="subject-info">
-                        <div class="subject-icon">
-                            <?php echo $subject['icon']; ?>
-                        </div>
-                        <div class="subject-details">
-                            <h1><?php echo $subject['name']; ?></h1>
-                            <p><?php echo $subject['description']; ?></p>
-                        </div>
+                <div class="mission-title">
+                    <h1>HỆ MẶT TRỜI KHOA HỌC</h1>
+                    <p>Khám phá 5 hành tinh tri thức</p>
+                </div>
+                
+                <div class="mission-stats">
+                    <div class="stat-orb xp-orb">
+                        <div class="stat-value">100</div>
+                        <div class="stat-label">XP</div>
                     </div>
-                    
-                    <div class="header-stats">
-                        <div class="xp-display">
-                            <div class="xp-chart" style="background: conic-gradient(var(--primary) <?php echo $progress_percentage; ?>%, var(--border) 0);">
-                                <div class="xp-chart-content">
-                                    <div class="xp-chart-number"><?php echo $subject['completed_xp']; ?></div>
-                                    <div class="xp-chart-label">XP</div>
-                                </div>
-                            </div>
-                            <div class="xp-info">
-                                <div class="xp-text">Đã đạt được</div>
-                                <div class="xp-total">/ <?php echo $subject['total_xp']; ?> XP</div>
-                            </div>
-                        </div>
-                        
-                        <div class="streak-display">
-                            <div class="streak-badge">
-                                <i class="fas fa-fire"></i>
-                                <span class="streak-count"><?php echo $subject['current_streak']; ?> ngày</span>
-                            </div>
-                        </div>
+                    <div class="stat-orb streak-orb">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">NGÀY</div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <section class="adventure-map">
-            <div class="map-header">
-                <h2>HÀNH TRÌNH KHÁM PHÁ</h2>
-                <p>Chọn một chủ đề để bắt đầu học tập!</p>
-            </div>
+        <section class="solar-system">
 
-            <div class="islands-container">
-                <?php foreach ($subject['topics'] as $topic): ?>
-                <div class="island <?php echo $topic['status']; ?>" data-topic="<?php echo $topic['id']; ?>">
-                    <div class="island-content">
-                        <div class="island-shape" style="background: <?php echo $topic['color']; ?>">
-                            <div class="island-flag">
-                                <?php echo $topic['icon']; ?>
-                            </div>
-                            <div class="island-trees">
-                                <div class="tree tree-1">🌱</div>
-                                <div class="tree tree-2">🌿</div>
-                            </div>
-                        </div>
-                        
-                        <div class="island-info">
-                            <h3 class="island-title"><?php echo $topic['title']; ?></h3>
-                            <p class="island-description"><?php echo $topic['description']; ?></p>
-                            
-                            <div class="learning-time">
-                                <i class="far fa-clock"></i>
-                                <span><?php echo $topic['learning_time']; ?></span>
-                            </div>
-                            
-                            <div class="island-activities">
-                                <?php foreach ($topic['activities'] as $activity): ?>
-                                    <?php
-                                    $activity_game_link = '';
-                                    $activity_title = strtoupper($activity['title']);
-                                    $is_unlocked = ($topic['status'] == 'completed' || $topic['status'] == 'current'); // Kiểm tra topic có mở khóa không
+            <div class="sun">🔬</div>
 
-                                    if ($activity_title == 'TRÒ CHƠI PHA MÀU') {
-                                        $activity_game_link = $base_url . '/science/color-game';
-                                    } elseif ($activity_title == 'TRÒ CHƠI DINH DƯỠNG') {
-                                        $activity_game_link = $base_url . '/science/nutrition';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY HOA') {
-                                        $activity_game_link = $base_url . '/science/plant-game?type=hoa';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY CỔ THỤ') {
-                                        $activity_game_link = $base_url . '/science/plant-game?type=cothu';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY CỦ') {
-                                        $activity_game_link = $base_url . '/science/plant-game?type=cu';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY ĂN QUẢ') {
-                                        $activity_game_link = $base_url . '/science/plant-game?type=anqua';
-                                    } elseif ($activity_title == 'TRÒ CHƠI CÂY DÂY LEO') {
-                                        $activity_game_link = $base_url . '/science/plant-game?type=dayleo';
-                                    } 
-
-                                    if (!empty($activity_game_link) && $is_unlocked && $activity['status'] != 'locked'):
-                                    ?>
-                                        <a href="<?php echo $activity_game_link; ?>" class="activity-badge <?php echo $activity['status']; ?>" title="Bấm để chơi game">
-                                            <span class="activity-emoji"><?php echo $activity['icon']; ?></span>
-                                            <span class="activity-text"><?php echo $activity['title']; ?></span>
-                                        </a>
-                                    <?php else: ?>
-                                        <div class="activity-badge <?php echo $activity['status']; ?>">
-                                            <span class="activity-emoji"><?php echo $activity['icon']; ?></span>
-                                            <span class="activity-text"><?php echo $activity['title']; ?></span>
-                                        </div>
-                                    <?php endif; ?>
-
-                                <?php endforeach; ?>
-                            </div>
-                            
-                            
-                            <div class="island-action">
-                                <?php
-                                if ($topic['status'] == 'completed'): 
-                                ?>
-                                    <button class="island-btn review" onclick="reviewTopic(<?php echo $topic['id']; ?>)">
-                                        <i class="fas fa-redo"></i>
-                                        <span>Ôn tập lại</span>
-                                    </button>
-                                <?php elseif ($topic['status'] == 'current'): ?>
-                                    <button class="island-btn start" onclick="startTopic(<?php echo $topic['id']; ?>)">
-                                        <i class="fas fa-play"></i>
-                                        <span>Bắt đầu học</span>
-                                    </button>
-                                <?php else: ?>
-                                    <button class="island-btn locked" disabled>
-                                        <i class="fas fa-lock"></i>
-                                        <span>Chờ mở khóa</span>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-                             
-                         </div>
-                    </div>
-
-                    <div class="ocean-waves">
-                        <div class="wave wave-1"></div>
-                        <div class="wave wave-2"></div>
-                        <div class="wave wave-3"></div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-3"></div>
+            <div class="orbit orbit-4"></div>
+            <div class="orbit orbit-5"></div>
+            
+            <div class="planet planet-1 completed" data-planet="1">🎨</div>
+            <div class="planet planet-2 completed" data-planet="2">🍎</div>
+            <div class="planet planet-3 current" data-planet="3">🌓</div>
+            <div class="planet planet-4" data-planet="4">🚒</div>
+            <div class="planet planet-5" data-planet="5">🗑️</div>
         </section>
-    </main>
+    </div>
 
-    <button class="character-float-btn" id="characterFloatBtn" style="background: <?php echo $subject['character']['color']; ?>">
-        <?php echo $subject['character']['avatar']; ?>
-        <div class="pulse-ring"></div>
+    <div class="planet-info-overlay" id="planetInfoOverlay">
+        <div class="planet-info">
+            <button class="close-button" id="closeInfo">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="info-header">
+                <div class="info-icon" id="infoIcon">🎨</div>
+                <div class="info-title">
+                    <h3 id="infoName">THẾ GIỚI MÀU SẮC</h3>
+                    <span class="status" id="infoStatus">Đã hoàn thành</span>
+                </div>
+            </div>
+            
+            <p class="info-description" id="infoDescription">
+                Khám phá bí mật của màu sắc qua các hoạt động thú vị và trò chơi pha màu
+            </p>
+            
+            <div class="info-meta">
+                <div class="info-time">
+                    <i class="far fa-clock"></i>
+                    <span id="infoTime">15 phút</span>
+                </div>
+                <div class="info-xp">
+                    <i class="fas fa-bolt"></i>
+                    <span id="infoXp">50 XP</span>
+                </div>
+            </div>
+            
+            <div class="activities-section">
+                <h4 class="activities-title">Hoạt động</h4>
+                <div class="activities-grid" id="activitiesGrid">
+                </div>
+            </div>
+            
+            <div class="info-actions">
+                <button class="action-button action-primary" id="actionStart">
+                    <i class="fas fa-play"></i>
+                    Bắt đầu
+                </button>
+                <button class="action-button action-secondary" id="actionClose">
+                    <i class="fas fa-times"></i>
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="cosmic-character" id="characterBtn">
+        🦖
     </button>
 
-    <script src="<?php echo $base_url; ?>/public/js/science.js"></script>
-    <script>
-        function reviewTopic(id) {
-            console.log("Ôn tập topic: " + id);
-        }
-        function startTopic(id) {
-            console.log("Bắt đầu topic: " + id);
-        }
-    </script>
+    <script src="<?php echo $base_url; ?>/public/JS/science.js"></script>
+
+
 </body>
 </html>

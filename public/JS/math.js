@@ -1,362 +1,223 @@
-class MathRoadmap {
-    constructor() {
-        this.currentTopic = 2;
-        this.character = {
-            name: 'Bạn Thỏ Toán Học',
-            avatar: '🐰',
-            color: '#7C3AED',
-            messages: {
-                welcome: 'Chào bạn nhỏ! Mình là Thỏ Toán Học! Cùng mình khám phá 5 chủ đề toán học siêu vui nhé! 🐰✨',
-                topicStart: [
-                    'Chúc bạn học toán vui vẻ! 🧮',
-                    'Hãy bắt đầu hành trình toán học nào! 🚀',
-                    'Ôi! Chủ đề này siêu thú vị! 💫'
-                ],
-                activityComplete: [
-                    'Xuất sắc! Bạn tính toán rất giỏi! 🎯',
-                    'Tuyệt vời! Thêm một con số cho bạn! 🔢',
-                    'Giỏi quá! Bạn thật thông minh! 💡'
-                ],
-                topicComplete: [
-                    'Chúc mừng! Bạn đã chinh phục toán học thành công! 🏆',
-                    'Thật ấn tượng! Bạn là nhà toán học tài ba! 💎',
-                    'Hoàn hảo! Chủ đề mới đã mở khóa! 🔓'
-                ]
+const planets = {
+    1: {
+        name: "MÁY BẮN ĐÁ MINI",
+        icon: "🎯",
+        status: "completed",
+        description: "Chế tạo máy bắn đá mini học về lực và góc bắn",
+        time: "22 phút",
+        xp: "35 XP",
+        activities: [
+            { type: "tutorial", name: "Làm máy bắn đá", icon: "🔨", xp: "35 XP" }
+        ]
+    },
+    2: {
+        name: "NHẬN BIẾT GÓC",
+        icon: "📐",
+        status: "current",
+        description: "Học về các loại góc qua video và trò chơi",
+        time: "18 phút",
+        xp: "55 XP",
+        activities: [
+            { type: "video", name: "Video nhận biết góc", icon: "📺", xp: "30 XP" },
+            { type: "game", name: "Trò chơi phân loại góc", icon: "🎮", xp: "25 XP" }
+        ]
+    },
+    3: {
+        name: "TANGRAM 3D",
+        icon: "🧩",
+        status: "locked",
+        description: "Khám phá tangram không gian 3 chiều thú vị",
+        time: "25 phút",
+        xp: "70 XP",
+        activities: [
+            { type: "video", name: "Giới thiệu tangram", icon: "📺", xp: "30 XP" },
+            { type: "puzzle", name: "Ghép hình tangram", icon: "🧠", xp: "40 XP" }
+        ]
+    },
+    4: {
+        name: "ĐẾM SỐ THÔNG MINH",
+        icon: "🔢",
+        status: "locked",
+        description: "Học đếm số và nhận biết số qua video vui nhộn",
+        time: "20 phút",
+        xp: "60 XP",
+        activities: [
+            { type: "video", name: "Video đếm số", icon: "📺", xp: "25 XP" },
+            { type: "game", name: "Trò chơi đếm số", icon: "🎲", xp: "35 XP" }
+        ]
+    },
+    5: {
+        name: "SIÊU THỊ CỦA BÉ",
+        icon: "🛒",
+        status: "locked",
+        description: "Học cộng trừ và nhận biết tiền Việt Nam",
+        time: "28 phút",
+        xp: "75 XP",
+        activities: [
+            { type: "tutorial", name: "Giới thiệu tiền VN", icon: "💵", xp: "30 XP" },
+            { type: "simulation", name: "Mua sắm siêu thị", icon: "🏪", xp: "45 XP" }
+        ]
+    }
+};
+
+function initMathSystem() {
+    console.log('🧮 Initializing Math System...');
+    
+    const planetInfoOverlay = document.getElementById('planetInfoOverlay');
+    const infoIcon = document.getElementById('infoIcon');
+    const infoName = document.getElementById('infoName');
+    const infoStatus = document.getElementById('infoStatus');
+    const infoDescription = document.getElementById('infoDescription');
+    const infoTime = document.getElementById('infoTime');
+    const infoXp = document.getElementById('infoXp');
+    const activitiesGrid = document.getElementById('activitiesGrid');
+    const actionStart = document.getElementById('actionStart');
+    const actionClose = document.getElementById('actionClose');
+    const closeInfo = document.getElementById('closeInfo');
+    const characterBtn = document.getElementById('characterBtn');
+
+    const elements = {
+        planetInfoOverlay, infoIcon, infoName, infoStatus, infoDescription,
+        infoTime, infoXp, activitiesGrid, actionStart, actionClose, closeInfo, characterBtn
+    };
+
+    for (const [name, element] of Object.entries(elements)) {
+        if (!element) {
+            console.error(`❌ Không tìm thấy element: ${name}`);
+            return false;
+        }
+    }
+
+    console.log('✅ Tất cả elements đã được tìm thấy');
+
+    document.querySelectorAll('.planet').forEach(planet => {
+        planet.addEventListener('click', function() {
+            const planetId = this.getAttribute('data-planet');
+            console.log(`🪐 Planet clicked: ${planetId}`);
+            
+            const planetData = planets[planetId];
+            
+            if (!planetData) {
+                console.error('❌ Không tìm thấy dữ liệu cho planet:', planetId);
+                return;
             }
-        };
-        
-        this.init();
-    }
-
-    init() {
-        console.log('🐰 Math Roadmap initialized - Kid Friendly Version');
-        this.setupEventListeners();
-        this.setupAnimations();
-        this.setupCharacterInteractions();
-        this.highlightCurrentTopic();
-    }
-
-    setupEventListeners() {
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.island-btn')) {
-                const btn = e.target.closest('.island-btn');
-                const island = btn.closest('.island');
-                const topicId = parseInt(island.getAttribute('data-topic'));
+            
+            infoIcon.textContent = planetData.icon;
+            infoName.textContent = planetData.name;
+            infoDescription.textContent = planetData.description;
+            infoTime.textContent = planetData.time;
+            infoXp.textContent = planetData.xp;
+            
+            let statusText = '';
+            let statusClass = '';
+            
+            if (planetData.status === 'completed') {
+                statusText = 'Đã hoàn thành';
+                statusClass = 'status-completed';
+            } else if (planetData.status === 'current') {
+                statusText = 'Đang học';
+                statusClass = 'status-current';
+            } else {
+                statusText = 'Chờ mở khóa';
+                statusClass = 'status-locked';
+            }
+            
+            infoStatus.textContent = statusText;
+            infoStatus.className = 'status ' + statusClass;
+            
+            activitiesGrid.innerHTML = '';
+            planetData.activities.forEach(activity => {
+                const activityElement = document.createElement('div');
+                activityElement.className = 'activity-item';
                 
-                e.stopPropagation();
-                if (btn.classList.contains('start')) {
-                    this.startTopic(topicId);
-                } else if (btn.classList.contains('review')) {
-                    this.reviewTopic(topicId);
+                let activityTypeText = '';
+                switch(activity.type) {
+                    case 'tutorial': activityTypeText = 'Hướng dẫn'; break;
+                    case 'video': activityTypeText = 'Video'; break;
+                    case 'game': activityTypeText = 'Trò chơi'; break;
+                    case 'puzzle': activityTypeText = 'Câu đố'; break;
+                    case 'simulation': activityTypeText = 'Mô phỏng'; break;
+                    default: activityTypeText = 'Hoạt động';
                 }
-            }
-        });
-
-        const dialogButton = document.getElementById('dialogButton');
-        if (dialogButton) {
-            dialogButton.addEventListener('click', () => {
-                this.closeWelcomeDialog();
+                
+                activityElement.innerHTML = `
+                    <div class="activity-icon">${activity.icon}</div>
+                    <div class="activity-info">
+                        <div class="activity-name">${activity.name}</div>
+                        <div class="activity-type">${activityTypeText}</div>
+                    </div>
+                    <div class="activity-xp">${activity.xp}</div>
+                `;
+                activitiesGrid.appendChild(activityElement);
             });
-        }
-
-        const floatBtn = document.getElementById('characterFloatBtn');
-        if (floatBtn) {
-            floatBtn.addEventListener('click', () => {
-                this.showRandomEncouragement();
-            });
-        }
-
-        document.querySelectorAll('.island').forEach(island => {
-            island.addEventListener('click', (e) => {
-                if (!e.target.closest('.island-btn')) {
-                    this.bounceIsland(island);
-                }
-            });
-        });
-    }
-
-    setupAnimations() {
-        const islands = document.querySelectorAll('.island');
-        islands.forEach((island, index) => {
-            island.style.animationDelay = `${index * 0.2}s`;
-        });
-
-        const cards = document.querySelectorAll('.progress-card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
-    }
-
-    setupCharacterInteractions() {
-        const welcomeDialog = document.getElementById('characterDialog');
-        if (welcomeDialog && welcomeDialog.classList.contains('show')) {
-            setTimeout(() => {
-                this.showCharacterMessage(this.character.messages.welcome, true);
-            }, 1000);
-        }
-
-        setInterval(() => {
-            if (document.visibilityState === 'visible') {
-                this.showRandomEncouragement();
+            
+            if (planetData.status === 'completed') {
+                actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
+                actionStart.className = 'action-button action-primary';
+                actionStart.disabled = false;
+            } else if (planetData.status === 'current') {
+                actionStart.innerHTML = '<i class="fas fa-play"></i> Tiếp tục học';
+                actionStart.className = 'action-button action-primary';
+                actionStart.disabled = false;
+            } else {
+                actionStart.innerHTML = '<i class="fas fa-lock"></i> Chờ mở khóa';
+                actionStart.className = 'action-button action-locked';
+                actionStart.disabled = true;
             }
-        }, 90000);
-    }
 
-    showCharacterMessage(message, isImportant = false) {
-        const dialog = document.getElementById('characterDialog');
-        const dialogText = document.getElementById('dialogText');
-        const dialogButton = document.getElementById('dialogButton');
-        
-        if (!dialog || !dialogText) return;
-
-        dialogText.textContent = message;
-        dialogButton.innerHTML = isImportant 
-            ? '<span>Bắt đầu thôi!</span><i class="fas fa-calculator"></i>'
-            : '<span>Tiếp tục</span><i class="fas fa-arrow-right"></i>';
-        
-        dialog.classList.add('show');
-
-        if (isImportant) {
-            this.typeMessage(dialogText, message);
-        }
-        if (!isImportant) {
+            planetInfoOverlay.classList.add('show');
+            console.log('📱 Info panel shown');
+         
+            this.style.transform = 'scale(1.3)';
             setTimeout(() => {
-                if (dialog.classList.contains('show')) {
-                    this.closeWelcomeDialog();
-                }
-            }, 4000);
+                this.style.transform = '';
+            }, 300);
+        });
+    });
+
+    function closeInfoPanel() {
+        planetInfoOverlay.classList.remove('show');
+        console.log('📱 Info panel closed');
+    }
+
+    closeInfo.addEventListener('click', closeInfoPanel);
+    actionClose.addEventListener('click', closeInfoPanel);
+
+    actionStart.addEventListener('click', function() {
+        if (!this.disabled) {
+            const planetName = infoName.textContent;
+            console.log(`🎮 Starting: ${planetName}`);
+            alert(`Bắt đầu học: ${planetName}`);
         }
-    }
+    });
 
-    typeMessage(element, message) {
-        element.textContent = '';
-        let i = 0;
-        const typingSpeed = 40;
+    characterBtn.addEventListener('click', function() {
+        console.log('🐰 Character clicked');
+        alert('Chào bạn nhỏ! Mình là Thỏ Toán Học! 🐰✨\nCùng mình khám phá 5 chủ đề toán học siêu vui nhé!');
+    });
 
-        const type = () => {
-            if (i < message.length) {
-                element.textContent += message.charAt(i);
-                i++;
-                setTimeout(type, typingSpeed);
-            }
-        };
-        
-        type();
-    }
-
-    closeWelcomeDialog() {
-        const dialog = document.getElementById('characterDialog');
-        if (dialog) {
-            dialog.classList.remove('show');
+    planetInfoOverlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeInfoPanel();
         }
-    }
+    });
 
-    showRandomEncouragement() {
-        const messages = [
-            'Cố lên bạn! Toán học rất thú vị phải không? 🧮',
-            'Bạn đang làm rất tốt! Tiếp tục nhé! 💪',
-            'Ôi! Bạn học nhanh quá! 🚀',
-            'Mỗi bài toán là một lần khám phá! 🎉'
-        ];
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        this.showCharacterMessage(randomMessage, false);
-    }
-
-    startTopic(topicId) {
-        this.showCharacterMessage(this.getRandomMessage(this.character.messages.topicStart), true);
-        this.showLoadingState(topicId, 'topic');
-        
-        setTimeout(() => {
-            console.log(`🏝️ Starting topic: ${topicId}`);
-            this.simulateTopicCompletion(topicId);
-        }, 2000);
-    }
-
-    reviewTopic(topicId) {
-        this.showCharacterMessage('Ôn tập lại để tính toán nhanh hơn nhé! 🔄', true);
-        this.showLoadingState(topicId, 'topic');
-        
-        setTimeout(() => {
-            console.log(`🔄 Reviewing topic: ${topicId}`);
-        }, 1500);
-    }
-
-    simulateTopicCompletion(topicId) {
-        const island = document.querySelector(`[data-topic="${topicId}"]`);
-        if (!island) return;
-
-        island.classList.remove('current');
-        island.classList.add('completed');
-        
-        const islandShape = island.querySelector('.island-shape');
-        if (islandShape) {
-            islandShape.style.background = 'linear-gradient(135deg, #10B981, #34D399)';
-        }
-        
-        const islandButton = island.querySelector('.island-btn');
-        if (islandButton) {
-            islandButton.className = 'island-btn review';
-            islandButton.innerHTML = '<i class="fas fa-redo"></i><span>Ôn tập lại</span>';
-        }
-        
-        const activityBadges = island.querySelectorAll('.activity-badge');
-        activityBadges.forEach(badge => {
-            badge.classList.remove('current');
-            badge.classList.add('completed');
+    document.querySelectorAll('.planet').forEach(planet => {
+        planet.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
         });
         
-        this.unlockNextIsland(topicId);
-        
-        this.showCharacterMessage(this.getRandomMessage(this.character.messages.topicComplete), true);
-        
-        this.celebrateIsland(island);
-    }
+        planet.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
+    });
 
-    unlockNextIsland(topicId) {
-        const nextTopicId = topicId + 1;
-        const nextIsland = document.querySelector(`[data-topic="${nextTopicId}"]`);
-        
-        if (nextIsland) {
-            nextIsland.classList.remove('upcoming');
-            nextIsland.classList.add('current');
-            
-            const nextButton = nextIsland.querySelector('.island-btn');
-            if (nextButton) {
-                nextButton.className = 'island-btn start';
-                nextButton.innerHTML = '<i class="fas fa-play"></i><span>Bắt đầu</span>';
-                nextButton.disabled = false;
-            }
-            const nextActivityBadges = nextIsland.querySelectorAll('.activity-badge');
-            nextActivityBadges.forEach(badge => {
-                badge.classList.remove('locked');
-                badge.classList.add('current');
-            });
-
-            this.bounceIsland(nextIsland);
-        }
-    }
-
-    showLoadingState(topicId, type) {
-        const island = document.querySelector(`[data-topic="${topicId}"]`);
-        const button = island?.querySelector('.island-btn');
-        
-        if (button && !button.disabled) {
-            const originalHTML = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                if (button.parentNode) {
-                    button.innerHTML = originalHTML;
-                    button.disabled = false;
-                }
-            }, 1500);
-        }
-    }
-
-    bounceIsland(island) {
-        island.style.animation = 'none';
-        setTimeout(() => {
-            island.style.animation = 'bounce 0.6s ease';
-        }, 10);
-        
-        setTimeout(() => {
-            island.style.animation = '';
-        }, 600);
-    }
-
-    celebrateIsland(island) {
-        island.style.animation = 'celebrate 1s ease-out';
-        this.createCelebration(island);
-        
-        setTimeout(() => {
-            island.style.animation = '';
-        }, 1000);
-    }
-
-    createCelebration(element) {
-        const rect = element.getBoundingClientRect();
-        const emojis = ['🎉', '⭐', '🧮', '🎊', '👏'];
-        
-        for (let i = 0; i < 12; i++) {
-            const celebration = document.createElement('div');
-            celebration.className = 'celebration';
-            celebration.style.cssText = `
-                position: fixed;
-                font-size: 1.5rem;
-                pointer-events: none;
-                z-index: 1000;
-                top: ${rect.top + rect.height / 2}px;
-                left: ${rect.left + rect.width / 2}px;
-                animation: celebratePop 1s ease-out forwards;
-            `;
-            celebration.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            
-            document.body.appendChild(celebration);
-            
-            setTimeout(() => {
-                celebration.remove();
-            }, 1000);
-        }
-    }
-
-    highlightCurrentTopic() {
-        const currentIsland = document.querySelector('.island.current');
-        if (currentIsland) {
-            setTimeout(() => {
-                currentIsland.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center'
-                });
-            }, 2000);
-        }
-    }
-
-    getRandomMessage(messages) {
-        return messages[Math.floor(Math.random() * messages.length)];
-    }
+    console.log('🎉 Math System initialized successfully!');
+    return true;
 }
 
-const celebrationStyles = document.createElement('style');
-celebrationStyles.textContent = `
-    @keyframes celebrate {
-        0% { transform: scale(1); }
-        25% { transform: scale(1.1); }
-        50% { transform: scale(0.95); }
-        75% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-    
-    @keyframes celebratePop {
-        0% {
-            opacity: 1;
-            transform: translate(0, 0) scale(1);
-        }
-        100% {
-            opacity: 0;
-            transform: translate(${Math.random() * 200 - 100}px, -100px) scale(0);
-        }
-    }
-    
-    .island.animate-in {
-        opacity: 1;
-        transform: translateX(0);
-    }
-`;
-document.head.appendChild(celebrationStyles);
-
-function startTopic(topicId) {
-    if (window.mathRoadmap) {
-        window.mathRoadmap.startTopic(topicId);
-    }
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMathSystem);
+} else {
+    initMathSystem();
 }
-
-function reviewTopic(topicId) {
-    if (window.mathRoadmap) {
-        window.mathRoadmap.reviewTopic(topicId);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    window.mathRoadmap = new MathRoadmap();
-});
