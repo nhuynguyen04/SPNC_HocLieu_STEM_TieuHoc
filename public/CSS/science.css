@@ -192,7 +192,7 @@ body {
 .solar-system {
     position: relative;
     height: 600px;
-    margin: 50px 0;
+    margin: 100px 0;
     perspective: 1000px;
 }
 
@@ -233,6 +233,7 @@ body {
 .orbit-3 { width: 400px; height: 400px; }
 .orbit-4 { width: 500px; height: 500px; }
 .orbit-5 { width: 600px; height: 600px; }
+.orbit-6 { width: 700px; height: 700px; }
 
 .planet {
     position: absolute;
@@ -308,6 +309,13 @@ body {
     animation: orbit-5 65s linear infinite;
 }
 
+.planet-6 {
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle at 50% 50%, #16A34A, #15803D);
+    animation: orbit-6 75s linear infinite;
+}
+
 @keyframes orbit-1 {
     0% { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg) translateX(100px) rotate(-360deg); }
@@ -331,6 +339,11 @@ body {
 @keyframes orbit-5 {
     0% { transform: translate(-50%, -50%) rotate(288deg) translateX(300px) rotate(-288deg); }
     100% { transform: translate(-50%, -50%) rotate(648deg) translateX(300px) rotate(-648deg); }
+}
+
+@keyframes orbit-6 {
+    0% { transform: translate(-50%, -50%) rotate(360deg) translateX(350px) rotate(-360deg); }
+    100% { transform: translate(-50%, -50%) rotate(720deg) translateX(350px) rotate(-720deg); }
 }
 
 .planet.completed::after {
@@ -728,4 +741,30 @@ body {
     .activities-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Thêm vào science.css */
+.activity-clickable {
+    transition: all 0.3s ease;
+}
+
+.activity-clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.activity-item {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    padding: 12px;
+    border: 2px solid transparent;
+}
+
+.activity-clickable:hover .activity-name {
+    color: #3b82f6;
+}
+
+.activity-clickable:hover .activity-icon {
+    transform: scale(1.1);
 }
