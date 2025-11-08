@@ -12,7 +12,7 @@ const planets = {
         activities: [
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP" },
             { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
-              link: baseUrl + '/views/lessons/science_color_game.php' }
+              link: baseUrl + '/views/lessons/color-game' }
         ]
     },
     2: {
@@ -24,7 +24,7 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP",
-              link: baseUrl + '/views/lessons/science_nutrition_game.php' }
+              link: baseUrl + '/views/lessons/nutrition' }
         ]
     },
     3: {
@@ -68,7 +68,7 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_trash_game.php' },
+              link: baseUrl + '/views/lessons/trash' },
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP" }
         ]
     },
@@ -81,7 +81,7 @@ const planets = {
         xp: "30 XP",
         activities: [
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_plant_game.php' }
+              link: baseUrl + '/views/lessons/plant-game' }
         ]
     }
 };

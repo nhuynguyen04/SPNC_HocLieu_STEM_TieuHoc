@@ -82,9 +82,9 @@ if (!empty($_SESSION['user_id'])) {
                 </div>
                 
                 <nav class="main-nav">
-                    <a href="<?= $base_url ?>views/home.php" class="nav-link <?php echo $current_page === 'home.php' ? 'active' : ''; ?>">Trang chủ</a>
-                    <a href="<?= $base_url ?>views/main_lesson.php" class="nav-link <?php echo $current_page === 'main_lesson.php' ? 'active' : ''; ?>">Bài học</a>
-                    <a href="<?= $base_url ?>views/achievements.php" class="nav-link <?php echo $current_page === 'achievements.php' ? 'active' : ''; ?>">Thành tích</a>
+                    <a href="<?= $base_url ?>/views/home.php" class="nav-link <?php echo $current_page === 'home.php' ? 'active' : ''; ?>">Trang chủ</a>
+                    <a href="<?= $base_url ?>/views/main_lesson.php" class="nav-link <?php echo $current_page === 'main_lesson.php' ? 'active' : ''; ?>">Bài học</a>
+                    <a href="<?= $base_url ?>/views/achievements.php" class="nav-link <?php echo $current_page === 'achievements.php' ? 'active' : ''; ?>">Thành tích</a>
                 </nav>
 
                 

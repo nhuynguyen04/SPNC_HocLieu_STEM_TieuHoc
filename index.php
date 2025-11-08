@@ -9,32 +9,18 @@ require_once 'controllers/AuthController.php';
 
 // 2. PHÂN TÍCH URL
 $request_uri = $_SERVER['REQUEST_URI'];
-$script_name = $_SERVER['SCRIPT_NAME'];
-$base_path = dirname($script_name);
 
-// Đảm bảo base_path không phải là dấu / đơn lẻ nếu chạy ở thư mục con
-if ($base_path === DIRECTORY_SEPARATOR) {
-    $base_path = '';
+// Xóa tên thư mục con khỏi URL
+$base_path = dirname($_SERVER['SCRIPT_NAME']);
+$base_path = rtrim($base_path, '/\\');
+
+$route = str_replace($base_path, '', $request_uri);
+
+if (strpos($route, '?') !== false) {
+    $route = substr($route, 0, strpos($route, '?'));
 }
-
-// Loại bỏ base_path khỏi request_uri để lấy route
-// Sử dụng strpos để đảm bảo chỉ loại bỏ phần đầu
-if (strpos($request_uri, $base_path) === 0) {
-    $route = substr($request_uri, strlen($base_path));
-} else {
-    $route = $request_uri;
-}
-
-// Loại bỏ query string (?next=1...)
-if (($pos = strpos($route, '?')) !== false) {
-    $route = substr($route, 0, $pos);
-}
-
-// *** QUAN TRỌNG: Sửa lỗi hai dấu gạch chéo // thành 1 dấu / ***
-$route = preg_replace('#/+#', '/', $route);
-
-// Đặt route mặc định
-if ($route === '' || $route === '/') {
+// Đặt route mặc định nếu rỗng
+if (empty($route)) {
     $route = '/';
 }
 
@@ -45,7 +31,20 @@ $lessonController = new LessonController();
 
 switch ($route) {
     // --- CÁC ROUTE CỦA GAME ---
+    case '/views/lessons/color-game':
+        $lessonController->showColorGame();
+        break;
+        
+    case '/views/lessons/nutrition':
+        $lessonController->showNutritionGame();
+        break;
     
+    case '/views/lessons/update-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateNutritionScore();
+        }
+        break;
+
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly
@@ -74,20 +73,6 @@ switch ($route) {
         }
         break;
     
-    case '/views/lessons/color-game':
-        $lessonController->showColorGame();
-        break;
-        
-    case '/views/lessons/nutrition':
-        $lessonController->showNutritionGame();
-        break;
-    
-    case '/views/lessons/update-score':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $lessonController->updateNutritionScore();
-        }
-        break;
-
     case '/views/lessons/plant-game':
         $lessonController->showPlantGame();
         break;
@@ -106,31 +91,7 @@ switch ($route) {
             $lessonController->updateTrashScore();
         }
         break;
-    
-    case '/logout':
-        // Xử lý logout
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         
-        $_SESSION = [];
-        
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
-            );
-        }
-        
-        session_destroy();
-        
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/SPNC_HocLieu_STEM_TieuHoc';
-        header("Location: " . $base_url . "/views/signin.php");
-        exit;
-        break;
-       
     // --- ROUTE CHO TRANG CHỦ ---
     case '/':
     case '/index.php':
