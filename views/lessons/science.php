@@ -124,7 +124,7 @@ $_SESSION['science_visited'] = true;
     <title>Hệ Mặt Trời Khoa Học - STEM Universe</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/science.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/science.css?v=<?= time() ?>">
 </head>
 <body>
     <div class="cosmic-universe">
@@ -167,12 +167,14 @@ $_SESSION['science_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
+            <div class="orbit orbit-6"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
             <div class="planet planet-4" data-planet="4">🚒</div>
             <div class="planet planet-5" data-planet="5">🗑️</div>
+            <div class="planet planet-6" data-planet="6">🌱</div>
         </section>
     </div>
 
@@ -227,9 +229,8 @@ $_SESSION['science_visited'] = true;
     <button class="cosmic-character" id="characterBtn">
         🦖
     </button>
-
-    <script src="<?php echo $base_url; ?>/public/JS/science.js"></script>
-
+    <script>window.baseUrl = "<?php echo $base_url; ?>";</script>
+    <script src="<?php echo $base_url; ?>/public/JS/science.js?v=<?= time() ?>"></script>
 
 </body>
 </html>

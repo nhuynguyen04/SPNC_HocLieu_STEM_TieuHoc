@@ -1,3 +1,6 @@
+console.log('science.js loaded');
+console.log('baseUrl(from DOM):', baseUrl, ' window.baseUrl:', window.baseUrl);
+
 const planets = {
     1: {
         name: "THẾ GIỚI MÀU SẮC",
@@ -8,18 +11,20 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP" },
-            { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP" }
+            { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
+              link: baseUrl + '/views/lessons/science_color_game.php' }
         ]
     },
     2: {
         name: "BÍ KÍP ĂN UỐNG LÀNH MẠNH",
         icon: "🍎",
-        status: "completed", 
+        status: "completed",
         description: "Học cách chọn thực phẩm tốt cho sức khỏe",
         time: "20 phút",
         xp: "50 XP",
         activities: [
-            { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP" }
+            { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP",
+              link: baseUrl + '/views/lessons/science_nutrition_game.php' }
         ]
     },
     3: {
@@ -30,7 +35,12 @@ const planets = {
         time: "12 phút", 
         xp: "50 XP",
         activities: [
-            { type: "question", name: "Trả lời câu hỏi", icon: "🌞", xp: "50 XP" }
+            { 
+                type: "question", 
+                name: "Trả lời câu hỏi", 
+                icon: "🌞", 
+                xp: "50 XP"
+            }
         ]
     },
     4: {
@@ -41,8 +51,13 @@ const planets = {
         time: "18 phút",
         xp: "50 XP", 
         activities: [
-            { type: "game", name: "Trò chơi thoát hiểm", icon: "🏃‍♂️", xp: "50 XP" }
-        ]
+            { 
+                type: "game", 
+                name: "Trò chơi thoát hiểm", 
+                icon: "🏃‍♂️", 
+                xp: "50 XP"
+            }
+        ] 
     },
     5: {
         name: "THÙNG RÁC THÂN THIỆN",
@@ -52,8 +67,21 @@ const planets = {
         time: "16 phút",
         xp: "50 XP",
         activities: [
-            { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP" },
+            { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
+              link: baseUrl + '/views/lessons/science_trash_game.php' },
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP" }
+        ]
+    },
+    6: {
+        name: "CÁC BỘ PHẬN CỦA CÂY",
+        icon: "🌱",
+        status: "locked",
+        description: "Học cách nhận biết các bộ phận của cây",
+        time: "10 phút",
+        xp: "30 XP",
+        activities: [
+            { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
+              link: baseUrl + '/views/lessons/science_plant_game.php' }
         ]
     }
 };
@@ -88,31 +116,33 @@ function initScienceSystem() {
 
     console.log('✅ Tất cả elements đã được tìm thấy');
 
+    let currentPlanetData = null;
+
     document.querySelectorAll('.planet').forEach(planet => {
         planet.addEventListener('click', function() {
             const planetId = this.getAttribute('data-planet');
             console.log(`🪐 Planet clicked: ${planetId}`);
             
-            const planetData = planets[planetId];
+            currentPlanetData = planets[planetId];
             
-            if (!planetData) {
+            if (!currentPlanetData) {
                 console.error('❌ Không tìm thấy dữ liệu cho planet:', planetId);
                 return;
             }
             
-            infoIcon.textContent = planetData.icon;
-            infoName.textContent = planetData.name;
-            infoDescription.textContent = planetData.description;
-            infoTime.textContent = planetData.time;
-            infoXp.textContent = planetData.xp;
+            infoIcon.textContent = currentPlanetData.icon;
+            infoName.textContent = currentPlanetData.name;
+            infoDescription.textContent = currentPlanetData.description;
+            infoTime.textContent = currentPlanetData.time;
+            infoXp.textContent = currentPlanetData.xp;
             
             let statusText = '';
             let statusClass = '';
             
-            if (planetData.status === 'completed') {
+            if (currentPlanetData.status === 'completed') {
                 statusText = 'Đã hoàn thành';
                 statusClass = 'status-completed';
-            } else if (planetData.status === 'current') {
+            } else if (currentPlanetData.status === 'current') {
                 statusText = 'Đang học';
                 statusClass = 'status-current';
             } else {
@@ -123,10 +153,18 @@ function initScienceSystem() {
             infoStatus.textContent = statusText;
             infoStatus.className = 'status ' + statusClass;
             
+            // Cập nhật activities với clickable links
             activitiesGrid.innerHTML = '';
-            planetData.activities.forEach(activity => {
+            currentPlanetData.activities.forEach(activity => {
                 const activityElement = document.createElement('div');
                 activityElement.className = 'activity-item';
+                
+                // Thêm class clickable nếu có link và không bị locked
+                if (activity.link && currentPlanetData.status !== 'locked') {
+                    activityElement.classList.add('activity-clickable');
+                    activityElement.style.cursor = 'pointer';
+                }
+                
                 activityElement.innerHTML = `
                     <div class="activity-icon">${activity.icon}</div>
                     <div class="activity-info">
@@ -135,21 +173,47 @@ function initScienceSystem() {
                     </div>
                     <div class="activity-xp">${activity.xp}</div>
                 `;
+                
+                // Thêm sự kiện click cho từng activity
+                if (activity.link && currentPlanetData.status !== 'locked') {
+                    activityElement.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        console.log(`🎮 Navigating to: ${activity.link}`);
+                        window.location.href = activity.link;
+                    });
+                }
+                
                 activitiesGrid.appendChild(activityElement);
             });
             
-            if (planetData.status === 'completed') {
+            // Cập nhật nút hành động chính
+            if (currentPlanetData.status === 'completed') {
                 actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
                 actionStart.className = 'action-button action-primary';
                 actionStart.disabled = false;
-            } else if (planetData.status === 'current') {
-                actionStart.innerHTML = '<i class="fas fa-play"></i> Tiếp tục học';
+                
+                // Chuyển đến activity đầu tiên khi click nút chính
+                actionStart.onclick = function() {
+                    if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
+                        window.location.href = currentPlanetData.activities[0].link;
+                    }
+                };
+            } else if (currentPlanetData.status === 'current') {
+                actionStart.innerHTML = '<i class="fas fa-play"></i> Bắt đầu học';
                 actionStart.className = 'action-button action-primary';
                 actionStart.disabled = false;
+                
+                // Chuyển đến activity đầu tiên khi click nút chính
+                actionStart.onclick = function() {
+                    if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
+                        window.location.href = currentPlanetData.activities[0].link;
+                    }
+                };
             } else {
                 actionStart.innerHTML = '<i class="fas fa-lock"></i> Chờ mở khóa';
                 actionStart.className = 'action-button action-locked';
                 actionStart.disabled = true;
+                actionStart.onclick = null;
             }
 
             planetInfoOverlay.classList.add('show');
@@ -170,12 +234,10 @@ function initScienceSystem() {
     closeInfo.addEventListener('click', closeInfoPanel);
     actionClose.addEventListener('click', closeInfoPanel);
 
-    actionStart.addEventListener('click', function() {
-        if (!this.disabled) {
-            const planetName = infoName.textContent;
-            console.log(`🎮 Starting: ${planetName}`);
-            alert(`Bắt đầu học: ${planetName}`);
-        }
+    // Xóa event listener cũ và sử dụng onclick đã được gán trong planet click
+    actionStart.addEventListener('click', function(e) {
+        // Ngăn chặn hành vi mặc định, sử dụng onclick đã được gán
+        e.preventDefault();
     });
 
     characterBtn.addEventListener('click', function() {

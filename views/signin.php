@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: ../index.php');
+    header('Location: ../views/home.php');
     exit;
 }
 
@@ -13,7 +13,7 @@ try {
 
     // Kiểm tra cookie ghi nhớ đăng nhập
     if (!isset($_SESSION['user_id']) && $authController->checkRememberToken()) {
-        header('Location: ../index.php');
+        header('Location: ../views/home.php');
         exit;
     }
 
@@ -25,7 +25,7 @@ try {
         $loginResult = $authController->login($username, $password, $remember);
         if ($loginResult === true) {
             $_SESSION['success'] = "Đăng nhập thành công!";
-            header('Location: ../index.php');
+            header('Location: ../views/home.php');
             exit;
         } elseif ($loginResult === 'not_verified') {
             $error = "Email chưa được xác thực. Vui lòng kiểm tra email và xác thực trước khi đăng nhập.";

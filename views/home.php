@@ -1,6 +1,8 @@
 <?php
-$base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$base_url = rtrim($base_url, '/\\');
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/SPNC_HocLieu_STEM_TieuHoc';
+
+
 $subjects = [
     'khoa_hoc' => [
         'name' => 'Khoa học',
