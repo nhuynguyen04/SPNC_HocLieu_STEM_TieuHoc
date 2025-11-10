@@ -91,6 +91,10 @@ switch ($route) {
             $lessonController->updateTrashScore();
         }
         break;
+
+    case '/views/lessons/day-night':
+        $lessonController->showDayNightLesson();
+        break;
         
     // --- ROUTE CHO TRANG CHỦ ---
     case '/':

@@ -368,4 +368,79 @@ class LessonController {
         echo json_encode(['newScore' => $_SESSION['trash_score']]);
         exit();
     }
+
+    /**
+     * Bài học Ngày và Đêm
+     */
+    public function showDayNightLesson() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $questions = [
+            [
+                'id' => 1,
+                'question' => 'Mặt trời mọc ở hướng nào?',
+                'options' => [
+                    'A' => 'Bắc',
+                    'B' => 'Đông',
+                    'C' => 'Nam',
+                    'D' => 'Tây'
+                ],
+                'correct' => 'B',
+                'explanation' => 'Do Trái Đất quay từ Tây sang Đông, nên ta luôn nhìn thấy Mặt Trời mọc từ hướng Đông.'
+            ],
+            [
+                'id' => 2,
+                'question' => 'Thời gian để Trái Đất quay hết một vòng quanh trục của mình là bao lâu?',
+                'options' => [
+                    'A' => '12 giờ',
+                    'B' => '1 tháng',
+                    'C' => '24 giờ',
+                    'D' => '1 năm'
+                ],
+                'correct' => 'C',
+                'explanation' => 'Trái Đất mất 24 giờ (một ngày đêm) để tự quay hết một vòng quanh trục của nó.'
+            ],
+            [
+                'id' => 3,
+                'question' => 'Khi một nửa Trái Đất hướng về phía Mặt Trời thì nửa đó là ban gì?',
+                'options' => [
+                    'A' => 'Ban đêm',
+                    'B' => 'Ban ngày',
+                    'C' => 'Cả ngày và đêm',
+                    'D' => 'Buổi chiều'
+                ],
+                'correct' => 'B',
+                'explanation' => 'Phần được Mặt Trời chiếu sáng sẽ là ban ngày, phần còn lại bị khuất bóng là ban đêm.'
+            ],
+            [
+                'id' => 4,
+                'question' => 'Câu nào sau đây là ĐÚNG về chuyển động của Trái Đất?',
+                'options' => [
+                    'A' => 'Trái Đất đứng yên, Mặt Trời quay quanh nó.',
+                    'B' => 'Trái Đất vừa quay quanh Mặt Trời, vừa tự quay quanh mình nó.',
+                    'C' => 'Trái Đất chỉ quay quanh Mặt Trời.',
+                    'D' => 'Mặt Trời và Trái Đất đều đứng yên.'
+                ],
+                'correct' => 'B',
+                'explanation' => 'Trái Đất không đứng yên mà luôn thực hiện 2 chuyển động cùng lúc: tự quay quanh trục và quay quanh Mặt Trời.'
+            ],
+            [
+                'id' => 5,
+                'question' => 'Nếu ở Việt Nam đang là buổi trưa, thì ở phía bên kia Trái Đất sẽ là:',
+                'options' => [
+                    'A' => 'Buổi sáng',
+                    'B' => 'Buổi trưa',
+                    'C' => 'Ban đêm',
+                    'D' => 'Buổi chiều'
+                ],
+                'correct' => 'C',
+                'explanation' => 'Vì Trái Đất hình cầu, khi một bên được chiếu sáng (buổi trưa) thì bên đối diện sẽ chìm trong bóng tối (ban đêm).'
+            ]
+        ];
+
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        require_once __DIR__ . '/../views/lessons/science_day_night.php';
+    }
 }
