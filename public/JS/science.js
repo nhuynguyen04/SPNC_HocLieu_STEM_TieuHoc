@@ -12,7 +12,7 @@ const planets = {
         activities: [
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP" },
             { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
-              link: baseUrl + '/views/lessons/color-game' }
+              link: baseUrl + '/views/lessons/science_color_game.php' }
         ]
     },
     2: {
@@ -24,7 +24,7 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP",
-              link: baseUrl + '/views/lessons/nutrition' }
+              link: baseUrl + '/views/lessons/science_nutrition_game.php' }
         ]
     },
     3: {
@@ -44,22 +44,6 @@ const planets = {
         ]
     },
     4: {
-        name: "CẨM NANG PHÒNG TRÁNH HỎA HOẠN",
-        icon: "🚒",
-        status: "locked",
-        description: "Học cách phòng tránh và xử lý khi có hỏa hoạn",
-        time: "18 phút",
-        xp: "50 XP", 
-        activities: [
-            { 
-                type: "game", 
-                name: "Trò chơi thoát hiểm", 
-                icon: "🏃‍♂️", 
-                xp: "50 XP"
-            }
-        ] 
-    },
-    5: {
         name: "THÙNG RÁC THÂN THIỆN",
         icon: "🗑️",
         status: "locked",
@@ -68,11 +52,11 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
-              link: baseUrl + '/views/lessons/trash' },
+              link: baseUrl + '/views/lessons/science_trash_game.php' },
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP" }
         ]
     },
-    6: {
+    5: {
         name: "CÁC BỘ PHẬN CỦA CÂY",
         icon: "🌱",
         status: "locked",
@@ -81,7 +65,7 @@ const planets = {
         xp: "30 XP",
         activities: [
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
-              link: baseUrl + '/views/lessons/plant-game' }
+              link: baseUrl + '/views/lessons/science_plant_game.php' }
         ]
     }
 };
@@ -153,13 +137,11 @@ function initScienceSystem() {
             infoStatus.textContent = statusText;
             infoStatus.className = 'status ' + statusClass;
             
-            // Cập nhật activities với clickable links
             activitiesGrid.innerHTML = '';
             currentPlanetData.activities.forEach(activity => {
                 const activityElement = document.createElement('div');
                 activityElement.className = 'activity-item';
                 
-                // Thêm class clickable nếu có link và không bị locked
                 if (activity.link && currentPlanetData.status !== 'locked') {
                     activityElement.classList.add('activity-clickable');
                     activityElement.style.cursor = 'pointer';
@@ -174,7 +156,6 @@ function initScienceSystem() {
                     <div class="activity-xp">${activity.xp}</div>
                 `;
                 
-                // Thêm sự kiện click cho từng activity
                 if (activity.link && currentPlanetData.status !== 'locked') {
                     activityElement.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -186,13 +167,11 @@ function initScienceSystem() {
                 activitiesGrid.appendChild(activityElement);
             });
             
-            // Cập nhật nút hành động chính
             if (currentPlanetData.status === 'completed') {
                 actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
                 actionStart.className = 'action-button action-primary';
                 actionStart.disabled = false;
                 
-                // Chuyển đến activity đầu tiên khi click nút chính
                 actionStart.onclick = function() {
                     if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
                         window.location.href = currentPlanetData.activities[0].link;
@@ -203,7 +182,6 @@ function initScienceSystem() {
                 actionStart.className = 'action-button action-primary';
                 actionStart.disabled = false;
                 
-                // Chuyển đến activity đầu tiên khi click nút chính
                 actionStart.onclick = function() {
                     if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
                         window.location.href = currentPlanetData.activities[0].link;
@@ -234,9 +212,7 @@ function initScienceSystem() {
     closeInfo.addEventListener('click', closeInfoPanel);
     actionClose.addEventListener('click', closeInfoPanel);
 
-    // Xóa event listener cũ và sử dụng onclick đã được gán trong planet click
     actionStart.addEventListener('click', function(e) {
-        // Ngăn chặn hành vi mặc định, sử dụng onclick đã được gán
         e.preventDefault();
     });
 

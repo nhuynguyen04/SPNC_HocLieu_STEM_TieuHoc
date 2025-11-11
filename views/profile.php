@@ -66,7 +66,6 @@ require_once './template/header.php';
 
                 <div class="profile-tabs">
                     <button class="tab-btn active" data-tab="info">Thông tin cá nhân</button>
-                    <button class="tab-btn" data-tab="achievements">Thành tích</button>
                     <button class="tab-btn" data-tab="progress">Tiến độ học tập</button>
                 </div>
 
@@ -123,27 +122,6 @@ require_once './template/header.php';
                                     <span class="interest-tag">Khoa học</span>
                                     <span class="interest-tag">Toán học</span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="achievements-tab">
-                        <div class="achievements-grid">
-                            <div class="achievement-card">
-                                <div class="achievement-icon gold">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <h4>Nhà khoa học tí hon</h4>
-                                <p>Hoàn thành 10 bài học đầu tiên</p>
-                                <span class="achievement-date">Đạt được: 15/12/2024</span>
-                            </div>
-                            <div class="achievement-card">
-                                <div class="achievement-icon bronze">
-                                    <i class="fas fa-award"></i>
-                                </div>
-                                <h4>Nhà sáng chế</h4>
-                                <p>Tạo ra 5 dự án STEM</p>
-                                <span class="achievement-date">Đạt được: 05/12/2024</span>
                             </div>
                         </div>
                     </div>

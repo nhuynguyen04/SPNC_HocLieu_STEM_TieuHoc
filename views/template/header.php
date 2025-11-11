@@ -1,30 +1,23 @@
 <?php
-// template/header.php
-
-// Bật session nếu chưa có
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Base URL (chuẩn, tự động phát hiện host + base path)
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/SPNC_HocLieu_STEM_TieuHoc';
+$host = $_SERVER['HTTP_HOST'];
+$project_path = '/SPNC_HocLieu_STEM_TieuHoc';
 
+$base_url = $protocol . '://' . $host . $project_path;
 
-// Tên file hiện tại để highlight menu
 $current_page = basename($_SERVER['PHP_SELF']) ?? 'home.php';
 
-// Giá trị mặc định
 $userName  = '';
 $userEmail = '';
-$avatarHtml = '<div class="avatar">👦</div>'; // bạn có thể thay bằng hình mặc định
+$avatarHtml = '<div class="avatar">👦</div>'; 
 
-// Nếu đã đăng nhập (session user_id), lấy thông tin từ DB (bảo đảm đường dẫn models đúng)
 if (!empty($_SESSION['user_id'])) {
     try {
-        require_once __DIR__ . '/../../models/Database.php'; // <- điều chỉnh nếu cần
-        // Nếu bạn có Model User, bạn có thể require_once __DIR__ . '/../models/User.php' và gọi User::findById()
-
+        require_once __DIR__ . '/../../models/Database.php'; 
         $database = new Database();
         $db = $database->getConnection();
 
@@ -39,7 +32,6 @@ if (!empty($_SESSION['user_id'])) {
                 $userEmail = $user['email'] ?? '';
 
                 if (!empty($user['avatar'])) {
-                    // giả sử avatar lưu tên file trong /public/uploads/avatars/
                     $avatarPath = $base_url . '/public/uploads/avatars/' . rawurlencode($user['avatar']);
                     $avatarHtml = "<img src=\"{$avatarPath}\" alt=\"avatar\" class=\"avatar-img\" />";
                 }
@@ -47,7 +39,6 @@ if (!empty($_SESSION['user_id'])) {
         }
     } catch (Exception $e) {
         error_log("Header user load error: " . $e->getMessage());
-        // giữ giá trị mặc định nếu lỗi
     }
 }
 ?>
@@ -87,9 +78,8 @@ if (!empty($_SESSION['user_id'])) {
                     <a href="<?= $base_url ?>/views/achievements.php" class="nav-link <?php echo $current_page === 'achievements.php' ? 'active' : ''; ?>">Thành tích</a>
                 </nav>
 
-                
                 <div class="header-actions">
-                    <form class="search-bar" method="GET" action="<?= $base_url ?>views/home.php">
+                    <form class="search-bar" method="GET" action="<?= $base_url ?>/views/home.php">
                         <input type="text" name="search" placeholder="Tìm bài học..." 
                             value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                         <button type="submit" class="search-btn">🔍</button>
@@ -119,7 +109,7 @@ if (!empty($_SESSION['user_id'])) {
         </div>
         
         <div class="dropdown-section">
-            <a href="<?= $base_url ?>views/profile.php" class="dropdown-item">
+            <a href="<?= $base_url ?>/views/profile.php" class="dropdown-item">
                 <i class="fas fa-user"></i>
                 <span>Xem hồ sơ</span>
             </a>

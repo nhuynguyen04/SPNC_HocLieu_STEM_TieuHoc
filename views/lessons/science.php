@@ -61,20 +61,9 @@ $science_data = [
                 [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '🌞', 'status' => 'current', 'xp' => 50 ]
             ]
         ],
+
         [ 
             'id' => 4,
-            'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN',
-            'icon' => '🚒',
-            'status' => 'upcoming',
-            'color' => '#EF4444',
-            'description' => 'Học cách phòng tránh và xử lý khi có hỏa hoạn',
-            'learning_time' => '18 phút',
-            'activities' => [
-                [ 'type' => 'game', 'title' => 'TRÒ CHƠI THOÁT HIỂM', 'icon' => '🏃‍♂️', 'status' => 'locked', 'xp' => 50 ]
-            ]
-        ],
-        [ 
-            'id' => 5,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
             'status' => 'upcoming',
@@ -88,7 +77,7 @@ $science_data = [
         ],
 
         [
-            'id' => 6,
+            'id' => 5,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
             'icon' => '🌱',
             'status' => 'current',
@@ -167,14 +156,12 @@ $_SESSION['science_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
-            <div class="orbit orbit-6"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
-            <div class="planet planet-4" data-planet="4">🚒</div>
-            <div class="planet planet-5" data-planet="5">🗑️</div>
-            <div class="planet planet-6" data-planet="6">🌱</div>
+            <div class="planet planet-4" data-planet="5">🗑️</div>
+            <div class="planet planet-5" data-planet="6">🌱</div>
         </section>
     </div>
 
