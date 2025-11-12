@@ -31,11 +31,11 @@ $lessonController = new LessonController();
 
 switch ($route) {
     // --- CÁC ROUTE CỦA GAME ---
-    case '/views/lessons/color-game':
+    case '/views/lessons/science_color_game':
         $lessonController->showColorGame();
         break;
         
-    case '/views/lessons/nutrition':
+    case '/views/lessons/science_nutrition_game':
         $lessonController->showNutritionGame();
         break;
     
@@ -44,6 +44,30 @@ switch ($route) {
             $lessonController->updateNutritionScore();
         }
         break;
+
+    case '/views/lessons/science_plant_game':
+        $lessonController->showPlantGame();
+        break;
+
+    case '/views/lessons/update-plant-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updatePlantScore();
+        }
+        break;
+
+    case '/views/lessons/science_trash_game':
+        $lessonController->showTrashGame();
+        break;
+    case 'trash_score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateTrashScore();
+        }
+        break;
+
+    case '/views/lessons/science_day_night':
+        $lessonController->showDayNightLesson();
+        break;
+        
 
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
@@ -73,29 +97,6 @@ switch ($route) {
         }
         break;
     
-    case '/views/lessons/plant-game':
-        $lessonController->showPlantGame();
-        break;
-
-    case '/views/lessons/update-plant-score':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $lessonController->updatePlantScore();
-        }
-        break;
-
-    case '/views/lessons/trash-game':
-        $lessonController->showTrashGame();
-        break;
-    case '/views/lessons/update-trash-score':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $lessonController->updateTrashScore();
-        }
-        break;
-
-    case '/views/lessons/day-night':
-        $lessonController->showDayNightLesson();
-        break;
-        
     // --- ROUTE CHO TRANG CHỦ ---
     case '/':
     case '/index.php':
