@@ -2,7 +2,7 @@
     --primary: #22C55E;
     --primary-light: #4ADE80;
     --primary-dark: #16A34A;
-    --secondary: #F59E0B;
+    --secondary: #22C55E; 
     --accent: #10B981;
     --danger: #EF4444;
     --success: #22C55E;
@@ -50,7 +50,7 @@ body {
     background: 
         radial-gradient(ellipse at 20% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 70%, rgba(132, 204, 22, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 40% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
         linear-gradient(135deg, #0F0F23 0%, #1A1A2E 50%, #16213E 100%);
 }
 
@@ -187,7 +187,7 @@ body {
 }
 
 .xp-orb .stat-value { color: var(--accent); }
-.streak-orb .stat-value { color: var(--secondary); }
+.streak-orb .stat-value { color: var(--primary); } 
 
 .solar-system {
     position: relative;
@@ -372,7 +372,7 @@ body {
     right: -5px;
     width: 20px;
     height: 20px;
-    background: var(--secondary);
+    background: var(--primary); 
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -473,7 +473,7 @@ body {
 }
 
 .status-current {
-    background: var(--secondary);
+    background: var(--primary);
     color: white;
 }
 
@@ -539,6 +539,7 @@ body {
     border-radius: 12px;
     transition: var(--transition);
     cursor: pointer;
+    position: relative;
 }
 
 .activity-item:hover {
@@ -576,53 +577,6 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--accent);
-}
-
-.info-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.action-button {
-    flex: 1;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 15px;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.action-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.action-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.action-secondary {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-glow);
-}
-
-.action-secondary:hover {
-    background: var(--bg-card);
-    transform: translateY(-2px);
-}
-
-.action-locked {
-    background: var(--bg-deep);
-    color: var(--text-secondary);
-    cursor: not-allowed;
 }
 
 .close-button {
@@ -671,6 +625,135 @@ body {
 .cosmic-character:hover {
     transform: scale(1.2) rotate(15deg);
     box-shadow: 0 0 60px rgba(16, 185, 129, 0.6);
+}
+
+.activity-clickable {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.activity-clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(74, 222, 128, 0.1) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.activity-status-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.completed-badge {
+    background: #22C55E;
+    color: white;
+}
+
+.current-badge {
+    background: #22C55E; 
+    color: white;
+    animation: pulse-badge 2s infinite;
+}
+
+.locked-badge {
+    background: #6B7280;
+    color: white;
+    font-size: 0.6rem;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.activity-completed {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.activity-completed .activity-name {
+    color: #22C55E;
+}
+
+.activity-completed .activity-xp {
+    color: #22C55E;
+}
+
+.activity-current {
+    background: rgba(34, 197, 94, 0.1); 
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.activity-current .activity-name {
+    color: #22C55E;
+}
+
+.activity-current .activity-xp {
+    color: #22C55E;
+}
+
+.activity-locked {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.3);
+    opacity: 0.7;
+}
+
+.activity-locked .activity-name {
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.activity-locked .activity-type {
+    color: #94a3b8;
+}
+
+.activity-locked .activity-xp {
+    color: #94a3b8;
+}
+
+.activity-locked .activity-icon {
+    opacity: 0.5;
+}
+
+.activity-clickable:hover .activity-name {
+    color: #22C55E;
+}
+
+.activity-clickable:hover .activity-icon {
+    transform: scale(1.1);
+    background: rgba(34, 197, 94, 0.2);
+}
+
+.planet[data-planet="4"], .planet[data-planet="5"] {
+    opacity: 0.6;
+    filter: grayscale(0.7);
+}
+
+.planet[data-planet="4"]::before,
+.planet[data-planet="5"]::before {
+    content: '🔒';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.8rem;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -741,30 +824,4 @@ body {
     .activities-grid {
         grid-template-columns: 1fr;
     }
-}
-
-/* Thêm vào science.css */
-.activity-clickable {
-    transition: all 0.3s ease;
-}
-
-.activity-clickable:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.activity-item {
-    transition: all 0.3s ease;
-    border-radius: 12px;
-    padding: 12px;
-    border: 2px solid transparent;
-}
-
-.activity-clickable:hover .activity-name {
-    color: #3b82f6;
-}
-
-.activity-clickable:hover .activity-icon {
-    transform: scale(1.1);
 }

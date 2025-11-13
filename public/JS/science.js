@@ -10,9 +10,10 @@ const planets = {
         time: "15 phút",
         xp: "50 XP",
         activities: [
-            { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP" },
+            { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP", 
+              link: baseUrl + '/views/lessons/science_color_questions', status: "completed" },
             { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
-              link: baseUrl + '/views/lessons/science_color_game' }
+              link: baseUrl + '/views/lessons/science_color_game', status: "completed" }
         ]
     },
     2: {
@@ -24,7 +25,7 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP",
-              link: baseUrl + '/views/lessons/science_nutrition_game' }
+              link: baseUrl + '/views/lessons/science_nutrition_game', status: "completed" }
         ]
     },
     3: {
@@ -40,7 +41,8 @@ const planets = {
                 name: "Trả lời câu hỏi", 
                 icon: "🌞", 
                 xp: "50 XP",
-                link: baseUrl + '/views/lessons/science_day_night'
+                link: baseUrl + '/views/lessons/science_day_night',
+                status: "current"
             }
         ]
     },
@@ -53,9 +55,9 @@ const planets = {
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_trash_game.php' },
+              link: baseUrl + '/views/lessons/science_trash_game.php', status: "locked" },
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP",
-              link: baseUrl + '/views/lessons/science_trash_game' }
+              link: baseUrl + '/views/lessons/science_trash_questions', status: "locked" }
         ]
     },
     5: {
@@ -67,7 +69,7 @@ const planets = {
         xp: "30 XP",
         activities: [
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_plant_game' }
+              link: baseUrl + '/views/lessons/science_plant_game', status: "locked" }
         ]
     }
 };
@@ -83,14 +85,12 @@ function initScienceSystem() {
     const infoTime = document.getElementById('infoTime');
     const infoXp = document.getElementById('infoXp');
     const activitiesGrid = document.getElementById('activitiesGrid');
-    const actionStart = document.getElementById('actionStart');
-    const actionClose = document.getElementById('actionClose');
     const closeInfo = document.getElementById('closeInfo');
     const characterBtn = document.getElementById('characterBtn');
 
     const elements = {
         planetInfoOverlay, infoIcon, infoName, infoStatus, infoDescription,
-        infoTime, infoXp, activitiesGrid, actionStart, actionClose, closeInfo, characterBtn
+        infoTime, infoXp, activitiesGrid, closeInfo, characterBtn
     };
 
     for (const [name, element] of Object.entries(elements)) {
@@ -144,12 +144,32 @@ function initScienceSystem() {
                 const activityElement = document.createElement('div');
                 activityElement.className = 'activity-item';
                 
-                if (activity.link && currentPlanetData.status !== 'locked') {
+                if (activity.status === 'completed') {
+                    activityElement.classList.add('activity-completed');
+                } else if (activity.status === 'current') {
+                    activityElement.classList.add('activity-current');
+                } else if (activity.status === 'locked') {
+                    activityElement.classList.add('activity-locked');
+                }
+                
+                if (activity.link && activity.status !== 'locked') {
                     activityElement.classList.add('activity-clickable');
                     activityElement.style.cursor = 'pointer';
+                } else {
+                    activityElement.style.cursor = 'not-allowed';
+                }
+                
+                let statusBadge = '';
+                if (activity.status === 'completed') {
+                    statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
+                } else if (activity.status === 'current') {
+                    statusBadge = '<div class="activity-status-badge current-badge">●</div>';
+                } else if (activity.status === 'locked') {
+                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `
+                    ${statusBadge}
                     <div class="activity-icon">${activity.icon}</div>
                     <div class="activity-info">
                         <div class="activity-name">${activity.name}</div>
@@ -158,7 +178,7 @@ function initScienceSystem() {
                     <div class="activity-xp">${activity.xp}</div>
                 `;
                 
-                if (activity.link && currentPlanetData.status !== 'locked') {
+                if (activity.link && activity.status !== 'locked') {
                     activityElement.addEventListener('click', function(e) {
                         e.stopPropagation();
                         console.log(`🎮 Navigating to: ${activity.link}`);
@@ -168,33 +188,6 @@ function initScienceSystem() {
                 
                 activitiesGrid.appendChild(activityElement);
             });
-            
-            if (currentPlanetData.status === 'completed') {
-                actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
-                actionStart.className = 'action-button action-primary';
-                actionStart.disabled = false;
-                
-                actionStart.onclick = function() {
-                    if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
-                        window.location.href = currentPlanetData.activities[0].link;
-                    }
-                };
-            } else if (currentPlanetData.status === 'current') {
-                actionStart.innerHTML = '<i class="fas fa-play"></i> Bắt đầu học';
-                actionStart.className = 'action-button action-primary';
-                actionStart.disabled = false;
-                
-                actionStart.onclick = function() {
-                    if (currentPlanetData.activities.length > 0 && currentPlanetData.activities[0].link) {
-                        window.location.href = currentPlanetData.activities[0].link;
-                    }
-                };
-            } else {
-                actionStart.innerHTML = '<i class="fas fa-lock"></i> Chờ mở khóa';
-                actionStart.className = 'action-button action-locked';
-                actionStart.disabled = true;
-                actionStart.onclick = null;
-            }
 
             planetInfoOverlay.classList.add('show');
             console.log('📱 Info panel shown');
@@ -212,11 +205,6 @@ function initScienceSystem() {
     }
 
     closeInfo.addEventListener('click', closeInfoPanel);
-    actionClose.addEventListener('click', closeInfoPanel);
-
-    actionStart.addEventListener('click', function(e) {
-        e.preventDefault();
-    });
 
     characterBtn.addEventListener('click', function() {
         console.log('🦖 Character clicked');

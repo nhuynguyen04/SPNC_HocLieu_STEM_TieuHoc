@@ -1,3 +1,6 @@
+console.log('engineering.js loaded');
+console.log('baseUrl(from DOM):', baseUrl, ' window.baseUrl:', window.baseUrl);
+
 const planets = {
     1: {
         name: "DỤNG CỤ GẤP ÁO",
@@ -7,7 +10,14 @@ const planets = {
         time: "25 phút",
         xp: "30 XP",
         activities: [
-            { type: "tutorial", name: "Hướng dẫn làm dụng cụ", icon: "📐", xp: "30 XP" }
+            { 
+                type: "tutorial", 
+                name: "Hướng dẫn làm dụng cụ", 
+                icon: "📐", 
+                xp: "30 XP", 
+                link: baseUrl + '/views/lessons/engineering_clothing_tool', 
+                status: "completed" 
+            }
         ]
     },
     2: {
@@ -18,20 +28,48 @@ const planets = {
         time: "30 phút",
         xp: "60 XP",
         activities: [
-            { type: "tutorial", name: "Thiết kế cơ cấu", icon: "🎨", xp: "35 XP" },
-            { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP" }
+            { 
+                type: "tutorial", 
+                name: "Thiết kế cơ cấu", 
+                icon: "🎨", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/engineering_flower_mechanism', 
+                status: "current" 
+            },
+            { 
+                type: "question", 
+                name: "Trả lời câu hỏi", 
+                icon: "❓", 
+                xp: "25 XP",
+                link: baseUrl + '/views/lessons/engineering_mechanism_questions', 
+                status: "locked" 
+            }
         ]
     },
     3: {
-        name: "XÂY CẦU GIẤY",
+        name: "XÂY CẦU GIẤY", 
         icon: "🌉",
         status: "locked",
         description: "Thiết kế và xây dựng cầu từ giấy A4 chịu lực",
-        time: "35 phút",
+        time: "35 phút", 
         xp: "75 XP",
         activities: [
-            { type: "tutorial", name: "Kỹ thuật xây cầu", icon: "📐", xp: "40 XP" },
-            { type: "challenge", name: "Thử thách cầu giấy", icon: "🏗️", xp: "35 XP" }
+            { 
+                type: "tutorial", 
+                name: "Kỹ thuật xây cầu", 
+                icon: "📐", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/engineering_bridge_tutorial', 
+                status: "locked" 
+            },
+            { 
+                type: "challenge", 
+                name: "Thử thách cầu giấy", 
+                icon: "🏗️", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/engineering_bridge_challenge', 
+                status: "locked" 
+            }
         ]
     },
     4: {
@@ -42,8 +80,22 @@ const planets = {
         time: "28 phút",
         xp: "70 XP",
         activities: [
-            { type: "tutorial", name: "Nguyên lý đẩy", icon: "💨", xp: "30 XP" },
-            { type: "experiment", name: "Thí nghiệm xe bong bóng", icon: "🧪", xp: "40 XP" }
+            { 
+                type: "tutorial", 
+                name: "Nguyên lý đẩy", 
+                icon: "💨", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/engineering_balloon_car_tutorial', 
+                status: "locked" 
+            },
+            { 
+                type: "experiment", 
+                name: "Thí nghiệm xe bong bóng", 
+                icon: "🧪", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/engineering_balloon_car_experiment', 
+                status: "locked" 
+            }
         ]
     },
     5: {
@@ -54,14 +106,28 @@ const planets = {
         time: "32 phút",
         xp: "80 XP",
         activities: [
-            { type: "tutorial", name: "Kỹ thuật xây tháp", icon: "📏", xp: "35 XP" },
-            { type: "competition", name: "Cuộc thi tháp giấy", icon: "🏆", xp: "45 XP" }
+            { 
+                type: "tutorial", 
+                name: "Kỹ thuật xây tháp", 
+                icon: "📏", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/engineering_tower_tutorial', 
+                status: "locked" 
+            },
+            { 
+                type: "competition", 
+                name: "Cuộc thi tháp giấy", 
+                icon: "🏆", 
+                xp: "45 XP",
+                link: baseUrl + '/views/lessons/engineering_tower_competition', 
+                status: "locked" 
+            }
         ]
     }
 };
 
 function initEngineeringSystem() {
-    console.log('⚙️ Initializing Engineering System...');
+    console.log('🚀 Initializing Engineering System...');
     
     const planetInfoOverlay = document.getElementById('planetInfoOverlay');
     const infoIcon = document.getElementById('infoIcon');
@@ -71,14 +137,12 @@ function initEngineeringSystem() {
     const infoTime = document.getElementById('infoTime');
     const infoXp = document.getElementById('infoXp');
     const activitiesGrid = document.getElementById('activitiesGrid');
-    const actionStart = document.getElementById('actionStart');
-    const actionClose = document.getElementById('actionClose');
     const closeInfo = document.getElementById('closeInfo');
     const characterBtn = document.getElementById('characterBtn');
 
     const elements = {
         planetInfoOverlay, infoIcon, infoName, infoStatus, infoDescription,
-        infoTime, infoXp, activitiesGrid, actionStart, actionClose, closeInfo, characterBtn
+        infoTime, infoXp, activitiesGrid, closeInfo, characterBtn
     };
 
     for (const [name, element] of Object.entries(elements)) {
@@ -90,31 +154,33 @@ function initEngineeringSystem() {
 
     console.log('✅ Tất cả elements đã được tìm thấy');
 
+    let currentPlanetData = null;
+
     document.querySelectorAll('.planet').forEach(planet => {
         planet.addEventListener('click', function() {
             const planetId = this.getAttribute('data-planet');
             console.log(`🪐 Planet clicked: ${planetId}`);
             
-            const planetData = planets[planetId];
+            currentPlanetData = planets[planetId];
             
-            if (!planetData) {
+            if (!currentPlanetData) {
                 console.error('❌ Không tìm thấy dữ liệu cho planet:', planetId);
                 return;
             }
             
-            infoIcon.textContent = planetData.icon;
-            infoName.textContent = planetData.name;
-            infoDescription.textContent = planetData.description;
-            infoTime.textContent = planetData.time;
-            infoXp.textContent = planetData.xp;
+            infoIcon.textContent = currentPlanetData.icon;
+            infoName.textContent = currentPlanetData.name;
+            infoDescription.textContent = currentPlanetData.description;
+            infoTime.textContent = currentPlanetData.time;
+            infoXp.textContent = currentPlanetData.xp;
             
             let statusText = '';
             let statusClass = '';
             
-            if (planetData.status === 'completed') {
+            if (currentPlanetData.status === 'completed') {
                 statusText = 'Đã hoàn thành';
                 statusClass = 'status-completed';
-            } else if (planetData.status === 'current') {
+            } else if (currentPlanetData.status === 'current') {
                 statusText = 'Đang học';
                 statusClass = 'status-current';
             } else {
@@ -126,44 +192,59 @@ function initEngineeringSystem() {
             infoStatus.className = 'status ' + statusClass;
             
             activitiesGrid.innerHTML = '';
-            planetData.activities.forEach(activity => {
+            currentPlanetData.activities.forEach(activity => {
                 const activityElement = document.createElement('div');
                 activityElement.className = 'activity-item';
                 
-                let activityTypeText = '';
-                switch(activity.type) {
-                    case 'tutorial': activityTypeText = 'Hướng dẫn'; break;
-                    case 'challenge': activityTypeText = 'Thử thách'; break;
-                    case 'experiment': activityTypeText = 'Thí nghiệm'; break;
-                    case 'competition': activityTypeText = 'Thi đua'; break;
-                    case 'question': activityTypeText = 'Câu hỏi'; break;
-                    default: activityTypeText = 'Hoạt động';
+                if (activity.status === 'completed') {
+                    activityElement.classList.add('activity-completed');
+                } else if (activity.status === 'current') {
+                    activityElement.classList.add('activity-current');
+                } else if (activity.status === 'locked') {
+                    activityElement.classList.add('activity-locked');
+                }
+                
+                if (activity.link && activity.status !== 'locked') {
+                    activityElement.classList.add('activity-clickable');
+                    activityElement.style.cursor = 'pointer';
+                } else {
+                    activityElement.style.cursor = 'not-allowed';
+                }
+                
+                let statusBadge = '';
+                if (activity.status === 'completed') {
+                    statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
+                } else if (activity.status === 'current') {
+                    statusBadge = '<div class="activity-status-badge current-badge">●</div>';
+                } else if (activity.status === 'locked') {
+                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `
+                    ${statusBadge}
                     <div class="activity-icon">${activity.icon}</div>
                     <div class="activity-info">
                         <div class="activity-name">${activity.name}</div>
-                        <div class="activity-type">${activityTypeText}</div>
+                        <div class="activity-type">${
+                            activity.type === 'tutorial' ? 'Hướng dẫn' : 
+                            activity.type === 'challenge' ? 'Thử thách' : 
+                            activity.type === 'experiment' ? 'Thí nghiệm' : 
+                            activity.type === 'competition' ? 'Cuộc thi' : 'Câu hỏi'
+                        }</div>
                     </div>
                     <div class="activity-xp">${activity.xp}</div>
                 `;
+                
+                if (activity.link && activity.status !== 'locked') {
+                    activityElement.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        console.log(`🔧 Navigating to: ${activity.link}`);
+                        window.location.href = activity.link;
+                    });
+                }
+                
                 activitiesGrid.appendChild(activityElement);
             });
-            
-            if (planetData.status === 'completed') {
-                actionStart.innerHTML = '<i class="fas fa-redo"></i> Ôn tập lại';
-                actionStart.className = 'action-button action-primary';
-                actionStart.disabled = false;
-            } else if (planetData.status === 'current') {
-                actionStart.innerHTML = '<i class="fas fa-play"></i> Tiếp tục học';
-                actionStart.className = 'action-button action-primary';
-                actionStart.disabled = false;
-            } else {
-                actionStart.innerHTML = '<i class="fas fa-lock"></i> Chờ mở khóa';
-                actionStart.className = 'action-button action-locked';
-                actionStart.disabled = true;
-            }
 
             planetInfoOverlay.classList.add('show');
             console.log('📱 Info panel shown');
@@ -181,19 +262,10 @@ function initEngineeringSystem() {
     }
 
     closeInfo.addEventListener('click', closeInfoPanel);
-    actionClose.addEventListener('click', closeInfoPanel);
-
-    actionStart.addEventListener('click', function() {
-        if (!this.disabled) {
-            const planetName = infoName.textContent;
-            console.log(`🎮 Starting: ${planetName}`);
-            alert(`Bắt đầu học: ${planetName}`);
-        }
-    });
 
     characterBtn.addEventListener('click', function() {
         console.log('👷‍♂️ Character clicked');
-        alert('Chào nhà kỹ sư nhí! Mình là Thợ Máy Thông Thái! 👷‍♂️✨\nCùng mình chế tạo 5 dự án siêu thú vị nhé!');
+        alert('Chào nhà kỹ sư nhí! Mình là Thợ Máy Thông Thái! 👷‍♂️\nCùng mình chế tạo 5 dự án siêu thú vị nhé!');
     });
 
     planetInfoOverlay.addEventListener('click', function(e) {

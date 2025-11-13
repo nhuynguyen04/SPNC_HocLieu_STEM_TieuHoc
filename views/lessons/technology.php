@@ -166,15 +166,14 @@ $_SESSION['technology_visited'] = true;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiên Hà Công Nghệ - STEM Universe</title>
+    <title>Hệ Mặt Trời Công Nghệ - STEM Universe</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/technology.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/technology.css?v=<?= time() ?>">
 </head>
 <body>
     <div class="cosmic-universe">
         <div class="stars"></div>
-        <div class="nebulae"></div>
     </div>
 
     <div class="universe-container">
@@ -187,25 +186,25 @@ $_SESSION['technology_visited'] = true;
                 </div>
                 
                 <div class="mission-title">
-                    <h1>THIÊN HÀ CÔNG NGHỆ</h1>
-                    <p>Khám phá 5 hành tinh công nghệ</p>
+                    <h1>HỆ MẶT TRỜI CÔNG NGHỆ</h1>
+                    <p>Khám phá 5 hành tinh tri thức</p>
                 </div>
                 
                 <div class="mission-stats">
                     <div class="stat-orb xp-orb">
-                        <div class="stat-value"><?php echo $subject['completed_xp']; ?></div>
+                        <div class="stat-value">75</div>
                         <div class="stat-label">XP</div>
                     </div>
                     <div class="stat-orb streak-orb">
-                        <div class="stat-value"><?php echo $subject['current_streak']; ?></div>
+                        <div class="stat-value">5</div>
                         <div class="stat-label">NGÀY</div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <section class="galaxy-system">
-            <div class="central-star">💻</div>
+        <section class="solar-system">
+            <div class="sun">💻</div>
 
             <div class="orbit orbit-1"></div>
             <div class="orbit orbit-2"></div>
@@ -255,24 +254,13 @@ $_SESSION['technology_visited'] = true;
                 <div class="activities-grid" id="activitiesGrid">
                 </div>
             </div>
-            
-            <div class="info-actions">
-                <button class="action-button action-primary" id="actionStart">
-                    <i class="fas fa-play"></i>
-                    Bắt đầu
-                </button>
-                <button class="action-button action-secondary" id="actionClose">
-                    <i class="fas fa-times"></i>
-                    Đóng
-                </button>
-            </div>
         </div>
     </div>
 
     <button class="cosmic-character" id="characterBtn">
         🤖
     </button>
-
-    <script src="<?php echo $base_url; ?>/public/JS/technology.js?v=1.1"></script>
+    <script>window.baseUrl = "<?php echo $base_url; ?>";</script>
+    <script src="<?php echo $base_url; ?>/public/JS/technology.js?v=<?= time() ?>"></script>
 </body>
 </html>
