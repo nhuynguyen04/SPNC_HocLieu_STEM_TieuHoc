@@ -68,7 +68,7 @@ switch ($route) {
         $lessonController->showDayNightLesson();
         break;
 
-    case '/views/lessons/tech_family_tree':
+    case '/views/lessons/technology_family_tree_game':
         $lessonController->showFamilyTree();
         break;
 

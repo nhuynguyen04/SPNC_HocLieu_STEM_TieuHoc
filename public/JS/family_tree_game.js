@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         nextLevelBtn.onclick = () => {
             const nextLevel = currentLevel + 1;
-            window.location.href = `${BASE_URL}/views/lessons/tech_family_tree?level=${nextLevel}`;
+            window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=${nextLevel}`;
         };
         restartGameBtn.onclick = () => {
             window.location.reload(); 
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             restartGameBtn.textContent = "Chơi lại từ đầu";
             restartGameBtn.onclick = () => { 
-                window.location.href = `${BASE_URL}/views/lessons/tech_family_tree?level=1`;
+                window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=1`;
             };
         } else { 
             modalTitle.textContent = "Thất bại... 😭";

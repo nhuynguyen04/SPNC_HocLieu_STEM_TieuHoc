@@ -557,6 +557,6 @@ class LessonController {
         $currentLevel = $gameLevels[$currentLevelId] ?? $gameLevels[1];
         $totalLevels = count($gameLevels);
 
-        require_once __DIR__ . '/../views/lessons/tech_family_tree.php';
+        require_once __DIR__ . '/../views/lessons/technology_family_tree_game.php';
     }
 }
