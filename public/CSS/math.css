@@ -3,9 +3,9 @@
     --primary-light: #A78BFA;
     --primary-dark: #7C3AED;
     --secondary: #8B5CF6;
-    --accent: #8B5CF6;
+    --accent: #7C3AED;
     --danger: #EF4444;
-    --success: #10B981;
+    --success: #22C55E;
     --cosmic: #8B5CF6;
     
     --bg-space: #0F0F23;
@@ -187,7 +187,7 @@ body {
 }
 
 .xp-orb .stat-value { color: var(--accent); }
-.streak-orb .stat-value { color: var(--primary-light); }
+.streak-orb .stat-value { color: var(--primary); }
 
 .solar-system {
     position: relative;
@@ -204,8 +204,8 @@ body {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #8B5CF6, #7C3AED);
-    box-shadow: 0 0 80px #8B5CF6, 0 0 120px rgba(139, 92, 246, 0.5);
+    background: radial-gradient(circle at 30% 30%, #A78BFA, #7C3AED);
+    box-shadow: 0 0 80px #A78BFA, 0 0 120px rgba(167, 139, 250, 0.5);
     animation: sun-pulse 4s infinite alternate;
     z-index: 10;
     display: flex;
@@ -215,8 +215,8 @@ body {
 }
 
 @keyframes sun-pulse {
-    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 80px #8B5CF6; }
-    100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 120px #8B5CF6; }
+    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 80px #A78BFA; }
+    100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 120px #A78BFA; }
 }
 
 .orbit {
@@ -281,29 +281,29 @@ body {
 }
 
 .planet-2 {
-    width: 75px;
-    height: 75px;
-    background: radial-gradient(circle at 40% 40%, #3B82F6, #1D4ED8);
+    width: 65px;
+    height: 65px;
+    background: radial-gradient(circle at 40% 40%, #3B82F6, #2563EB);
     animation: orbit-2 35s linear infinite;
 }
 
 .planet-3 {
-    width: 72px;
-    height: 72px;
+    width: 75px;
+    height: 75px;
     background: radial-gradient(circle at 50% 50%, #10B981, #059669);
     animation: orbit-3 45s linear infinite;
 }
 
 .planet-4 {
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
     background: radial-gradient(circle at 35% 35%, #F59E0B, #D97706);
     animation: orbit-4 55s linear infinite;
 }
 
 .planet-5 {
-    width: 76px;
-    height: 76px;
+    width: 68px;
+    height: 68px;
     background: radial-gradient(circle at 45% 45%, #EC4899, #DB2777);
     animation: orbit-5 65s linear infinite;
 }
@@ -526,6 +526,7 @@ body {
     border-radius: 12px;
     transition: var(--transition);
     cursor: pointer;
+    position: relative;
 }
 
 .activity-item:hover {
@@ -565,53 +566,6 @@ body {
     color: var(--accent);
 }
 
-.info-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.action-button {
-    flex: 1;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 15px;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.action-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.action-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.action-secondary {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-glow);
-}
-
-.action-secondary:hover {
-    background: var(--bg-card);
-    transform: translateY(-2px);
-}
-
-.action-locked {
-    background: var(--bg-deep);
-    color: var(--text-secondary);
-    cursor: not-allowed;
-}
-
 .close-button {
     position: absolute;
     top: 15px;
@@ -643,7 +597,7 @@ body {
     height: 80px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, var(--accent), var(--primary));
     color: white;
     font-size: 2.5rem;
     cursor: pointer;
@@ -657,7 +611,137 @@ body {
 
 .cosmic-character:hover {
     transform: scale(1.2) rotate(15deg);
-    box-shadow: 0 0 60px rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 60px rgba(124, 58, 237, 0.6);
+}
+
+.activity-clickable {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.activity-clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.activity-status-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.completed-badge {
+    background: #22C55E;
+    color: white;
+}
+
+.current-badge {
+    background: #8B5CF6;
+    color: white;
+    animation: pulse-badge 2s infinite;
+}
+
+.locked-badge {
+    background: #6B7280;
+    color: white;
+    font-size: 0.6rem;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.activity-completed {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.activity-completed .activity-name {
+    color: #22C55E;
+}
+
+.activity-completed .activity-xp {
+    color: #22C55E;
+}
+
+.activity-current {
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.activity-current .activity-name {
+    color: #8B5CF6;
+}
+
+.activity-current .activity-xp {
+    color: #8B5CF6;
+}
+
+.activity-locked {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.3);
+    opacity: 0.7;
+}
+
+.activity-locked .activity-name {
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.activity-locked .activity-type {
+    color: #94a3b8;
+}
+
+.activity-locked .activity-xp {
+    color: #94a3b8;
+}
+
+.activity-locked .activity-icon {
+    opacity: 0.5;
+}
+
+.activity-clickable:hover .activity-name {
+    color: #8B5CF6;
+}
+
+.activity-clickable:hover .activity-icon {
+    transform: scale(1.1);
+    background: rgba(139, 92, 246, 0.2);
+}
+
+.planet[data-planet="3"], .planet[data-planet="4"], .planet[data-planet="5"] {
+    opacity: 0.6;
+    filter: grayscale(0.7);
+}
+
+.planet[data-planet="3"]::before,
+.planet[data-planet="4"]::before,
+.planet[data-planet="5"]::before {
+    content: '🔒';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.8rem;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {

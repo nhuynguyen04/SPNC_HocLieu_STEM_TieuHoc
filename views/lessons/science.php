@@ -80,7 +80,7 @@ $science_data = [
             'id' => 5,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
             'icon' => '🌱',
-            'status' => 'current',
+            'status' => 'upcoming',
             'color' => '#16a085',
             'description' => 'Học cách nhận biết các bộ phận của cây',
             'learning_time' => '10 phút',
@@ -90,7 +90,7 @@ $science_data = [
                     'title' => 'TRÒ CHƠI LẮP GHÉP',
                     'icon' => '🌿',
                     'description' => 'Lắp ghép các bộ phận của cây',
-                    'status' => 'current',
+                    'status' => 'locked',
                     'xp' => 30
                 ]
             ]
@@ -160,8 +160,8 @@ $_SESSION['science_visited'] = true;
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
-            <div class="planet planet-4" data-planet="5">🗑️</div>
-            <div class="planet planet-5" data-planet="6">🌱</div>
+            <div class="planet planet-4" data-planet="4">🗑️</div>
+            <div class="planet planet-5" data-planet="5">🌱</div>
         </section>
     </div>
 
@@ -198,17 +198,6 @@ $_SESSION['science_visited'] = true;
                 <h4 class="activities-title">Hoạt động</h4>
                 <div class="activities-grid" id="activitiesGrid">
                 </div>
-            </div>
-            
-            <div class="info-actions">
-                <button class="action-button action-primary" id="actionStart">
-                    <i class="fas fa-play"></i>
-                    Bắt đầu
-                </button>
-                <button class="action-button action-secondary" id="actionClose">
-                    <i class="fas fa-times"></i>
-                    Đóng
-                </button>
             </div>
         </div>
     </div>
