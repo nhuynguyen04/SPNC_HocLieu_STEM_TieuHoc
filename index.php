@@ -67,7 +67,10 @@ switch ($route) {
     case '/views/lessons/science_day_night':
         $lessonController->showDayNightLesson();
         break;
-        
+
+    case '/views/lessons/tech_family_tree':
+        $lessonController->showFamilyTree();
+        break;
 
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':

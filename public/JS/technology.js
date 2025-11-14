@@ -7,7 +7,9 @@ const planets = {
         time: "20 phút",
         xp: "25 XP",
         activities: [
-            { type: "game", name: "Trò chơi cây gia đình", icon: "🎮", xp: "25 XP" }
+            { type: "game", name: "Trò chơi cây gia đình", icon: "🎮", xp: "25 XP",
+                link: baseUrl + '/views/lessons/tech_family_tree'
+             }
         ]
     },
     2: {

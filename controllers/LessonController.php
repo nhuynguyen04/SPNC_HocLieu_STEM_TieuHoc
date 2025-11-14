@@ -443,4 +443,120 @@ class LessonController {
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
         require_once __DIR__ . '/../views/lessons/science_day_night.php';
     }
+
+    public function showFamilyTree() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        
+        // DỮ LIỆU 5 LEVEL
+        $gameLevels = [
+            // LEVEL 1:
+            1 => [
+                'id' => 1,
+                'layout_type' => 'type_2p_3c_fixed', // Layout: 2 phụ huynh (1 cố định), 3 con
+                'level_title' => 'Gia đình của Lan (Dễ)',
+                'fixed_chars' => ['parent1' => ['id' => 'lan', 'name' => 'Lan']], 
+                'available_characters' => ['Hùng', 'Chi', 'An', 'Bình'],
+                'clues' => [
+                    'Lan là vợ của Hùng.',
+                    'Chi là chị cả trong nhà.',
+                    'Bình là em út.'
+                ],
+                'solution' => [
+                    'parent2' => 'Hùng', // Bố
+                    'child1' => 'Chi',   // Con cả
+                    'child2' => 'An',    // Con giữa
+                    'child3' => 'Bình'   // Con út
+                ]
+            ],
+
+            // LEVEL 2:
+            2 => [
+                'id' => 2,
+                'layout_type' => 'type_2p_2c', // Layout: 2 phụ huynh, 2 con
+                'level_title' => 'Gia đình của Tuấn & Mai (Trung bình)',
+                'fixed_chars' => [],
+                'available_characters' => ['Tuấn', 'Mai', 'Tí', 'Tèo'],
+                'clues' => [
+                    'Tuấn kết hôn với Mai.',
+                    'Tí là anh của Tèo.'
+                ],
+                'solution' => [
+                    'parent1' => 'Tuấn',
+                    'parent2' => 'Mai',
+                    'child1' => 'Tí',
+                    'child2' => 'Tèo'
+                ]
+            ],
+
+            // LEVEL 3:
+            3 => [
+                'id' => 3,
+                'layout_type' => 'type_vertical_3gen', // Layout: Ông -> Bố -> Cháu
+                'level_title' => 'Gia đình 3 thế hệ (Khá)',
+                'fixed_chars' => [],
+                'available_characters' => ['Ba', 'Nam', 'Bi'],
+                'clues' => [
+                    'Bi là cháu nội của Ba.',
+                    'Nam là ba của Bi.'
+                ],
+                'solution' => [
+                    'gen1' => 'Ba',  // Ông
+                    'gen2' => 'Nam', // Bố
+                    'gen3' => 'Bi'   // Cháu
+                ]
+            ],
+
+            // LEVEL 4:
+            4 => [
+                'id' => 4,
+                'layout_type' => 'type_2p_3c_fixed_dad', // Layout: Bố cố định
+                'level_title' => 'Gia đình của Bảo (Khá)',
+                'fixed_chars' => ['parent1' => ['id' => 'Bảo', 'name' => 'Bảo']],
+                'available_characters' => ['Nga', 'Minh', 'Cúc', 'Hải'],
+                'clues' => [
+                    'Nga là mẹ của 3 đứa trẻ.',
+                    'Hải có 1 anh trai và 1 chị gái (Hải là út).',
+                    'Cúc không phải con cả.'
+                ],
+                'solution' => [
+                    'parent2' => 'Nga',  // Mẹ
+                    'child1' => 'Minh',  // Cả
+                    'child2' => 'Cúc',   // Giữa
+                    'child3' => 'Hải'    // Út
+                ]
+            ],
+
+            // LEVEL 5:
+            5 => [
+                'id' => 5,
+                'layout_type' => 'type_3gen_complex',
+                'level_title' => 'Gia đình Đạt & Hoàng (Nâng cao)',
+                'fixed_chars' => [],
+                'available_characters' => ['Đạt', 'Hoàng', 'Linh', 'Dũng', 'Thảo', 'Anh'],
+                'clues' => [
+                    'Đạt và Hoàng có hai người con là Linh và Dũng.',
+                    'Linh là chị của Dũng.',
+                    'Đạt là ông nội của Anh.'
+                ],
+                'solution' => [
+                    'gen1_p1' => 'Đạt',   // Ông
+                    'gen1_p2' => 'Hoàng', // Bà
+                    'gen2_c1' => 'Linh',  // Con (Bác)
+                    'gen2_c2' => 'Dũng',  // Con (Bố)
+                    'gen2_spouse' => 'Thảo',// Mẹ
+                    'gen3_c1' => 'Anh'   // Cháu
+                ]
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $gameLevels[$currentLevelId] ?? $gameLevels[1];
+        $totalLevels = count($gameLevels);
+
+        require_once __DIR__ . '/../views/lessons/tech_family_tree.php';
+    }
 }
