@@ -559,4 +559,75 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/technology_family_tree_game.php';
     }
+
+    /**
+     * TRÒ CHƠI SƠN TINH - THỦY TINH
+     */
+    public function showCodingGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        
+        // Map codes: 0=Đất, 1=Núi(Chặn), 2=Sơn Tinh, 3=Đích(Sính lễ), 4=Nước, 5=Cầu(Sau khi xây)
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Khu rừng rậm rạp',
+                'mission' => 'Tìm Voi chín ngà',
+                'target_img' => 'voi9nga.png',
+                'hint' => 'Sử dụng các lệnh Đi thẳng và Rẽ để vượt qua mê cung.',
+                'concepts' => ['sequence'], // Tuần tự
+                'map' => [
+                    [1, 1, 1, 1, 1],
+                    [1, 0, 0, 3, 1],
+                    [1, 0, 1, 1, 1],
+                    [1, 2, 0, 0, 1],
+                    [1, 1, 1, 1, 1]
+                ],
+                'limit' => 10,
+                'time' => 60 // giây
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Vách núi cheo leo',
+                'mission' => 'Tìm Gà chín cựa',
+                'target_img' => 'ga9cua.png',
+                'hint' => 'Đường đi lặp lại giống nhau. Hãy dùng khối [Lặp lại] để leo núi nhanh hơn!',
+                'concepts' => ['loop'], // Vòng lặp
+                'map' => [
+                    [1, 1, 1, 3, 1],
+                    [1, 1, 0, 0, 1],
+                    [1, 0, 0, 1, 1],
+                    [2, 0, 1, 1, 1],
+                    [1, 1, 1, 1, 1]
+                ],
+                'limit' => 5,
+                'time' => 60
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Đồng cỏ ngập nước',
+                'mission' => 'Tìm Ngựa chín hồng mao',
+                'target_img' => 'ngua9hongmao.png',
+                'hint' => 'Nước lũ dâng cao! Dùng khối [Nếu gặp nước] để bắc cầu.',
+                'concepts' => ['condition'], // Điều kiện
+                'map' => [
+                    [1, 1, 1, 1, 1],
+                    [1, 3, 4, 0, 0],
+                    [1, 1, 1, 1, 4],
+                    [1, 2, 0, 4, 0],
+                    [1, 1, 1, 1, 1]
+                ],
+                'limit' => 12,
+                'time' => 70
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        // Tải view mới
+        require_once __DIR__ . '/../views/lessons/technology_coding_game.php';
+    }
 }

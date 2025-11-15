@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.draggable-char, .person-node').forEach(el => el.draggable = false);
 
         if (status === 'win') {
-            modalTitle.textContent = "🎉 Chúc Mừng! 🎉";
+            modalTitle.textContent = "Chúc Mừng!";
             modalMessage.textContent = "Bạn đã hoàn thành xuất sắc cấp độ này!";
             if (currentLevel < TOTAL_GAME_LEVELS) {
                 nextLevelBtn.style.display = 'inline-block';
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=1`;
             };
         } else { 
-            modalTitle.textContent = "Thất bại... 😭";
+            modalTitle.textContent = "Thất bại...";
             modalMessage.textContent = "Bạn đã hết 3 lượt sai. Đừng nản chí, hãy thử lại nhé!";
             nextLevelBtn.style.display = 'none';
             restartGameBtn.textContent = "Chơi lại cấp độ này";

@@ -72,6 +72,10 @@ switch ($route) {
         $lessonController->showFamilyTree();
         break;
 
+    case '/views/lessons/technology_coding_game':
+        $lessonController->showCodingGame();
+        break;
+
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly
