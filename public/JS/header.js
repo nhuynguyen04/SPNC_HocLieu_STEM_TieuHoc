@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     logoutBtn.addEventListener('click', function() {
         if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
-            window.location.href = '../../logout.php';
+            window.location.href = baseUrl + '/controllers/logout.php';
         }
     });
 });

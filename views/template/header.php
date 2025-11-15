@@ -119,7 +119,9 @@ if (!empty($_SESSION['user_id'])) {
             </button>
         </div>
     </div>
-    
+    <script>
+        const baseUrl = '<?= $base_url ?>';
+    </script>
     <script src="<?= $base_url ?>/public/JS/header.js"></script>
 
 </body>
