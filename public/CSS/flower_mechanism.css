@@ -1,0 +1,53 @@
+body {
+    background: #fff7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.flower-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #d81b60;
+}
+
+.subtitle {
+    margin-top: -10px;
+    font-size: 18px;
+    color: #9c27b0;
+}
+
+.toolbar {
+    margin: 20px 0;
+}
+
+.toolbar button {
+    margin: 0 8px;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #ffb6e6;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.toolbar button:hover {
+    background: #ff80d5;
+}
+
+#flowerCanvas {
+    background: white;
+    border: 2px solid #ff80d5;
+    border-radius: 12px;
+    cursor: crosshair;
+}
+
+.guide {
+    margin-top: 15px;
+    color: #444;
+    font-style: italic;
+}
