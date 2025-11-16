@@ -111,16 +111,17 @@
 
     <div id="game-over-modal" class="modal">
         <div class="modal-content">
-            <h2 id="modal-title"></h2>
-            <p id="modal-message"></p>
+            <h2 id="modal-title">Kết quả</h2>
+            <p id="modal-message">Thông báo...</p>
+            
             <button id="next-level-btn" class="game-btn" style="display: none;">Cấp độ tiếp theo</button>
+            
             <button id="restart-game-btn" class="game-btn">Chơi lại</button>
         </div>
     </div>
 </div>
 
 <script>
-    const baseUrl = "<?= $base_url ?>";
     const currentLevelData = <?= json_encode($currentLevel) ?>;
     const totalGameLevels = <?= $totalLevels ?>;
 </script>

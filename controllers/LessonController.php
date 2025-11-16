@@ -449,7 +449,7 @@ class LessonController {
             session_start();
         }
         
-        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\'));
         
         // DỮ LIỆU 5 LEVEL
         $gameLevels = [

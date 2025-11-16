@@ -5,172 +5,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // DOM Elements
     const characterBank = document.getElementById('character-bank');
-    // const checkSolutionBtn = document.getElementById('check-solution-btn'); // Đã xóa
     const feedbackMessage = document.getElementById('game-feedback');
     const livesContainer = document.getElementById('lives-container');
+    const currentLevelDisplay = document.getElementById('current-level-display');
     const gameOverModal = document.getElementById('game-over-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     const nextLevelBtn = document.getElementById('next-level-btn');
     const restartGameBtn = document.getElementById('restart-game-btn');
+    const treeCanvas = document.getElementById('tree-canvas');
 
+    // Game Variables
     let draggedCharId = null; 
     let lives = 3; 
-    let currentLevel = CURRENT_LEVEL_DATA.id;
     let totalCorrectSlots = 0;
     const totalSlotsToWin = Object.keys(CURRENT_LEVEL_DATA.solution).length;
 
-    // Khởi chạy game
+    // --- KHỞI TẠO ---
     initGame();
-
-    // --- SỬ DỤNG EVENT DELEGATION ---
-    
-    // 1. BẮT ĐẦU KÉO
-    document.addEventListener('dragstart', (e) => {
-        const target = e.target.closest('.draggable-char, .person-node');
-        
-        if (!target || !target.dataset.charId || target.classList.contains('empty') || !target.draggable) {
-            e.preventDefault();
-            return;
-        }
-
-        draggedCharId = target.dataset.charId;
-        e.dataTransfer.setData('text/plain', draggedCharId);
-        e.dataTransfer.effectAllowed = "move";
-        setTimeout(() => target.style.opacity = '0.5', 0);
-    });
-
-    // 2. KẾT THÚC KÉO
-    document.addEventListener('dragend', (e) => {
-        const target = e.target.closest('.draggable-char, .person-node');
-        if (target) target.style.opacity = '1';
-    });
-
-    // 3. KÉO QUA VÙNG THẢ
-    document.addEventListener('dragover', (e) => {
-        const slot = e.target.closest('.drop-slot');
-        if (slot && !slot.classList.contains('correct')) {
-            e.preventDefault(); 
-            e.dataTransfer.dropEffect = "move";
-            slot.classList.add('hovered');
-        }
-    });
-
-    // 4. RỜI KHỎI VÙNG THẢ
-    document.addEventListener('dragleave', (e) => {
-        const slot = e.target.closest('.drop-slot');
-        if (slot) {
-            slot.classList.remove('hovered');
-        }
-    });
-
-    // 5. THẢ (DROP)
-    document.addEventListener('drop', (e) => {
-        const slot = e.target.closest('.drop-slot');
-        
-        if (!slot || !draggedCharId || slot.classList.contains('correct')) {
-            if (draggedCharId) {
-                // Nếu thả ra ngoài, trả về bank
-                returnToBank(draggedCharId);
-            }
-            draggedCharId = null;
-            return;
-        }
-        
-        e.preventDefault();
-        slot.classList.remove('hovered');
-
-        const charIdToDrop = draggedCharId; 
-        const currentSlotCharId = slot.dataset.currentCharId; 
-        const slotKey = slot.id.replace('slot-', '');
-        const correctCharId = CURRENT_LEVEL_DATA.solution[slotKey];
-
-        // TÌM PHẦN TỬ GỐC
-        let originalCharElement = document.querySelector(`#character-bank .draggable-char[data-char-id="${charIdToDrop}"]`);
-        if (!originalCharElement || originalCharElement.style.display === 'none') {
-             const sourceSlot = document.querySelector(`.drop-slot[data-current-char-id="${charIdToDrop}"]`);
-             if (sourceSlot && sourceSlot !== slot) {
-                 emptySlot(sourceSlot); 
-             }
-        } else {
-            originalCharElement.style.display = 'none';
-        }
-
-        // TRẢ LẠI NHÂN VẬT CŨ
-        if (currentSlotCharId) {
-            returnToBank(currentSlotCharId);
-        }
-
-        // ĐIỀN VÀO Ô MỚI
-        fillSlot(slot, charIdToDrop, false); // Tạm thời chưa khóa
-
-        // KIỂM TRA ĐÚNG/SAI NGAY LẬP TỨC
-        if (charIdToDrop === correctCharId) {
-            // *** ĐÚNG  ***
-            slot.classList.add('correct');
-            slot.draggable = false; // Khóa lại, không cho kéo đi nữa
-            totalCorrectSlots++;
-            showFeedback("Đúng rồi!", 'success');
-            
-            // KIỂM TRA THẮNG
-            if (totalCorrectSlots === totalSlotsToWin) {
-                showModal('win');
-            }
-            
-        } else {
-            // *** SAI ***
-            lives--;
-            updateLivesDisplay();
-            showFeedback(`Sai vị trí! Bạn mất 1 trái tim.`, 'error');
-            
-            // Thêm hiệu ứng rung lắc
-            slot.classList.add('wrong-immediate');
-            setTimeout(() => {
-                slot.classList.remove('wrong-immediate');
-                // Trả nhân vật vừa thả sai về bank
-                emptySlot(slot);
-                returnToBank(charIdToDrop);
-            }, 600);
-
-            // KIỂM TRA THUA
-            if (lives <= 0) {
-                showModal('lose');
-            }
-        }
-        
-        draggedCharId = null; // Reset
-    });
-
-    // --- CÁC HÀM HỖ TRỢ ---
 
     function initGame() {
         lives = 3; 
         totalCorrectSlots = 0;
         updateLivesDisplay();
-        feedbackMessage.style.display = 'none'; 
-        
-        nextLevelBtn.onclick = () => {
-            const nextLevel = currentLevel + 1;
-            window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=${nextLevel}`;
-        };
-        restartGameBtn.onclick = () => {
-            window.location.reload(); 
-        };
+        if(feedbackMessage) feedbackMessage.style.display = 'none'; 
 
-        gameOverModal.style.display = 'none';
-        
+        if(currentLevelDisplay) currentLevelDisplay.textContent = CURRENT_LEVEL_DATA.id;
+        const titleEl = document.querySelector('#level-title');
+        if(titleEl) titleEl.textContent = `Cấp độ ${CURRENT_LEVEL_DATA.id}: ${CURRENT_LEVEL_DATA.level_title}`;
+
         resetSlotsAndBank();
+        
+        // Gán sự kiện cho modal
+        if(nextLevelBtn) {
+            nextLevelBtn.onclick = () => {
+                const nextLevel = CURRENT_LEVEL_DATA.id + 1;
+                window.location.href = `${BASE_URL}/views/lessons/tech-family-tree?level=${nextLevel}`;
+            };
+        }
+        if(restartGameBtn) {
+            restartGameBtn.onclick = () => {
+                window.location.reload(); 
+            };
+        }
+        if(gameOverModal) gameOverModal.style.display = 'none';
     }
 
     function resetSlotsAndBank() {
+        // 1. Tạo lại Ngân hàng nhân vật (Giữ nguyên)
         characterBank.innerHTML = '';
         CURRENT_LEVEL_DATA.available_characters.forEach(charId => {
             const charDiv = createDraggableCharElement(charId);
             characterBank.appendChild(charDiv);
+            addDragEvents(charDiv);
         });
 
-        document.querySelectorAll('.drop-slot').forEach(slot => {
+        // 2. Reset các ô trên cây
+        const dropSlots = document.querySelectorAll('.drop-slot');
+        dropSlots.forEach(slot => {
             emptySlot(slot);
+            
+            // CHỈ GÁN SỰ KIỆN NẾU CHƯA GÁN (Kiểm tra thuộc tính dataset)
+            if (!slot.dataset.eventsAttached) {
+                addDropEvents(slot);
+                addDragEvents(slot); // Ô trên cây cũng có thể là nguồn kéo
+                slot.dataset.eventsAttached = "true"; // Đánh dấu đã gán
+            }
         });
     }
 
@@ -178,7 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const charDiv = document.createElement('div');
         charDiv.className = 'draggable-char';
         charDiv.dataset.charId = charId;
-        charDiv.draggable = true;
+        charDiv.draggable = true; // Bắt buộc
+        
         const charName = charId.charAt(0).toUpperCase() + charId.slice(1);
         
         charDiv.innerHTML = `
@@ -187,54 +88,194 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         return charDiv;
     }
-    
-    function fillSlot(slot, charId, isCorrect) { // isCorrect dùng để khóa
+
+    // --- HÀM GÁN SỰ KIỆN KÉO (DRAG START) ---
+    function addDragEvents(element) {
+        element.addEventListener('dragstart', (e) => {
+            // Nếu là ô trống hoặc bị khóa thì không cho kéo
+            if (element.classList.contains('empty') || element.draggable === false) {
+                e.preventDefault();
+                return;
+            }
+
+            draggedCharId = element.dataset.charId;
+            e.dataTransfer.setData('text/plain', draggedCharId);
+            e.dataTransfer.effectAllowed = "move";
+            
+            // Làm mờ để biết đang kéo
+            setTimeout(() => {
+                element.style.opacity = '0.5';
+            }, 0);
+        });
+
+        element.addEventListener('dragend', (e) => {
+            element.style.opacity = '1';
+            // Không reset draggedCharId ở đây
+        });
+    }
+
+    // --- HÀM GÁN SỰ KIỆN THẢ (DROP) ---
+    function addDropEvents(slot) {
+        // 1. Drag Over (Bắt buộc để cho phép Drop)
+        slot.addEventListener('dragover', (e) => {
+            e.preventDefault(); // Quan trọng nhất!
+            if (!slot.classList.contains('correct')) { 
+                e.dataTransfer.dropEffect = "move";
+                slot.classList.add('hovered');
+            }
+        });
+
+        // 2. Drag Leave
+        slot.addEventListener('dragleave', (e) => {
+            slot.classList.remove('hovered');
+        });
+
+        // 3. Drop
+        slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            slot.classList.remove('hovered');
+
+
+            // SỬA ĐOẠN NÀY: Lấy ID từ dataTransfer thay vì biến toàn cục
+            const transferData = e.dataTransfer.getData('text/plain');
+            // Ưu tiên lấy từ dataTransfer, nếu không có mới dùng biến toàn cục (dự phòng)
+            const charIdToDrop = transferData ? transferData : draggedCharId;
+            // const charIdToDrop = draggedCharId;
+
+            // Nếu ô này đã đúng hoặc không có dữ liệu kéo -> Dừng
+            if (slot.classList.contains('correct') || !draggedCharId) return;
+            
+            const currentSlotCharId = slot.dataset.currentCharId;
+
+            // --- XỬ LÝ LOGIC DI CHUYỂN ---
+
+            // A. Tìm xem nhân vật này đang ở đâu (Ngân hàng hay Ô khác)?
+            let sourceElement = null;
+            
+            // Tìm trong ngân hàng
+            const bankChar = document.querySelector(`#character-bank .draggable-char[data-char-id="${charIdToDrop}"]`);
+            
+            // Nếu tìm thấy trong bank và nó chưa bị ẩn -> Nó đến từ bank
+            if (bankChar && bankChar.style.display !== 'none') {
+                sourceElement = bankChar;
+                sourceElement.style.display = 'none'; // Ẩn khỏi ngân hàng
+            } else {
+                // Nếu không, tìm trên cây (ô khác đang chứa nó)
+                const allSlots = document.querySelectorAll('.drop-slot');
+                for (let s of allSlots) {
+                    // Tìm ô có chứa ID này, và không phải là ô hiện tại
+                    if (s.dataset.currentCharId === charIdToDrop && s !== slot) {
+                        sourceElement = s;
+                        emptySlot(sourceElement); // Làm rỗng ô cũ
+                        break;
+                    }
+                }
+            }
+
+            // B. Nếu ô đích đang có người -> Trả người đó về ngân hàng
+            if (currentSlotCharId) {
+                const charInBank = document.querySelector(`#character-bank .draggable-char[data-char-id="${currentSlotCharId}"]`);
+                if (charInBank) charInBank.style.display = 'flex';
+            }
+
+            // C. Điền nhân vật mới vào ô đích
+            fillSlot(slot, charIdToDrop);
+            
+            // --- KIỂM TRA KẾT QUẢ NGAY LẬP TỨC ---
+            validateMove(slot, charIdToDrop);
+            
+            draggedCharId = null;
+        });
+    }
+
+    function validateMove(slot, charId) {
+        const slotKey = slot.id.replace('slot-', ''); // vd: parent1
+        const correctCharId = CURRENT_LEVEL_DATA.solution[slotKey];
+
+        // Xóa class sai cũ
+        slot.classList.remove('wrong-immediate');
+
+        if (charId === correctCharId) {
+            // *** ĐÚNG ***
+            slot.classList.add('correct');
+            slot.draggable = false; // Khóa ô này lại
+            
+            // Tăng điểm/số ô đúng
+            totalCorrectSlots++;
+            showFeedback("Đúng rồi!", 'success');
+            
+            // Kiểm tra xem đã thắng chưa
+            if (totalCorrectSlots === totalSlotsToWin) {
+                 setTimeout(() => { showModal('win'); }, 500);
+            }
+        } else {
+            // *** SAI ***
+            lives--;
+            updateLivesDisplay();
+            showFeedback(`Sai vị trí! Bạn mất 1 trái tim.`, 'error');
+            
+            // Hiệu ứng rung lắc đỏ
+            slot.classList.add('wrong-immediate');
+            
+            // Sau 0.6s thì trả nhân vật về ngân hàng
+            setTimeout(() => {
+                slot.classList.remove('wrong-immediate');
+                // Nếu vẫn chưa đúng (người dùng chưa kéo cái khác vào thay thế nhanh quá)
+                if (!slot.classList.contains('correct') && slot.dataset.currentCharId === charId) { 
+                    emptySlot(slot); // Xóa khỏi ô sai
+                    
+                    // Hiện lại trong ngân hàng
+                    const charInBank = document.querySelector(`#character-bank .draggable-char[data-char-id="${charId}"]`);
+                    if (charInBank) charInBank.style.display = 'flex';
+                }
+            }, 600);
+
+            if (lives <= 0) {
+                showModal('lose');
+            }
+        }
+    }
+
+    function fillSlot(slot, charId) {
         const charName = charId.charAt(0).toUpperCase() + charId.slice(1);
         slot.innerHTML = `
             <img src="${BASE_URL}/public/images/family_tree/${charId}.png" alt="${charId}">
             <span class="char-name">${charName}</span>
         `;
+        // CSS Styles cho ô đã điền
         slot.style.backgroundImage = 'none';
-        slot.style.backgroundColor = 'none'; 
-        slot.style.borderColor = 'none';       
-        slot.style.borderStyle = 'none';     
+        slot.style.backgroundColor = '#f7dc6f'; 
+        slot.style.borderColor = '#f39c12';       
+        slot.style.borderStyle = 'solid';     
         slot.style.filter = 'none'; 
 
         slot.classList.add('filled');
         slot.classList.remove('empty');
+        
         slot.dataset.currentCharId = charId;
         slot.dataset.charId = charId; 
-        
-        slot.draggable = !isCorrect;
-        if(isCorrect) {
-            slot.classList.add('correct');
-        }
+        slot.draggable = true; 
     }
 
     function emptySlot(slot) {
         slot.innerHTML = '';
+        // CSS Styles cho ô trống (Xám)
         slot.style.backgroundImage = `url('${BASE_URL}/public/images/family_tree/empty_slot.png')`;
         slot.style.backgroundColor = '#e0e0e0'; 
         slot.style.borderColor = '#999';       
         slot.style.borderStyle = 'dashed';     
         slot.style.filter = 'grayscale(100%)'; 
 
-        slot.classList.remove('filled', 'correct', 'wrong', 'wrong-immediate', 'correct-immediate');
+        slot.classList.remove('filled', 'correct', 'wrong', 'wrong-immediate');
         slot.classList.add('empty');
+        
         slot.dataset.currentCharId = '';
         slot.dataset.charId = ''; 
         slot.draggable = false;
     }
 
-    // Trả 1 nhân vật về ngân hàng
-    function returnToBank(charId) {
-        const charInBank = document.querySelector(`#character-bank .draggable-char[data-char-id="${charId}"]`);
-        if (charInBank) {
-            charInBank.style.display = 'flex';
-        }
-    }
-
     function updateLivesDisplay() {
+        if (!livesContainer) return;
         const hearts = livesContainer.querySelectorAll('.fa-heart');
         hearts.forEach((heart, index) => {
             if (index < lives) {
@@ -248,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showFeedback(message, type) {
+        if (!feedbackMessage) return;
         feedbackMessage.textContent = message;
         feedbackMessage.className = `feedback-message ${type}`;
         feedbackMessage.style.display = 'block';
@@ -257,30 +299,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showModal(status) {
+        if (!gameOverModal) return;
+        
+        // Khóa tất cả các vật thể khi hiện bảng thông báo
         document.querySelectorAll('.draggable-char, .person-node').forEach(el => el.draggable = false);
 
         if (status === 'win') {
+            // === TRƯỜNG HỢP THẮNG ===
             modalTitle.textContent = "Chúc Mừng!";
-            modalMessage.textContent = "Bạn đã hoàn thành xuất sắc cấp độ này!";
-            if (currentLevel < TOTAL_GAME_LEVELS) {
+            modalTitle.style.color = "#2ecc71"; // Màu xanh
+            modalMessage.textContent = "Bạn đã sắp xếp chính xác gia đình này!";
+            
+            // Kiểm tra xem còn level tiếp theo không
+            // Lưu ý: Chuyển về số nguyên để so sánh cho chính xác
+            const currentId = parseInt(CURRENT_LEVEL_DATA.id);
+            const totalLevels = parseInt(TOTAL_GAME_LEVELS);
+
+            if (currentId < totalLevels) {
+                // Vẫn còn level -> Hiện nút Next
                 nextLevelBtn.style.display = 'inline-block';
+                nextLevelBtn.textContent = "Cấp độ tiếp theo ➡️";
+                
+                // Gán sự kiện click để chuyển trang
+                nextLevelBtn.onclick = () => { 
+                    const nextLevelId = currentId + 1;
+                    // Chuyển hướng sang level tiếp theo
+                    window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=${nextLevelId}`;
+                };
             } else {
-                modalMessage.textContent = "Bạn đã hoàn thành tất cả các cấp độ! Giỏi quá!";
+                // Đã là level cuối cùng -> Ẩn nút Next
                 nextLevelBtn.style.display = 'none';
+                modalMessage.textContent = "Xuất sắc! Bạn đã hoàn thành tất cả các gia đình!";
             }
-            restartGameBtn.textContent = "Chơi lại từ đầu";
+
+            restartGameBtn.textContent = "Chơi lại level này";
+            restartGameBtn.className = "game-btn"; // Màu xanh
             restartGameBtn.onclick = () => { 
-                window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=1`;
+                window.location.reload(); 
             };
+            
         } else { 
+            // === TRƯỜNG HỢP THUA ===
             modalTitle.textContent = "Thất bại...";
-            modalMessage.textContent = "Bạn đã hết 3 lượt sai. Đừng nản chí, hãy thử lại nhé!";
-            nextLevelBtn.style.display = 'none';
-            restartGameBtn.textContent = "Chơi lại cấp độ này";
+            modalTitle.style.color = "#e74c3c"; // Màu đỏ
+            modalMessage.textContent = "Bạn đã hết lượt thử. Đừng nản chí nhé!";
+            
+            nextLevelBtn.style.display = 'none'; // Ẩn nút Next
+            
+            restartGameBtn.textContent = "Thử lại ngay ↺";
+            restartGameBtn.className = "game-btn reset"; // Màu đỏ
             restartGameBtn.onclick = () => { 
                 window.location.reload();
             };
         }
+
+        // Hiển thị Modal
         gameOverModal.style.display = 'flex';
     }
 });
