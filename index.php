@@ -76,7 +76,7 @@ switch ($route) {
         $lessonController->showCodingGame();
         break;
 
-    case '/views/lessons/flower-mechanism':
+    case '/views/lessons/engineering_flower_mechanism':
         $lessoncontroller->showFlowerMechanismGame();
         break;
 

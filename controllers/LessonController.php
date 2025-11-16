@@ -637,6 +637,8 @@ class LessonController {
             session_start();
         }
 
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        
         // Khởi tạo điểm game
         if (!isset($_SESSION['flower_score'])) {
             $_SESSION['flower_score'] = 0;

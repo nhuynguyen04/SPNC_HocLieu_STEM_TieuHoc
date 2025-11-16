@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             originalCharElement.style.display = 'none';
         }
 
-        // TRẢ LẠI NHÂN VẬT CŨ (NẾU CÓ)
+        // TRẢ LẠI NHÂN VẬT CŨ
         if (currentSlotCharId) {
             returnToBank(currentSlotCharId);
         }
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // KIỂM TRA ĐÚNG/SAI NGAY LẬP TỨC
         if (charIdToDrop === correctCharId) {
-            // *** ĐÚNG (GOAL 4) ***
+            // *** ĐÚNG  ***
             slot.classList.add('correct');
             slot.draggable = false; // Khóa lại, không cho kéo đi nữa
             totalCorrectSlots++;
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
         } else {
-            // *** SAI (GOAL 2 & 3) ***
+            // *** SAI ***
             lives--;
             updateLivesDisplay();
             showFeedback(`Sai vị trí! Bạn mất 1 trái tim.`, 'error');
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Trả nhân vật vừa thả sai về bank
                 emptySlot(slot);
                 returnToBank(charIdToDrop);
-            }, 600); // Thời gian khớp với animation
+            }, 600);
 
             // KIỂM TRA THUA
             if (lives <= 0) {
@@ -205,7 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
         slot.dataset.currentCharId = charId;
         slot.dataset.charId = charId; 
         
-        // GOAL 4: Khóa lại nếu đúng
         slot.draggable = !isCorrect;
         if(isCorrect) {
             slot.classList.add('correct');
@@ -235,8 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Xóa hàm checkSolution() cũ vì không cần nữa
-
     function updateLivesDisplay() {
         const hearts = livesContainer.querySelectorAll('.fa-heart');
         hearts.forEach((heart, index) => {
@@ -256,11 +253,10 @@ document.addEventListener("DOMContentLoaded", () => {
         feedbackMessage.style.display = 'block';
         setTimeout(() => {
             feedbackMessage.style.display = 'none';
-        }, 2000); // Rút ngắn thời gian thông báo
+        }, 2000);
     }
 
     function showModal(status) {
-        // Vô hiệu hóa kéo thả khi modal hiện
         document.querySelectorAll('.draggable-char, .person-node').forEach(el => el.draggable = false);
 
         if (status === 'win') {

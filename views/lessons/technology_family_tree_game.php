@@ -97,7 +97,13 @@
                 </ul>
             </div>
             <div id="character-bank">
-                </div>
+                <?php foreach ($currentLevel['available_characters'] as $charId): ?>
+                    <div class="draggable-char" data-char-id="<?= $charId ?>" draggable="true">
+                        <img src="<?= $base_url ?>/public/images/family_tree/<?= $charId ?>.png" alt="<?= $charId ?>">
+                        <span class="char-name"><?= mb_convert_case($charId, MB_CASE_TITLE, "UTF-8") ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 
