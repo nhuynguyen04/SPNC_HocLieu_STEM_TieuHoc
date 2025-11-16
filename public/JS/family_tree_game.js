@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentId < totalLevels) {
                 // Vẫn còn level -> Hiện nút Next
                 nextLevelBtn.style.display = 'inline-block';
-                nextLevelBtn.textContent = "Cấp độ tiếp theo ➡️";
+                nextLevelBtn.textContent = "Cấp độ tiếp theo";
                 
                 // Gán sự kiện click để chuyển trang
                 nextLevelBtn.onclick = () => { 
