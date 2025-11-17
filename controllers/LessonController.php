@@ -631,6 +631,31 @@ class LessonController {
         require_once __DIR__ . '/../views/lessons/technology_coding_game.php';
     }
 
+    /**
+     * TRÒ CHƠI CÁC BỘ PHẬN MÁY TÍNH
+     */
+    public function showComputerPartsGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Định nghĩa các bộ phận.
+        $computerParts = [
+            ['id' => 'monitor', 'name' => 'Màn hình', 'img' => 'monitor.png'],
+            ['id' => 'case', 'name' => 'Thùng máy', 'img' => 'case.png'],
+            ['id' => 'keyboard', 'name' => 'Bàn phím', 'img' => 'keyboard.png'],
+            ['id' => 'mouse', 'name' => 'Chuột', 'img' => 'mouse.png'],
+            ['id' => 'printer', 'name' => 'Máy in', 'img' => 'printer.png'],
+            ['id' => 'speaker', 'name' => 'Loa', 'img' => 'speaker.png'],
+            ['id' => 'microphone', 'name' => 'Micrô', 'img' => 'microphone.png']
+        ];
+        
+        shuffle($computerParts); // Xáo trộn các bộ phận trong ngân hàng
+
+        // Tải view
+        require_once __DIR__ . '/../views/lessons/technology_computer_parts.php';
+    }
+
     /*TRÒ CHƠI CƠ CHẾ HOA*/
     public function showFlowerMechanismGame() {
         if (session_status() == PHP_SESSION_NONE) {
