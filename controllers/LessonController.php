@@ -449,7 +449,7 @@ class LessonController {
             session_start();
         }
         
-        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\'));
         
         // DỮ LIỆU 5 LEVEL
         $gameLevels = [
@@ -630,4 +630,35 @@ class LessonController {
         // Tải view mới
         require_once __DIR__ . '/../views/lessons/technology_coding_game.php';
     }
+
+    /*TRÒ CHƠI CƠ CHẾ HOA*/
+    public function showFlowerMechanismGame() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        
+        // Khởi tạo điểm game
+        if (!isset($_SESSION['flower_score'])) {
+            $_SESSION['flower_score'] = 0;
+        }
+
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Dữ liệu game (tuỳ bạn thêm)
+        $flowerParts = [
+            ['id' => 'petal', 'name' => 'Cánh hoa'],
+            ['id' => 'stamen', 'name' => 'Nhị hoa'],
+            ['id' => 'pistil', 'name' => 'Nhuỵ hoa'],
+            ['id' => 'sepal', 'name' => 'Đài hoa'],
+            ['id' => 'stem', 'name' => 'Thân'],
+        ];
+
+        shuffle($flowerParts);
+
+        // Load view
+        require_once __DIR__ . '/../views/lessons/engineering_flower_mechanism.php';
+    }
+
 }

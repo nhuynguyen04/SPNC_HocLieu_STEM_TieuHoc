@@ -1,4 +1,3 @@
-/* --- KHUNG TRÒ CHƠI CHÍNH --- */
 .family-tree-game {
     width: 95%;
     max-width: 1100px;
@@ -323,13 +322,36 @@
 .modal-content h2 { margin-top: 0; color: #2c3e50; }
 .modal-content p { color: #555; margin-bottom: 20px; }
 
+/* Đảm bảo nhân vật trên cây (đã thả) dùng absolute để định vị */
+#tree-canvas .person-node,
+#tree-canvas .draggable-char {
+    position: absolute !important;
+    z-index: 50;
+}
+
 .draggable-char img, 
 .draggable-char span,
 .person-node img, 
 .person-node span,
 .drop-slot img, 
 .drop-slot span {
-    pointer-events: none;
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+/* Đảm bảo nhân vật trong ngân hàng không bị chồng lên nhau */
+#character-bank .draggable-char {
+    position: relative !important; /* Bắt buộc dùng relative */
+    top: auto !important;
+    left: auto !important;
+    z-index: 100 !important;
+    cursor: grab !important;
+    margin: 5px;
+}
+
+/* Hiệu ứng khi đang kéo */
+.draggable-char:active {
+    cursor: grabbing !important;
 }
 
 /* Class này sẽ được JS thêm vào khi thả sai */
@@ -367,4 +389,8 @@
     60% { transform: translateX(-6px) rotate(-3deg); }
     80% { transform: translateX(6px) rotate(3deg); }
     100% { transform: translateX(0); }
+}
+
+.drop-slot.hovered {
+    z-index: 200 !important; /* Đảm bảo khi kéo qua, ô nhận luôn nổi lên trên cùng */
 }
