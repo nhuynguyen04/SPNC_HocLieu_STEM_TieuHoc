@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
     const avatarInput = document.getElementById('avatarInput');
     const saveAvatarBtn = document.getElementById('saveAvatarBtn');
+    const deleteAvatarBtn = document.getElementById('deleteAvatarBtn');
     const profileForm = document.getElementById('profileForm');
+
+    const initialAvatarHtml = (document.getElementById('currentAvatar') && document.getElementById('currentAvatar').innerHTML) ? document.getElementById('currentAvatar').innerHTML : '<div class="avatar-large">👦</div>';
 
     if (editProfileBtn) {
         editProfileBtn.addEventListener('click', () => {
@@ -82,43 +85,111 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (saveAvatarBtn) {
-        saveAvatarBtn.addEventListener('click', () => {
-            if (selectedAvatarFile) {
-                const currentAvatar = document.getElementById('currentAvatar');
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    currentAvatar.innerHTML = `<img src="${event.target.result}" alt="User avatar">`;
-                };
-                reader.readAsDataURL(selectedAvatarFile);
-                
-                alert('Ảnh đại diện đã được cập nhật!');
-                editAvatarModal.classList.remove('active');
-                selectedAvatarFile = null;
-            } else {
+        saveAvatarBtn.addEventListener('click', async () => {
+            if (!selectedAvatarFile) {
                 alert('Vui lòng chọn ảnh trước khi lưu!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('avatar', selectedAvatarFile);
+
+            try {
+                const res = await fetch(baseUrl + '/views/save_profile.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const currentAvatar = document.getElementById('currentAvatar');
+                    if (data.avatar_url) {
+                        currentAvatar.innerHTML = `<img src="${data.avatar_url}" alt="User avatar">`;
+                        const avatarPreview = document.getElementById('avatarPreview');
+                        if (avatarPreview) avatarPreview.innerHTML = `<img src="${data.avatar_url}" alt="Avatar preview">`;
+                    }
+                    alert('Ảnh đại diện đã được cập nhật!');
+                    editAvatarModal.classList.remove('active');
+                    selectedAvatarFile = null;
+                } else {
+                    alert('Lỗi: ' + (data.message || 'Không cập nhật được'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Lỗi khi gửi yêu cầu.');
+            }
+        });
+    }
+
+    if (deleteAvatarBtn) {
+        deleteAvatarBtn.addEventListener('click', async () => {
+            if (!confirm('Bạn có chắc muốn xóa ảnh đại diện?')) return;
+
+            const formData = new FormData();
+            formData.append('delete_avatar', '1');
+
+            try {
+                const res = await fetch(baseUrl + '/views/save_profile.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const currentAvatar = document.getElementById('currentAvatar');
+                    if (currentAvatar) currentAvatar.innerHTML = initialAvatarHtml;
+                    const avatarPreview = document.getElementById('avatarPreview');
+                    if (avatarPreview) avatarPreview.innerHTML = initialAvatarHtml;
+                    alert('Ảnh đại diện đã được xóa');
+                    editAvatarModal.classList.remove('active');
+                } else {
+                    alert('Lỗi: ' + (data.message || 'Không xóa được'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Lỗi khi gửi yêu cầu.');
             }
         });
     }
 
     if (profileForm) {
-        profileForm.addEventListener('submit', (e) => {
+        profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const fullName = document.getElementById('fullName').value;
             const birthDate = document.getElementById('birthDate').value;
             const studentClass = document.getElementById('class').value;
             const school = document.getElementById('school').value;
-            
-            const formattedDate = formatDateForDisplay(birthDate);
-            
-            document.getElementById('displayName').textContent = fullName;
-            document.getElementById('infoFullName').textContent = fullName;
-            document.getElementById('infoBirthDate').textContent = formattedDate;
-            document.getElementById('infoClass').textContent = studentClass;
-            document.getElementById('infoSchool').textContent = school;
-            
-            alert('Thông tin hồ sơ đã được cập nhật!');
-            editProfileModal.classList.remove('active');
+
+            const formData = new FormData();
+            formData.append('fullName', fullName);
+            formData.append('class', studentClass);
+            // birthDate and school are not stored server-side in current schema
+
+            try {
+                const res = await fetch(baseUrl + '/views/save_profile.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const formattedDate = formatDateForDisplay(birthDate);
+                    document.getElementById('displayName').textContent = fullName;
+                    document.getElementById('infoFullName').textContent = fullName;
+                    document.getElementById('infoBirthDate').textContent = formattedDate;
+                    document.getElementById('infoClass').textContent = studentClass;
+                    document.getElementById('infoSchool').textContent = school;
+
+                    alert('Thông tin hồ sơ đã được cập nhật!');
+                    editProfileModal.classList.remove('active');
+                } else {
+                    alert('Lỗi: ' + (data.message || 'Không cập nhật được'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Lỗi khi gửi yêu cầu.');
+            }
         });
     }
 

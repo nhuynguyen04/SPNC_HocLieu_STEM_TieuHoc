@@ -52,6 +52,41 @@
     object-fit: cover;
 }
 
+/* Ensure any avatar image inserted directly is contained */
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+/* Current avatar wrapper (when we inject avatarHtml) */
+#currentAvatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Avatar preview inside modal: keep fixed box and contain image */
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+}
+
+.avatar-preview img { width:100%; height:100%; object-fit:cover; display:block; }
+
 .edit-avatar-btn {
     position: absolute;
     bottom: 5px;
