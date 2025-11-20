@@ -513,7 +513,7 @@ class LessonController {
             // LEVEL 4:
             4 => [
                 'id' => 4,
-                'layout_type' => 'type_2p_3c_fixed_dad', // Layout: Bố cố định
+                'layout_type' => 'type_2p_3c_fixed_dad',
                 'level_title' => 'Gia đình của Bảo (Khá)',
                 'fixed_chars' => ['parent1' => ['id' => 'Bảo', 'name' => 'Bảo']],
                 'available_characters' => ['Nga', 'Minh', 'Cúc', 'Hải'],
@@ -654,6 +654,35 @@ class LessonController {
 
         // Tải view
         require_once __DIR__ . '/../views/lessons/technology_computer_parts.php';
+    }
+
+    /**
+     * GAME ĐÁNH MÁY THẠCH SANH
+     */
+    public function showThachSanhGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Dữ liệu từ vựng theo cấp độ
+        $gameData = [
+            'easy' => [ // Hàng phím cơ sở
+                'A', 'S', 'D', 'F', 'J', 'K', 'L', 
+                'A', 'S', 'D', 'F', 'J', 'K', 'L'
+            ],
+            'hard' => [ // Từ đơn không dấu
+                'GA', 'CA', 'BA', 'DA', 'LA', 'MA', 'NA', 
+                'CO', 'BO', 'HO', 'TO', 'LO', 
+                'VE', 'XE', 'BE', 'HE',
+                'VOI', 'CUA', 'MEO', 'CHO'
+            ]
+        ];
+
+        $level = $_GET['level'] ?? 'easy';
+        $wordList = $gameData[$level];
+
+        require_once __DIR__ . '/../views/lessons/technology_typing_thach_sanh.php';
     }
 
     /*TRÒ CHƠI CƠ CHẾ HOA*/

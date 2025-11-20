@@ -80,6 +80,10 @@ switch ($route) {
         $lessonController->showComputerPartsGame();
         break;
 
+    case '/views/lessons/technology_typing_thach_sanh':
+        $lessonController->showThachSanhGame();
+        break;
+
     case '/views/lessons/engineering_flower_mechanism':
         $lessonController->showFlowerMechanismGame();
         break;
