@@ -22,7 +22,11 @@ require_once __DIR__ . '/../template/header.php';
     
     <div class="score-board">Điểm: <span id="score"><?= $_SESSION['trash_score'] ?></span></div>
     
-    <button id="trashResetButton" class="reset-button">Chơi lại</button>
+    <div class="game-actions">
+        <button id="trashResetButton" class="reset-button">Chơi lại</button>
+        <button id="trashCompleteButton" class="complete-button">Hoàn thành</button>
+        <a href="<?= $base_url ?>/views/lessons/science.php" class="back-button" id="trashBackButton">Quay lại</a>
+    </div>
     <hr>
 
     <div id="trashGameContainer">
@@ -65,7 +69,8 @@ require_once __DIR__ . '/../template/header.php';
 </div>
 
 <script>
-    const baseUrl = "<?= $base_url ?>";
+    // Ensure a single global `baseUrl` exists; do not declare `const/var baseUrl` here
+    window.baseUrl = window.baseUrl || "<?= $base_url ?>";
 </script>
 <script src="<?= $base_url ?>/public/JS/trash_game.js"></script>
 

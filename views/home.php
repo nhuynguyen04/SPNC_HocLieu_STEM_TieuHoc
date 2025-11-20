@@ -84,6 +84,36 @@ foreach ($subjects as $subject) {
 $progress = $total ? round(($done / $total) * 100) : 0;
 
 require_once './template/header.php';
+
+
+$totalLessons = 20;
+if (session_status() == PHP_SESSION_NONE) session_start();
+if (!empty($_SESSION['user_id'])) {
+    try {
+        require_once __DIR__ . '/../models/Database.php';
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare(<<<'SQL'
+    SELECT COUNT(*) as cnt FROM (
+      SELECT s.game_id, MAX(s.score_percentage) as best
+      FROM scores s
+      WHERE s.user_id = :uid
+      GROUP BY s.game_id
+    ) b JOIN games g ON b.game_id = g.id
+    WHERE g.passing_score IS NOT NULL AND b.best >= g.passing_score
+    SQL
+        );
+        $stmt->execute([':uid' => $_SESSION['user_id']]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $completedCount = $row ? (int)$row['cnt'] : 0;
+    } catch (Exception $e) {
+        error_log('Home progress load error: ' . $e->getMessage());
+        $completedCount = 0;
+    }
+    $done = $completedCount;
+    $total = $totalLessons;
+    $progress = $total ? round(($done / $total) * 100) : 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">

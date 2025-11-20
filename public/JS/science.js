@@ -10,10 +10,10 @@ const planets = {
         time: "15 phút",
         xp: "50 XP",
         activities: [
-            { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP", 
-              link: baseUrl + '/views/lessons/science_color_questions', status: "completed" },
-            { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
-              link: baseUrl + '/views/lessons/science_color_game', status: "completed" }
+                        { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP", 
+                            link: baseUrl + '/views/lessons/science_color_game', status: "completed" },
+                        { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
+                            link: baseUrl + '/views/lessons/science_color_game', status: "completed" }
         ]
     },
     2: {
@@ -54,8 +54,8 @@ const planets = {
         time: "16 phút",
         xp: "50 XP",
         activities: [
-            { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_trash_game.php', status: "locked" },
+                        { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
+                            link: baseUrl + '/views/lessons/science_trash_game', status: "locked" },
             { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP",
               link: baseUrl + '/views/lessons/science_trash_questions', status: "locked" }
         ]
@@ -73,6 +73,19 @@ const planets = {
         ]
     }
 };
+
+// Unlock all activities in the science panel so they become available
+// (Converts any 'locked' status into 'current' so items become clickable)
+for (const pid in planets) {
+    if (!planets.hasOwnProperty(pid)) continue;
+    const p = planets[pid];
+    if (p.status === 'locked') p.status = 'current';
+    if (Array.isArray(p.activities)) {
+        p.activities.forEach(act => {
+            if (act.status === 'locked') act.status = 'current';
+        });
+    }
+}
 
 function initScienceSystem() {
     console.log('🚀 Initializing Science System...');

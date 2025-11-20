@@ -5,8 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const feedbackBox = document.getElementById("plant-feedback");
     const scoreDisplay = document.getElementById("score"); 
     const resetButton = document.getElementById("plantResetButton");
+    const finishButton = document.getElementById('plantFinishButton');
+    const backButton = document.querySelector('.back-button');
     
-    // Biến 'baseUrl' đã được nạp từ thẻ <script>
+    // Local reference to baseUrl (defined on the window by the view).
+    const baseUrl = window.baseUrl || '';
+
     let draggedItem = null;
     let correctDrops = 0;
     const totalDrops = dropzones.length; // Đếm số lượng dropzone
@@ -74,13 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (correctDrops === totalDrops) {
                     if (points > 0) {
-                        showFeedback("🎉 Chúc mừng! Bạn nhận được 10 điểm và đã hoàn thành!", "win");
+                        showFeedback("🎉 Chúc mừng! đã hoàn thành!", "win");
                     } else {
                         showFeedback("🎉 Chúc mừng! Bạn đã ghép hoàn chỉnh cái cây!", "win");
                     }
+                    // No automatic commit here. Commit will occur only when user clicks 'Hoàn thành'.
                 } else {
                     if (points > 0) {
-                        showFeedback(`Chính xác! Bạn nhận được ${points} điểm.`, "win");
+                        showFeedback(`Chính xác! `, "win");
                     } else {
                         showFeedback("Đúng rồi!", "win");
                     }
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Logic cho nút Reset
     resetButton.addEventListener('click', () => {
-        fetch(`${baseUrl}/science/update-plant-score`, {
+        fetch(`${baseUrl}/views/lessons/update-plant-score`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'reset' })
@@ -122,6 +127,73 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error('Lỗi reset:', error));
     });
+
+    // Back button: reset score on server then navigate back
+    if (backButton) {
+        backButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = backButton.getAttribute('href');
+            fetch(`${baseUrl}/views/lessons/update-plant-score`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'reset' })
+            })
+            .then(() => {
+                // navigate after reset
+                window.location.href = href;
+            })
+            .catch((err) => {
+                console.error('Lỗi reset khi nhấn Quay lại:', err);
+                // still navigate even if reset failed
+                window.location.href = href;
+            });
+        });
+    }
+
+    // Finish button: commit score to server then navigate back on success
+    if (finishButton) {
+        finishButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            finishButton.disabled = true;
+            finishButton.textContent = 'Đang xử lý...';
+            try {
+                const resp = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // send explicit game_id to avoid relying on name resolution
+                    body: JSON.stringify({ action: 'commit', game_id: 2, total_drops: totalDrops })
+                });
+                const ct = resp.headers.get('content-type') || '';
+                let data = null;
+                if (ct.indexOf('application/json') !== -1) data = await resp.json();
+                else data = { success: false, message: 'Non-JSON response' };
+
+                if (data && data.success) {
+                    // update score display if server included newScore
+                    if (data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
+                    if (data.score !== undefined) scoreDisplay.textContent = data.score;
+                    if (data.completed) showFeedback('🎉 Điểm đã được lưu và hoàn thành!', 'win');
+                    else showFeedback('Điểm đã được lưu.', 'win');
+
+                    // behave like Back button after short delay
+                    setTimeout(() => {
+                        const href = backButton ? backButton.getAttribute('href') : `${baseUrl}/views/lessons/science.php`;
+                        window.location.href = href;
+                    }, 1500);
+                } else {
+                    const msg = (data && data.message) ? data.message : 'Không thể lưu điểm.';
+                    if (data && data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
+                    showFeedback(msg, 'hint');
+                }
+            } catch (err) {
+                console.error('Finish commit error:', err);
+                showFeedback('Lỗi khi lưu điểm. Vui lòng thử lại.', 'hint');
+            } finally {
+                finishButton.disabled = false;
+                finishButton.textContent = 'Hoàn thành';
+            }
+        });
+    }
 
     // Hàm hiển thị thông báo
     function showFeedback(message, type) {
@@ -140,14 +212,24 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hàm cập nhật điểm
     async function updateScore(points) {
         try {
-            const response = await fetch(`${baseUrl}/science/update-plant-score`, {
+            const response = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'add_points', points: points })
+                body: JSON.stringify({ action: 'add_points', points: points, total_drops: totalDrops })
             });
-            const data = await response.json();
-            
-            if (data.newScore !== undefined) {
+            // Parse response safely: if server returns JSON, use it; otherwise log text for debugging.
+            const contentType = response.headers.get('content-type') || '';
+            let data = null;
+            if (contentType.indexOf('application/json') !== -1) {
+                data = await response.json();
+            } else {
+                const text = await response.text();
+                console.error('Non-JSON response from update-plant-score:', text);
+                // Try to recover: don't throw, just return
+                return;
+            }
+
+            if (data && data.newScore !== undefined) {
                 scoreDisplay.textContent = data.newScore;
             }
         } catch (error) {

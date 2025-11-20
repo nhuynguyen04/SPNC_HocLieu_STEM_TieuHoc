@@ -14,7 +14,11 @@ require_once __DIR__ . '/../template/header.php';
         Điểm của bạn: <span id="score"><?= $_SESSION['nutrition_score'] ?></span>
     </div>
     <div id="feedback"></div>
-    <button id="resetButton">Chơi lại (Reset điểm)</button>
+    <div class="game-actions">
+        <button id="resetButton">Chơi lại (Reset điểm)</button>
+        <button id="finishButton" class="finish-btn">Hoàn thành</button>
+        <a href="<?= $base_url ?>/views/lessons/science.php" class="back-btn">Quay lại</a>
+    </div>
     <hr>
 
     <div id="gameContainer">
@@ -49,7 +53,8 @@ require_once __DIR__ . '/../template/header.php';
 </div>
 
 <script>
-    const baseUrl = "<?= $base_url ?>";
+    // Avoid re-declaring baseUrl if other templates already define it
+    window.baseUrl = window.baseUrl || "<?= $base_url ?>";
 </script>
 
 <script src="<?= $base_url ?>/public/JS/nutrition_game.js"></script>

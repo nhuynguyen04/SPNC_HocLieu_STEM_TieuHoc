@@ -101,6 +101,25 @@ function showFinalResult() {
     } else {
         messageText.textContent = "Hãy xem lại video và thử lại lần nữa nhé!";
     }
+
+    // Commit score to server and check completion (passing score = 30)
+    try {
+        const percentage = Math.round((score / (totalQuestions * 10)) * 100);
+        fetch('/SPNC_HocLieu_STEM_TieuHoc/science/commit-quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ lesson: 'Ngày và Đêm', score: percentage })
+        }).then(r => r.json()).then(data => {
+            if (data && data.success) {
+            } else {
+                const msg = document.createElement('p');
+                msg.textContent = 'Có lỗi khi lưu điểm: ' + (data && data.message ? data.message : '');
+                finalResultEl.appendChild(msg);
+            }
+        }).catch(err => {
+            console.error('Commit error', err);
+        });
+    } catch (e) { console.error(e); }
 }
 
 // Bắt đầu game khi tải trang

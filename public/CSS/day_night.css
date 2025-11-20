@@ -152,3 +152,16 @@
     font-size: 1.1em;
     cursor: pointer;
 }
+
+/* back button styled like restart-btn */
+.back-btn {
+    padding: 12px 30px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}

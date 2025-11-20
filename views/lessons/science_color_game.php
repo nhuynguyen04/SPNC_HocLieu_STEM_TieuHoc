@@ -27,13 +27,13 @@
         <div class="controls">
             <button id="clearButton">Làm lại</button>
             
-            <a href="<?= $base_url ?>/views/lessons/color-game?next=1" id="nextButton" style="display:none;">Câu hỏi tiếp theo ➡️</a>
+            <a href="<?= $base_url ?>/science/color-game?next=1" id="nextButton" style="display:none;">Câu hỏi tiếp theo ➡️</a>
         </div>
 
         <script>
-            const baseUrl = "<?= $base_url ?>"; 
+            // Use global `baseUrl` from header; do not redeclare it here to avoid duplicate identifier errors.
             const targetColor = <?= json_encode($target['rgb']) ?>;
-            const correctPair = <?= json_encode($correct_colors_sorted) ?>; 
+            const correctPair = <?= json_encode($correct_colors_sorted) ?>;
             let currentAttempt = <?= $current_attempt ?>;
         </script>
         
@@ -41,9 +41,26 @@
 
     <?php else: ?>
         <p class="question">🎉 Chúc mừng! Bạn đã hoàn thành tất cả các câu hỏi!</p>
-        <p class="final-score">Tổng điểm của bạn là: <?= $_SESSION['total_score'] ?></p>
-        
-        <a href="<?= $base_url ?>/views/lessons/color-game?next=1" class="play-again">Chơi lại từ đầu</a>
+        <?php
+            // Hiển thị trạng thái hoàn thành nếu có kết quả commit
+            if (isset($completionResult) && is_array($completionResult)) {
+                if (!empty($completionResult['success'])) {
+                    if (!empty($completionResult['completed'])) {
+                        echo '<p class="completed-msg">🎉 Bạn đã hoàn thành trò chơi! Tiến độ +1.</p>';
+                    } else {
+                        $need = isset($passingThreshold) ? htmlspecialchars($passingThreshold) . '%' : '25%';
+                        echo '<p class="incomplete-msg">⚠️ Bạn chưa đạt điểm tối thiểu để hoàn thành trò chơi (cần ' . $need . ').</p>';
+                    }
+                } else {
+                    echo '<p class="error-msg">Có lỗi khi lưu điểm: ' . htmlspecialchars($completionResult['message'] ?? '') . '</p>';
+                }
+            }
+        ?>
+
+        <div class="final-actions">
+            <a href="<?= $base_url ?>/science/color-game?next=1" class="play-again">Chơi lại từ đầu</a>
+            <a href="<?= $base_url ?>/views/lessons/science.php" class="back-btn">Quay lại</a>
+        </div>
     <?php endif; ?>
 </div>
 

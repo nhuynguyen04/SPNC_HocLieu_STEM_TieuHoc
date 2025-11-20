@@ -25,7 +25,10 @@
                 <h3>Chúc mừng bạn đã hoàn thành!</h3>
                 <div class="final-score" id="finalScoreText">0 / 50</div>
                 <p id="finalMessage"></p>
-                <button class="restart-btn" onclick="location.reload()">Làm lại bài</button>
+                <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+                    <button class="restart-btn" onclick="location.reload()">Làm lại bài</button>
+                    <a href="<?= $base_url ?>/views/lessons/science.php" class="back-btn">Quay lại</a>
+                </div>
             </div>
 
         </div>

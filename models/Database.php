@@ -16,6 +16,9 @@ class Database {
             );
             $this->conn->exec("set names utf8");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+           
+            
+           
         } catch(PDOException $exception) {
             // Nếu database chưa tồn tại, tạo mới
             if ($exception->getCode() == '1049') {
@@ -66,8 +69,8 @@ class Database {
                 username VARCHAR(50) UNIQUE NOT NULL,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                first_name NVARCHAR(100),
-                last_name NVARCHAR(100),
+                first_name VARCHAR(100),
+                last_name VARCHAR(100),
                 class VARCHAR(10),
                 role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
                 avatar VARCHAR(255),
@@ -89,40 +92,27 @@ class Database {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )",
 
-            // Bảng bài giảng (Đài giảng)
-            "CREATE TABLE IF NOT EXISTS lessons (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                topic_id INT,
-                lesson_name NVARCHAR(255) NOT NULL,
-                class_level NVARCHAR(100),
-                video_url VARCHAR(255),
-                content TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (topic_id) REFERENCES stem_fields(id) ON DELETE CASCADE
-            )",
-
-            // Bảng trò chơi (Từ chơi)
+            // Bảng trò chơi (catalog) - mỗi game có thể thuộc một chủ đề (topic)
             "CREATE TABLE IF NOT EXISTS games (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                lesson_id INT,
-                game_name NVARCHAR(255) NOT NULL,
-                game_rules TEXT,
+                topic_id INT DEFAULT NULL,
+                game_name VARCHAR(255) NOT NULL,
+                description TEXT,
+                passing_score INT DEFAULT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
+                FOREIGN KEY (topic_id) REFERENCES stem_fields(id) ON DELETE SET NULL
             )",
 
             // Bảng tác phẩm
             "CREATE TABLE IF NOT EXISTS works (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 user_id INT,
-                lesson_id INT,
-                content TEXT,
+              content TEXT,
                 image_url VARCHAR(255),
                 video_url VARCHAR(255),
                 work_time INT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )",
 
             // Bảng điểm
@@ -130,12 +120,23 @@ class Database {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 user_id INT,
                 game_id INT,
-                score INT NOT NULL,
-                play_time INT,
-                total_time INT,
+                score_percentage INT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+            )",
+
+            // Note: `user_game_completions` removed; completion state will be
+            // derived from `scores` combined with `games.passing_score`.
+            // Table to store awarded certificates per topic (stem_field)
+            "CREATE TABLE IF NOT EXISTS certificates (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                topic_id INT NOT NULL,
+                issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE KEY uq_user_topic (user_id, topic_id),
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY (topic_id) REFERENCES stem_fields(id) ON DELETE CASCADE
             )",
 
             // Bảng xếp hạng từng trò chơi
@@ -208,25 +209,17 @@ class Database {
                 ('Công nghệ', 'Lập trình và robot', '🤖', '#96CEB4'),
                 ('Kỹ thuật', 'Xây dựng và sáng tạo', '⚙️', '#FFD166')");
 
-                // Chèn bài giảng mẫu
-                $this->conn->exec("INSERT INTO lessons (topic_id, lesson_name, class_level, video_url, content) VALUES
-                (1, 'Phép cộng cơ bản', 'Lớp 1', 'video/phep-cong.mp4', 'Nội dung bài học phép cộng'),
-                (1, 'Phép trừ cơ bản', 'Lớp 1', 'video/phep-tru.mp4', 'Nội dung bài học phép trừ'),
-                (2, 'Thực vật xung quanh em', 'Lớp 2', 'video/thuc-vat.mp4', 'Tìm hiểu về các loại cây')");
+                // Insert sample games mapped to topics. Use passing_score as legacy threshold (percent)
+                $this->conn->exec("INSERT INTO games (topic_id, game_name, description, passing_score) VALUES
+                (2, 'Tháp dinh dưỡng', 'Sắp xếp các nhóm thực phẩm theo tháp dinh dưỡng', 50),
+                (2, 'Pha màu', 'Pha màu đúng tỉ lệ', 20),
+                (2, 'Ngày và đêm', 'Trả lời các câu hỏi', 20),
+                (2, 'Thùng rác thân thiện', 'Phân loại rác đúng cách', 50),
+                (2, 'Lắp ghép bộ phận', 'Lắp ghép các bộ phận của cây', 2)");
 
-                // Chèn trò chơi mẫu
-                $this->conn->exec("INSERT INTO games (lesson_id, game_name, game_rules) VALUES
-                (1, 'Đố vui phép cộng', 'Trả lời các câu hỏi phép cộng trong 2 phút'),
-                (1, 'Thử thách toán học', 'Giải các bài toán nhanh'),
-                (2, 'Ghép từ thành câu', 'Sắp xếp các từ thành câu hoàn chỉnh')");
 
-                // Chèn điểm mẫu
-                $this->conn->exec("INSERT INTO scores (user_id, game_id, score, play_time, total_time) VALUES
-                (2, 1, 85, 120, 180),
-                (2, 2, 90, 150, 200),
-                (3, 1, 78, 140, 190)");
+    
 
-                // echo "✅ Đã chèn dữ liệu mẫu thành công!";
             }
         } catch(PDOException $e) {
             echo "Lỗi khi chèn dữ liệu mẫu: " . $e->getMessage();

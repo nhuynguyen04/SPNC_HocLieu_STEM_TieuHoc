@@ -166,8 +166,8 @@ function handleCorrectAnswer() {
     // Cập nhật điểm hiển thị ngay lập tức
     totalScoreSpan.innerText = parseInt(totalScoreSpan.innerText) + points;
 
-    // *** ĐÃ SỬA ĐƯỜNG DẪN TẠI ĐÂY ***
-    nextButton.href = `${baseUrl}/views/lessons/color-game?next=1&points=${points}`;
+    // Đường dẫn route đúng (router defines /science/color-game)
+    nextButton.href = `${baseUrl}/science/color-game?next=1&points=${points}`;
     
     // Hiển thị/ẩn nút
     nextButton.style.display = "inline-block";
@@ -190,16 +190,27 @@ function handleWrongAnswer() {
     // Tăng số lần thử
     currentAttempt++; 
     
-    // Cập nhật gợi ý dựa trên số lần thử MỚI
+    // Cập nhật gợi ý dựa trên số lần thử MỚI (hiển thị tên màu bằng tiếng Việt)
+    function colorNameVN(name) {
+        const map = {
+            red: 'ĐỎ',
+            yellow: 'VÀNG',
+            blue: 'XANH DƯƠNG',
+            white: 'TRẮNG',
+            black: 'ĐEN'
+        };
+        return map[name] || name.toUpperCase();
+    }
+
     if (currentAttempt === 2) {
         // Lần sai 1 (chuẩn bị cho lần thử 2)
-        hintBox.innerHTML = `Gợi ý: Một trong hai màu là <span style="color:${correctPair[0]}">${correctPair[0].toUpperCase()}</span>.`;
+        hintBox.innerHTML = `Gợi ý: Một trong hai màu là <span style="color:${correctPair[0]}">${colorNameVN(correctPair[0])}</span>.`;
     } else if (currentAttempt === 3) {
         // Lần sai 2 (chuẩn bị cho lần thử 3)
-        hintBox.innerHTML = `Gợi ý: Bạn cần màu <span style="color:${correctPair[0]}">${correctPair[0].toUpperCase()}</span> và <span style="color:${correctPair[1]}">${correctPair[1].toUpperCase()}</span>.`;
+        hintBox.innerHTML = `Gợi ý: Bạn cần màu <span style="color:${correctPair[0]}">${colorNameVN(correctPair[0])}</span> và <span style="color:${correctPair[1]}">${colorNameVN(correctPair[1])}</span>.`;
     } else {
         // Lần sai 3 trở đi
-        hintBox.innerHTML = `Hãy trộn màu <span style="color:${correctPair[0]}">${correctPair[0].toUpperCase()}</span> và <span style="color:${correctPair[1]}">${correctPair[1].toUpperCase()}</span>.`;
+        hintBox.innerHTML = `Hãy trộn màu <span style="color:${correctPair[0]}">${colorNameVN(correctPair[0])}</span> và <span style="color:${correctPair[1]}">${colorNameVN(correctPair[1])}</span>.`;
     }
 
     // Tự động làm mới bảng pha màu sau 1.5 giây
