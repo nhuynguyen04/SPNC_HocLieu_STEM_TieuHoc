@@ -18,18 +18,52 @@
     margin-bottom: 10px;
 }
 
+.game-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
 .trash-game .reset-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 15px;
     background: #e74c3c;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
 }
 .trash-game .reset-button:hover { background-color: #c0392b; }
+
+/* Back button styled like reset but blue */
+.trash-game .back-button {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 15px;
+    background: #3498db;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    text-align: center;
+}
+.trash-game .back-button:hover { background: #2980b9; }
+
+/* Complete button (green) placed between reset and back */
+.trash-game .complete-button {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 15px;
+    background: #2ecc71;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+.trash-game .complete-button:hover { background: #27ae60; }
 
 #trashGameContainer {
     position: relative;

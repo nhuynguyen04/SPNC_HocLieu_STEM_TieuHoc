@@ -30,6 +30,11 @@ if (empty($route)) {
 $lessonController = new LessonController();
 
 switch ($route) {
+    // Support pretty route used by some front-end links
+    case '/science/color-game':
+        $lessonController->showColorGame();
+        break;
+
     // --- CÁC ROUTE CỦA GAME ---
     case '/views/lessons/science_color_game':
         $lessonController->showColorGame();
@@ -40,6 +45,11 @@ switch ($route) {
         break;
     
     case '/views/lessons/update-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateNutritionScore();
+        }
+        break;
+    case '/science/update-score':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->updateNutritionScore();
         }
@@ -58,6 +68,16 @@ switch ($route) {
     case '/views/lessons/science_trash_game':
         $lessonController->showTrashGame();
         break;
+    case '/views/lessons/update-trash-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateTrashScore();
+        }
+        break;
+    case '/science/update-trash-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateTrashScore();
+        }
+        break;
     case 'trash_score':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lessonController->updateTrashScore();
@@ -74,6 +94,12 @@ switch ($route) {
 
     case '/views/lessons/technology_coding_game':
         $lessonController->showCodingGame();
+        break;
+
+    case '/science/commit-quiz':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->commitQuizScore();
+        }
         break;
 
     case '/views/lessons/technology_computer_parts':
@@ -410,7 +436,7 @@ function showHomePage() {
         <?php endif; ?>
     </main>
 
-    <script src="public/js/cosmic.js"></script>
+    <script src="/SPNC_HocLieu_STEM_TieuHoc/public/JS/cosmic.js"></script>
 </body>
 </html>
 <?php

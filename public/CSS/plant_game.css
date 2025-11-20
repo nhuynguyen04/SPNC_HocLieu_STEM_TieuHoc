@@ -28,18 +28,50 @@
 #plant-feedback.wrong { color: #e74c3c; }
 #plant-feedback.hint { color: #e67e22; }
 
-.plant-game .reset-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #e74c3c;
+
+/* Buttons area */
+.game-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.plant-game .reset-button,
+.plant-game .finish-button,
+.plant-game .back-button {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 15px;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
 }
+
+.plant-game .reset-button { background: #e74c3c; }
 .plant-game .reset-button:hover { background-color: #c0392b; }
+
+.plant-game .finish-button { background: #2ecc71; }
+.plant-game .finish-button:hover { background: #27ae60; }
+
+/* Back button: styled like reset but blue */
+.plant-game .back-button {
+    display: inline-block;
+    margin: 10px 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+.plant-game .back-button:hover { background-color: #2c80b9; }
 
 #plantGameContainer {
     display: flex;

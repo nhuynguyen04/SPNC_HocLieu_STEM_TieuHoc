@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const feedbackBox = gameWrapper.querySelector("#feedback");
     const scoreDisplay = gameWrapper.querySelector("#score");
     const resetButton = gameWrapper.querySelector("#resetButton");
+    const finishButton = gameWrapper.querySelector("#finishButton");
     
     let draggedItem = null; 
 
@@ -39,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Completion is validated server-side using `games.passing_score`.
+    // Do not enforce a client-side threshold here to avoid mismatch with DB.
+
     // --- 2. Xử lý thả (Drop) ---
     pyramidLevels.forEach(level => {
         level.addEventListener("dragover", (e) => {
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             level.classList.remove("drag-over");
         });
 
-        level.addEventListener("drop", (e) => {
+        level.addEventListener("drop", async (e) => {
             e.preventDefault();
             level.classList.remove("drag-over");
 
@@ -67,15 +71,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     draggedItem.classList.add("dropped"); // Thêm class 'dropped'
                     draggedItem.setAttribute("draggable", "false"); // Khóa, không cho kéo nữa
 
-                    if (attempt === 1) {
-                        // Lần 1 đúng -> 10 điểm
-                        showFeedback(`✅ Chính xác! Bạn được 10 điểm!`, "correct");
-                        updateScore(10); 
-                    } else {
-                        // Lần 2 (hoặc hơn) mới đúng -> 0 điểm
-                        showFeedback(`👍 Đúng rồi! ${draggedItem.dataset.name} thuộc ${groupNames[foodGroup]}.`, "correct");
-                        // Không cộng điểm
-                    }
+                        if (attempt === 1) {
+                            // Lần 1 đúng -> 10 điểm: ask server to add points and use server's
+                            // returned score as the authoritative value for the UI.
+                            showFeedback(`✅ Chính xác! `, "correct");
+                            try {
+                                const res = await updateScore(10);
+                                if (res && res.newScore !== undefined) {
+                                    scoreDisplay.textContent = parseInt(res.newScore, 10);
+                                } else {
+                                    // Fallback: increment locally if server didn't return a value
+                                    const current = parseInt(scoreDisplay.textContent || '0', 10);
+                                    scoreDisplay.textContent = current + 10;
+                                }
+                            } catch (err) {
+                                // If update failed, still increment UI so player sees feedback
+                                const current = parseInt(scoreDisplay.textContent || '0', 10);
+                                scoreDisplay.textContent = current + 10;
+                            }
+                        } else {
+                            // Lần 2 (hoặc hơn) mới đúng -> 0 điểm
+                            showFeedback(`👍 Đúng rồi! ${draggedItem.dataset.name} thuộc ${groupNames[foodGroup]}.`, "correct");
+                        }
                     
                 } else {
                     // *** SAI ***
@@ -106,6 +123,70 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Lỗi reset:', error));
     });
 
+    // --- 4. Nút Hoàn thành (Finish) - tổng kết và lưu điểm ---
+    if (finishButton) {
+        finishButton.addEventListener('click', async () => {
+            // Defer completion validation to the server (uses games.passing_score)
+            const currentScore = parseInt(scoreDisplay.textContent || '0', 10);
+
+            finishButton.disabled = true;
+            finishButton.textContent = 'Đang xử lý...';
+            try {
+                const resp = await fetch(`${baseUrl}/science/update-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'commit' })
+                });
+                const data = await resp.json();
+                if (data && data.success) {
+                    // update visible score to server-provided newScore (should be 0 when saved)
+                    const serverScore = data.score ?? data.newScore ?? currentScore;
+                    scoreDisplay.textContent = serverScore;
+                    showCompletion(serverScore);
+                    // show an extra feedback if completed is true
+                    if (data.completed) {
+                        showFeedback('🎉 Bạn đã hoàn thành trò chơi!', 'correct');
+                    }
+
+                    // After short delay, behave like back button: navigate back to lessons
+                    setTimeout(() => {
+                        window.location.href = `${baseUrl}/views/lessons/science.php`;
+                    }, 1500);
+                } else {
+                    const msg = (data && data.message) ? data.message : 'Không thể lưu tiến độ.';
+                    // if server returned newScore (percentage), update UI accordingly
+                    if (data && data.newScore !== undefined) {
+                        scoreDisplay.textContent = data.newScore;
+                    }
+                    showFeedback(msg, 'hint');
+                }
+            } catch (err) {
+                console.error('Lỗi commit:', err);
+                showFeedback('Lỗi khi lưu điểm. Vui lòng thử lại.', 'hint');
+            } finally {
+                finishButton.disabled = false;
+                finishButton.textContent = 'Hoàn thành';
+            }
+        });
+    }
+
+    // Back button: reset score on server then navigate back
+    const backBtn = gameWrapper.querySelector('.back-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = backBtn.getAttribute('href') || `${baseUrl}/views/lessons/science.php`;
+            fetch(`${baseUrl}/science/update-score`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'reset' })
+            }).finally(() => {
+                // navigate after attempting reset regardless of result
+                window.location.href = href;
+            });
+        });
+    }
+
     // --- Các hàm hỗ trợ ---
     function showFeedback(message, type) {
         feedbackBox.textContent = message;
@@ -127,12 +208,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ action: 'add_points', points: points })
             });
             const data = await response.json();
-            
             if (data.newScore !== undefined) {
                 scoreDisplay.textContent = data.newScore;
             }
+            return data;
         } catch (error) {
             console.error("Lỗi cập nhật điểm:", error);
+            return null;
+        }
+    }
+
+    function showCompletion(finalScore) {
+        // Show a persistent completion box and disable further interactions
+        let box = gameWrapper.querySelector('#completionBox');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'completionBox';
+            gameWrapper.appendChild(box);
         }
     }
 });

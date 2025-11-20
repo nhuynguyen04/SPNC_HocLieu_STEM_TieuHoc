@@ -2,6 +2,105 @@
 
 class LessonController {
 
+    // Helper: try to find a lesson id that matches a game/lesson name
+    private function findLessonIdByName($db, $name) {
+        if (!$db || empty($name)) return null;
+        try {
+            // 1) exact match
+            $stmt = $db->prepare("SELECT id FROM lessons WHERE lesson_name = :name LIMIT 1");
+            $stmt->execute([':name' => $name]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) return (int)$row['id'];
+
+            // 2) like match
+            $stmt = $db->prepare("SELECT id FROM lessons WHERE lesson_name LIKE :like LIMIT 1");
+            $stmt->execute([':like' => '%' . $name . '%']);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) return (int)$row['id'];
+
+            // 3) try shorter token matches (split words)
+            $parts = preg_split('/\s+/', trim($name));
+            foreach ($parts as $p) {
+                if (strlen($p) < 3) continue;
+                $stmt = $db->prepare("SELECT id FROM lessons WHERE lesson_name LIKE :like LIMIT 1");
+                $stmt->execute([':like' => '%' . $p . '%']);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($row) return (int)$row['id'];
+            }
+        } catch (Exception $e) {
+            // ignore and return null
+        }
+        return null;
+    }
+
+    // Helper: get topic_id from a lesson id (returns null if not found)
+    private function getTopicIdFromLesson($db, $lessonId) {
+        if (!$db || empty($lessonId)) return null;
+        try {
+            $tstmt = $db->prepare("SELECT topic_id FROM lessons WHERE id = :lid LIMIT 1");
+            $tstmt->execute([':lid' => $lessonId]);
+            $trow = $tstmt->fetch(PDO::FETCH_ASSOC);
+            if ($trow && !empty($trow['topic_id'])) return (int)$trow['topic_id'];
+        } catch (Exception $e) {
+            // ignore
+        }
+        return null;
+    }
+
+    // API: commit quiz score for lessons like 'Ngày và Đêm'
+    public function commitQuizScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || empty($data['lesson']) || !isset($data['score'])) {
+            echo json_encode(['success' => false, 'message' => 'Missing lesson or score']);
+            return;
+        }
+
+        if (empty($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        $lessonName = $data['lesson'];
+        $score = (int)$data['score'];
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+
+            $stmt = $db->prepare("SELECT id FROM games WHERE game_name = :name LIMIT 1");
+            $stmt->execute([':name' => $lessonName]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                $gameId = (int)$row['id'];
+            } else {
+              
+                $stmt2 = $db->prepare("SELECT id FROM games WHERE game_name LIKE :like LIMIT 1");
+                $stmt2->execute([':like' => '%' . $lessonName . '%']);
+                $r2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                if ($r2) {
+                    $gameId = (int)$r2['id'];
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Game record not found for: ' . $lessonName]);
+                    return;
+                }
+            }
+
+            $userId = (int)$_SESSION['user_id'];
+            $scorePct = max(0, min(100, (int)$score));
+            $res = Score::saveAndMark($userId, $gameId, $scorePct);
+
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
     /**
      * TRÒ CHƠI PHA MÀU
      */
@@ -63,6 +162,76 @@ class LessonController {
         }
 
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        // Default passing threshold (percentage) for this game
+        $passingThreshold = 25;
+        // Nếu đã hết câu hỏi -> có thể lưu điểm/chấm hoàn thành một lần
+        $completionResult = null;
+        if ($target === null) {
+            // Nếu user đăng nhập và chưa commit điểm cho game này trong session
+            if (!empty($_SESSION['user_id']) && empty($_SESSION['color_game_committed'])) {
+                try {
+                    require_once __DIR__ . '/../models/Database.php';
+                    require_once __DIR__ . '/../models/Score.php';
+
+                    $database = new Database();
+                    $db = $database->getConnection();
+
+                    // Tìm game 'Pha màu' trong cơ sở dữ liệu (không tạo mới từ controller)
+                    $stmt = $db->prepare("SELECT id FROM games WHERE game_name LIKE :name LIMIT 1");
+                    $stmt->execute([':name' => '%Pha màu%']);
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($row) {
+                        $gameId = (int)$row['id'];
+                    } else {
+                        // Try a looser match and otherwise skip DB save.
+                        $stmt2 = $db->prepare("SELECT id FROM games WHERE game_name LIKE :like LIMIT 1");
+                        $stmt2->execute([':like' => '%Pha màu%']);
+                        $r2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                        if ($r2) {
+                            $gameId = (int)$r2['id'];
+                        } else {
+                            // No game record found; skip saving to DB and mark completionResult accordingly
+                            $completionResult = ['success' => false, 'message' => 'Game "Pha màu" not registered in database'];
+                        }
+                    }
+
+                    // Lưu điểm và đánh dấu hoàn thành nếu đạt `passing_score` (nếu gameId tồn tại)
+                    $userId = (int)$_SESSION['user_id'];
+                    $rawScore = isset($_SESSION['total_score']) ? (int)$_SESSION['total_score'] : 0;
+                    // Derive max possible points: number of targets * 10 (JS awards up to 10 per question)
+                    $maxPoints = count($targets) * 10;
+                    $percentage = 0;
+                    if ($maxPoints > 0) {
+                        $percentage = (int)round(($rawScore / $maxPoints) * 100);
+                        if ($percentage > 100) $percentage = 100;
+                        if ($percentage < 0) $percentage = 0;
+                    }
+                    if (!empty($gameId)) {
+                        $completionResult = Score::saveAndMark($userId, $gameId, $percentage);
+                    } else {
+                        // completionResult already set above when game not found
+                    }
+
+                    // Đánh dấu đã commit để tránh double-insert
+                    $_SESSION['color_game_committed'] = true;
+                } catch (Exception $e) {
+                    error_log('Color game commit error: ' . $e->getMessage());
+                }
+            }
+        }
+
+        // compute final percentage for view (even if user not logged in)
+        if (!isset($percentage)) {
+            $rawScore = isset($_SESSION['total_score']) ? (int)$_SESSION['total_score'] : 0;
+            $maxPoints = count($targets) * 25;
+            $percentage = 0;
+            if ($maxPoints > 0) {
+                $percentage = (int)round(($rawScore / $maxPoints) * 100);
+                if ($percentage > 100) $percentage = 100;
+                if ($percentage < 0) $percentage = 0;
+            }
+        }
+
         // 6. TẢI VIEW (GIAO DIỆN)
         require_once __DIR__ . '/../views/lessons/science_color_game.php';
     }
@@ -140,14 +309,125 @@ class LessonController {
 
         if ($data) {
             if ($data['action'] === 'add_points' && isset($data['points'])) {
+                // Only update session score here. Do NOT auto-commit to DB.
+                // Commit will only happen when the user presses the Finish button.
                 $_SESSION['nutrition_score'] += (int)$data['points'];
             } elseif ($data['action'] === 'reset') {
                 $_SESSION['nutrition_score'] = 0;
+            } elseif ($data['action'] === 'commit') {
+                // Lưu điểm vào database và đánh dấu hoàn thành nếu đạt passing_score
+                require_once __DIR__ . '/../models/Database.php';
+                require_once __DIR__ . '/../models/Score.php';
+
+                $userId = $_SESSION['user_id'] ?? null;
+                $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+                $playTime = isset($data['play_time']) ? (int)$data['play_time'] : null;
+                $totalTime = isset($data['total_time']) ? (int)$data['total_time'] : null;
+
+                if (empty($userId)) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'User not logged in']);
+                    exit();
+                }
+
+                try {
+                    $db = (new Database())->getConnection();
+
+                    // If game_id not provided, find or create the 'Tháp dinh dưỡng' game and set passing_score accordingly
+                    if (empty($gameId)) {
+                        $stmt = $db->prepare("SELECT id FROM games WHERE game_name = :name LIMIT 1");
+                        $stmt->execute([':name' => 'Tháp dinh dưỡng']);
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        // determine threshold based on number of foods (27 items * 10 / 2)
+                        $totalFoods = 27;
+                        $threshold = (int)ceil(($totalFoods * 10) / 2.0);
+
+                            if ($row) {
+                                $gameId = (int)$row['id'];
+                            } else {
+                                // Try a looser match; do not create games from controller.
+                                $stmt2 = $db->prepare("SELECT id FROM games WHERE game_name LIKE :like LIMIT 1");
+                                $stmt2->execute([':like' => '%Tháp dinh dưỡng%']);
+                                $r2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                                if ($r2) {
+                                    $gameId = (int)$r2['id'];
+                                } else {
+                                    header('Content-Type: application/json');
+                                    echo json_encode(['success' => false, 'message' => 'Game "Tháp dinh dưỡng" not registered']);
+                                    exit();
+                                }
+                            }
+                    }
+
+                    // compute percentage
+                    $raw = (int)$_SESSION['nutrition_score'];
+                    $maxPoints = $totalFoods * 10;
+                    $pct = 0;
+                    if ($maxPoints > 0) {
+                        $pct = (int)round(($raw / $maxPoints) * 100);
+                        if ($pct > 100) $pct = 100;
+                        if ($pct < 0) $pct = 0;
+                    }
+
+                    // Determine passing threshold from DB (games.passing_score). If not set,
+                    // fall back to half of max points as before.
+                    $passingScore = null;
+                    try {
+                        $pstmt = $db->prepare("SELECT passing_score FROM games WHERE id = :gid LIMIT 1");
+                        $pstmt->execute([':gid' => $gameId]);
+                        $prow = $pstmt->fetch(PDO::FETCH_ASSOC);
+                        if ($prow && $prow['passing_score'] !== null) {
+                            $passingScore = (int)$prow['passing_score'];
+                        }
+                    } catch (Exception $e) {
+                        // ignore and use fallback
+                    }
+
+                    if ($passingScore === null) {
+                        // fallback: half of max points (expressed as percent)
+                        $passingScore = (int)ceil((($totalFoods * 10) / $maxPoints) * 100 / 2);
+                        // The above simplifies to 50, but keep calculation explicit if items change
+                        if ($passingScore <= 0) $passingScore = 50;
+                    }
+
+                    // Only save when user meets or exceeds passing_score
+                    if ($pct >= $passingScore) {
+                        $res = Score::saveAndMark($userId, $gameId, $pct);
+                        // If save succeeded, reset session score to avoid duplicate saves
+                        if (is_array($res) && !empty($res['success'])) {
+                            $_SESSION['nutrition_score'] = 0;
+                            // include newScore in response so client can update UI
+                            $res['newScore'] = 0;
+                        }
+                        header('Content-Type: application/json');
+                        echo json_encode($res);
+                        exit();
+                    } else {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => false, 'message' => 'Chưa đủ điểm để hoàn thành', 'newScore' => $pct, 'required' => $passingScore]);
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                    exit();
+                }
             }
         }
 
+        // return score as percentage for client
+        $raw = isset($_SESSION['nutrition_score']) ? (int)$_SESSION['nutrition_score'] : 0;
+        $totalFoods = 27;
+        $maxPoints = $totalFoods * 10;
+        $pct = 0;
+        if ($maxPoints > 0) {
+            $pct = (int)round(($raw / $maxPoints) * 100);
+            if ($pct > 100) $pct = 100;
+            if ($pct < 0) $pct = 0;
+        }
         header('Content-Type: application/json');
-        echo json_encode(['newScore' => $_SESSION['nutrition_score']]);
+        echo json_encode(['newScore' => $pct]);
         exit();
     }
 
@@ -287,10 +567,140 @@ class LessonController {
                 $_SESSION['plant_score'] += (int)$data['points'];
             } elseif ($data['action'] === 'reset') { 
                 $_SESSION['plant_score'] = 0;
+            } elseif ($data['action'] === 'commit') {
+                require_once __DIR__ . '/../models/Database.php';
+                require_once __DIR__ . '/../models/Score.php';
+                $userId = $_SESSION['user_id'] ?? null;
+                $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+                $gameName = isset($data['game_name']) ? trim($data['game_name']) : null;
+
+                if (empty($userId)) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'User not logged in']);
+                    exit();
+                }
+
+                try {
+                    $db = (new Database())->getConnection();
+
+                    // If game_id not provided, try several strategies to find the game record
+                    if (empty($gameId)) {
+                        if (!empty($gameName)) {
+                            // 1) exact match
+                            $stmt = $db->prepare("SELECT id FROM games WHERE game_name = :name LIMIT 1");
+                            $stmt->execute([':name' => $gameName]);
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            if ($row) {
+                                $gameId = (int)$row['id'];
+                            }
+                        }
+
+                        if (empty($gameId) && !empty($gameName)) {
+                            // 2) looser match using LIKE
+                            $stmt2 = $db->prepare("SELECT id FROM games WHERE game_name LIKE :like LIMIT 1");
+                            $stmt2->execute([':like' => '%' . $gameName . '%']);
+                            $r2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                            if ($r2) $gameId = (int)$r2['id'];
+                        }
+
+                        if (empty($gameId)) {
+                            try {
+                                $tf = $db->prepare("SELECT id FROM games WHERE topic_id = :tid LIMIT 1");
+                                $tf->execute([':tid' => 2]);
+                                $rf = $tf->fetch(PDO::FETCH_ASSOC);
+                                if ($rf) $gameId = (int)$rf['id'];
+                            } catch (Exception $e) {
+                                // ignore
+                            }
+                        }
+
+                        if (empty($gameId)) {
+                            error_log('updatePlantScore: could not resolve game_id for game_name=' . ($gameName ?? 'NULL'));
+                        } else {
+                            error_log('updatePlantScore: resolved game_id=' . $gameId . ' for game_name=' . ($gameName ?? 'NULL'));
+                        }
+                    }
+
+                        if (empty($gameId)) {
+                            header('Content-Type: application/json');
+                            echo json_encode(['success' => false, 'message' => 'Game not found for commit']);
+                            exit();
+                        }
+
+                    // compute raw score and percentage
+                    $raw = isset($_SESSION['plant_score']) ? (int)$_SESSION['plant_score'] : 0;
+                    $totalDrops = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
+                    if ($totalDrops && $totalDrops > 0) {
+                        $maxPoints = $totalDrops * 10; // 10 points per correct first-attempt
+                        $pct = (int) round(($maxPoints > 0) ? (($raw / $maxPoints) * 100) : 0);
+                    } else {
+                        // fallback: if client didn't send total_drops, assume raw is already percentage
+                        $pct = max(0, min(100, $raw));
+                    }
+
+                    // Prevent double-commit during the same session
+                    if (!empty($_SESSION['plant_committed'])) {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => $pct]);
+                        exit();
+                    }
+
+                    // Get passing_score from games
+                    $passingScore = null;
+                    try {
+                        $pstmt = $db->prepare("SELECT passing_score FROM games WHERE id = :gid LIMIT 1");
+                        $pstmt->execute([':gid' => $gameId]);
+                        $prow = $pstmt->fetch(PDO::FETCH_ASSOC);
+                        if ($prow && $prow['passing_score'] !== null) {
+                            $passingScore = (int)$prow['passing_score'];
+                        }
+                    } catch (Exception $e) {
+                        // ignore and use fallback
+                    }
+
+                    if ($passingScore === null) {
+                        // fallback to 50%
+                        $passingScore = 50;
+                    }
+
+                    if ($pct >= $passingScore) {
+                        $res = Score::saveAndMark($userId, $gameId, $pct);
+                        // If save was successful, mark session as committed to avoid duplicates
+                        if (is_array($res) && !empty($res['success'])) {
+                            $_SESSION['plant_committed'] = true;
+                            // reset session score to avoid duplicate saves and inform client
+                            $_SESSION['plant_score'] = 0;
+                            $res['newScore'] = 0;
+                        }
+                        header('Content-Type: application/json');
+                        echo json_encode($res);
+                        exit();
+                    } else {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => false, 'message' => 'Chưa đủ điểm để hoàn thành', 'newScore' => $pct, 'required' => $passingScore]);
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                    exit();
+                }
             }
         }
+        // return percentage to client
+        $raw = isset($_SESSION['plant_score']) ? (int)$_SESSION['plant_score'] : 0;
+        $pct = 0;
+        // if client provided total_drops, convert raw points to percent
+        $totalDropsResp = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
+        if ($totalDropsResp && $totalDropsResp > 0) {
+            $maxPointsResp = $totalDropsResp * 10;
+            $pct = (int) round(($maxPointsResp > 0) ? (($raw / $maxPointsResp) * 100) : 0);
+        } else {
+            // fallback: assume raw is percentage
+            $pct = max(0, min(100, $raw));
+        }
         header('Content-Type: application/json');
-        echo json_encode(['newScore' => $_SESSION['plant_score']]);
+        echo json_encode(['newScore' => $pct]);
         exit();
     }
 
@@ -361,11 +771,94 @@ class LessonController {
                 $_SESSION['trash_score'] += (int)$data['points'];
             } elseif ($data['action'] === 'reset') { 
                 $_SESSION['trash_score'] = 0;
+            } elseif ($data['action'] === 'commit') {
+                require_once __DIR__ . '/../models/Score.php';
+                require_once __DIR__ . '/../models/Database.php';
+                $userId = $_SESSION['user_id'] ?? null;
+                $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+                header('Content-Type: application/json');
+
+                if (empty($userId) || empty($gameId)) {
+                    echo json_encode(['success' => false, 'message' => 'User not logged in or missing game_id']);
+                    exit();
+                }
+
+                try {
+                    $db = (new Database())->getConnection();
+
+                    // Compute percentage from raw session points. JS may send total_drops so
+                    // we can compute a proper percentage: (raw / (total_drops*10)) * 100
+                    $raw = (int)($_SESSION['trash_score'] ?? 0);
+                    $totalDropsParam = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
+                    if ($totalDropsParam && $totalDropsParam > 0) {
+                        $maxPoints = $totalDropsParam * 10;
+                        $pct = ($maxPoints > 0) ? (int) round((($raw / $maxPoints) * 100)) : 0;
+                    } else {
+                        // fallback: assume 21 items (matching showTrashGame list)
+                        $defaultItems = 21;
+                        $maxPoints = $defaultItems * 10;
+                        $pct = ($maxPoints > 0) ? (int) round((($raw / $maxPoints) * 100)) : 0;
+                    }
+                    if ($pct > 100) $pct = 100;
+                    if ($pct < 0) $pct = 0;
+
+                    // Get passing_score from games table (if set)
+                    $passingScore = null;
+                    try {
+                        $pstmt = $db->prepare("SELECT passing_score FROM games WHERE id = :gid LIMIT 1");
+                        $pstmt->execute([':gid' => $gameId]);
+                        $prow = $pstmt->fetch(PDO::FETCH_ASSOC);
+                        if ($prow && $prow['passing_score'] !== null) {
+                            $passingScore = (int)$prow['passing_score'];
+                        }
+                    } catch (Exception $e) {
+                        // ignore and fall back
+                    }
+
+                    if ($passingScore === null) {
+                        // fallback default: 50
+                        $passingScore = 50;
+                    }
+
+                    // Only save to DB if percentage meets or exceeds passing score
+                    if ($pct >= $passingScore) {
+                        $res = Score::saveAndMark($userId, $gameId, $pct);
+                        // If save succeeded, reset session score to avoid duplicate saves
+                        if (is_array($res) && !empty($res['success'])) {
+                            $_SESSION['trash_score'] = 0;
+                            // include newScore in response so client can update UI
+                            $res['newScore'] = 0;
+                        }
+                        echo json_encode($res);
+                        exit();
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Chưa đủ điểm để hoàn thành', 'newScore' => $pct, 'required' => $passingScore]);
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                    exit();
+                }
             }
         }
 
+        // return percentage to client. If client provided total_drops, use it to compute
+        // an accurate percentage; otherwise fall back to default item count.
+        $raw = isset($_SESSION['trash_score']) ? (int)$_SESSION['trash_score'] : 0;
+        $totalDropsResp = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
+        if ($totalDropsResp && $totalDropsResp > 0) {
+            $maxPointsResp = $totalDropsResp * 10;
+            $pct = ($maxPointsResp > 0) ? (int) round((($raw / $maxPointsResp) * 100)) : 0;
+        } else {
+            $defaultItems = 21;
+            $maxPointsResp = $defaultItems * 10;
+            $pct = ($maxPointsResp > 0) ? (int) round((($raw / $maxPointsResp) * 100)) : 0;
+        }
+        if ($pct > 100) $pct = 100;
+        if ($pct < 0) $pct = 0;
         header('Content-Type: application/json');
-        echo json_encode(['newScore' => $_SESSION['trash_score']]);
+        echo json_encode(['newScore' => $pct]);
         exit();
     }
 

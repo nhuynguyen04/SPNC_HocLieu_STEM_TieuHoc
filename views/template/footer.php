@@ -36,6 +36,13 @@
         </div>
     </footer>
 
-    <script src="../public/js/home.js"></script>
+    <?php if (!isset($base_url)) {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        $project_path = '/SPNC_HocLieu_STEM_TieuHoc';
+        $base_url = $protocol . '://' . $host . $project_path;
+    }
+    ?>
+    <script src="<?= $base_url ?>/public/JS/home.js"></script>
 </body>
 </html>
