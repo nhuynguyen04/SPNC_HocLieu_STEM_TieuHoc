@@ -1,0 +1,334 @@
+/* --- KHUNG TRÒ CHƠI CHÍNH (KHUNG GỖ) --- */
+.painter-game {
+    width: 98%;
+    max-width: 1200px;
+    margin: 110px auto 20px auto;
+    /* Hiệu ứng nền gỗ và viền khung tranh */
+    background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #d3a673;
+    border: 15px solid #8b5a2b;
+    border-radius: 10px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.3);
+    padding: 15px;
+    font-family: 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+}
+
+/* --- HEADER --- */
+.header-game {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.9);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-game h1 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5em;
+}
+
+.header-game .home-btn {
+    font-size: 1.5em;
+    color: #3498db;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.header-game .home-btn:hover {
+    transform: scale(1.1);
+    color: #2980b9;
+}
+
+/* Đồng hồ đếm ngược */
+.timer-box {
+    font-size: 1.5em;
+    font-weight: bold;
+    background: #333;
+    color: #0f0;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    border: 2px solid #555;
+}
+
+/* --- KHU VỰC LÀM VIỆC --- */
+.workspace {
+    display: flex;
+    gap: 15px;
+    height: 600px;
+}
+
+/* --- 1. THANH CÔNG CỤ TRÁI --- */
+.sidebar-tools {
+    width: 110px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.tool-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.tool-group:last-child {
+    border-bottom: none;
+}
+
+.tool-group label {
+    display: block;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+/* Style cho nút công cụ */
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #eee;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 3px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    transition: all 0.2s;
+}
+
+.tool-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1));
+}
+
+/* Hiệu ứng khi nút được chọn */
+.tool-btn.active {
+    background: #e3f2fd;
+    border-color: #2196f3;
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
+}
+
+/* Nút Undo */
+#undo-btn {
+    background-color: #fff8e1;
+    border-color: #ffe082;
+    width: 90%;
+}
+#undo-btn:hover {
+    background-color: #ffecb3;
+}
+
+/* Slider nét vẽ */
+#size-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Nhóm nút hành động (Xóa, Lưu) */
+.action-group {
+    margin-top: auto;
+}
+.action-group button {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+#clear-btn {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+#clear-btn:hover { background: #ffcdd2; }
+
+#save-btn {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+#save-btn:hover { background: #c8e6c9; }
+
+/* --- 2. KHU VỰC VẼ --- */
+.canvas-area {
+    flex-grow: 1;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: crosshair;
+    /* Họa tiết nền trong suốt */
+    background-image: none;
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+canvas {
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    background: #fff;
+}
+
+/* --- 3. THANH BÊN PHẢI (MÀU & CHỦ ĐỀ) --- */
+.sidebar-right {
+    width: 150px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Bảng màu */
+.color-palette {
+    flex-shrink: 0;
+}
+.color-palette label {
+    display: block; 
+    font-size: 0.9em; 
+    font-weight: bold; 
+    color: #555; 
+    margin-bottom: 5px;
+}
+
+.colors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: transform 0.1s;
+}
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.selected {
+    border: 2px solid #333;
+    transform: scale(1.15);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+#color-picker {
+    width: 100%;
+    height: 35px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+}
+
+/* --- DANH SÁCH CHỦ ĐỀ --- */
+.topic-selector {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.topic-selector label {
+    display: block; font-size: 1em; font-weight: bold; color: #34495e; 
+    margin-bottom: 10px; text-align: center;
+}
+
+.topic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-right: 5px;
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+/* Tùy chỉnh thanh cuộn (Webkit - Chrome, Safari) */
+.topic-list::-webkit-scrollbar {
+    width: 6px;
+}
+.topic-list::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 3px;
+}
+.topic-list::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 3px;
+}
+.topic-list::-webkit-scrollbar-thumb:hover {
+    background: #aaa; 
+}
+
+/* Nút chủ đề */
+.topic-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #555;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+    background: #f9f9f9;
+}
+
+.topic-btn img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 5px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+}
+
+.topic-btn span {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.topic-btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    border-color: #ccc;
+}
+
+.topic-btn.active {
+    background-color: #fff3e0;
+    border-color: #ff9800;
+    color: #e65100;
+    box-shadow: 0 2px 5px rgba(255, 152, 0, 0.2);
+}
+.topic-btn.active img {
+    transform: scale(1.1);
+}

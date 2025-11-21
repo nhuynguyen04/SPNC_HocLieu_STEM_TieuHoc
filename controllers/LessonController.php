@@ -1178,6 +1178,53 @@ class LessonController {
         require_once __DIR__ . '/../views/lessons/technology_typing_thach_sanh.php';
     }
 
+    /**
+     * TRÒ CHƠI HỌA SĨ MÁY TÍNH
+     */
+    public function showPainterGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Lấy chủ đề từ URL, mặc định là 'free' (Tự vẽ)
+        $topic = $_GET['topic'] ?? 'free';
+        
+        // Cấu hình các chủ đề
+        $topicConfig = [
+            'free' => [
+                'title' => 'Tự do sáng tạo', 
+                'bg_image' => '', // Không có nền
+                'icon' => 'icon_free.png'
+            ],
+            'house' => [
+                'title' => 'Ngôi nhà mơ ước', 
+                'bg_image' => 'bg_house.png', // Ảnh ngôi nhà
+                'icon' => 'icon_house.png'
+            ],
+            'animal' => [
+                'title' => 'Thế giới động vật', 
+                'bg_image' => 'bg_animal.png', // Ảnh con vật
+                'icon' => 'icon_animal.png'
+            ],
+            'computer' => [
+                'title' => 'Máy tính của em', 
+                'bg_image' => 'bg_computer.png', // Ảnh máy tính
+                'icon' => 'icon_computer.png'
+            ],
+            'nature' => [
+                'title' => 'Thiên nhiên tươi đẹp', 
+                'bg_image' => 'bg_nature.png', // Ảnh cây cối
+                'icon' => 'icon_nature.png'
+            ]
+        ];
+
+        // Kiểm tra nếu chủ đề không tồn tại thì quay về 'free'
+        $currentConfig = $topicConfig[$topic] ?? $topicConfig['free'];
+        $timeLimit = 300; // Thời gian mặc định 5 phút
+
+        require_once __DIR__ . '/../views/lessons/technology_painter_game.php';
+    }
+
     /*TRÒ CHƠI CƠ CHẾ HOA*/
     public function showFlowerMechanismGame() {
         if (session_status() == PHP_SESSION_NONE) {
