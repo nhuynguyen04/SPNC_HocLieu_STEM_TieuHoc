@@ -10,8 +10,6 @@ const planets = {
         time: "15 phút",
         xp: "50 XP",
         activities: [
-                        { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "25 XP", 
-                            link: baseUrl + '/views/lessons/science_color_game', status: "completed" },
                         { type: "game", name: "Trò chơi pha màu", icon: "🎮", xp: "25 XP",
                             link: baseUrl + '/views/lessons/science_color_game', status: "completed" }
         ]

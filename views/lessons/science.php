@@ -33,7 +33,6 @@ $science_data = [
             'description' => 'Khám phá bí mật của màu sắc qua các hoạt động thú vị',
             'learning_time' => '15 phút',
             'activities' => [
-                [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'completed', 'xp' => 25 ],
                 [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHA MÀU', 'icon' => '🎮', 'status' => 'completed', 'xp' => 25 ]
             ]
         ],
