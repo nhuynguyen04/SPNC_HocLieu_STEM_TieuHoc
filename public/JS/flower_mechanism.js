@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Các phần tử DOM
-    const materialCards = document.querySelectorAll('.material-card');
+    const materialBtns = document.querySelectorAll('.material-btn');
     const predictionOptions = document.querySelectorAll('.prediction-option input');
     const startBtn = document.getElementById('startExperiment');
     const restartBtn = document.getElementById('restartExperiment');
+    const nextGameBtn = document.getElementById('nextGame');
     const resultsSection = document.querySelector('.results-section');
     const flower = document.getElementById('flower');
     const waterDroplets = document.getElementById('waterDroplets');
@@ -38,8 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < petalCount; i++) {
             const petal = document.createElement('div');
             petal.className = 'petal';
-            petal.style.setProperty('--start-rotate', `${i * (360/petalCount)}deg`);
-            petal.style.setProperty('--end-rotate', `${i * (360/petalCount)}deg`);
+            const angle = i * (360 / petalCount);
+            petal.style.setProperty('--start-rotate', `${angle}deg`);
+            petal.style.setProperty('--mid-rotate', `${angle}deg`);
+            petal.style.setProperty('--end-rotate', `${angle}deg`);
+                
             flower.appendChild(petal);
         }
         
@@ -52,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Thiết lập sự kiện
     function setupEventListeners() {
         // Chọn vật liệu
-        materialCards.forEach(card => {
-            card.addEventListener('click', function() {
+        materialBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
                 selectMaterial(this.dataset.material);
             });
         });
@@ -70,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Nút thử lại
         restartBtn.addEventListener('click', resetExperiment);
+        
+        // Nút game tiếp theo
+        nextGameBtn.addEventListener('click', function() {
+            alert('Chuyển đến game tiếp theo!');
+            // Có thể thêm chức năng chuyển trang ở đây
+        });
     }
     
     // Chọn vật liệu
@@ -77,10 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedMaterial = material;
         
         // Cập nhật giao diện
-        materialCards.forEach(card => {
-            card.classList.remove('selected');
-            if (card.dataset.material === material) {
-                card.classList.add('selected');
+        materialBtns.forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.dataset.material === material) {
+                btn.classList.add('selected');
             }
         });
         
@@ -97,10 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkStartReady() {
         if (selectedMaterial && selectedPrediction) {
             startBtn.disabled = false;
-            startBtn.style.animation = 'pulse 1s infinite';
         } else {
             startBtn.disabled = true;
-            startBtn.style.animation = 'none';
         }
     }
     
@@ -110,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         experimentRunning = true;
         startBtn.disabled = true;
-        startBtn.style.animation = 'none';
         
         // Hiển thị tiến trình
         experimentProgress.classList.remove('hidden');
@@ -136,11 +143,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Cập nhật text tiến trình
             if (progress < 30) {
-                progressText.textContent = "Hoa đang uống nước... 🌊";
+                progressText.textContent = "Hoa đang uống nước...";
             } else if (progress < 70) {
-                progressText.textContent = "Hoa đang phình to... 🌸";
+                progressText.textContent = "Hoa đang nở...";
             } else {
-                progressText.textContent = "Hoa sắp nở rồi... 💫";
+                progressText.textContent = "Hoa sắp nở xong...";
             }
             
             if (progress >= 100) {
@@ -160,22 +167,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const droplets = document.querySelectorAll('.droplet');
         
         droplets.forEach((droplet, index) => {
-            droplet.style.animation = `waterDrop 2s ease-in-out ${index * 0.5}s infinite`;
+            droplet.style.animation = `waterDrop 1.5s ease-in-out ${index * 0.3}s infinite`;
         });
     }
     
     // Animation hoa nở
     function animateFlowerBloom(duration) {
         const petals = document.querySelectorAll('.petal');
+        const center = document.querySelector('.petal-center');
         
+        // Animation cho nhụy hoa
+        center.style.animation = `centerPulse ${duration/1000}s ease-in-out infinite`;
+        
+        // Animation cho từng cánh hoa
         petals.forEach((petal, index) => {
-            const delay = index * (duration / petals.length) * 0.3;
+            const delay = index * 80;
             petal.style.animation = `bloomPetal ${duration}ms ease-out ${delay}ms both`;
         });
-        
-        // Thêm hiệu ứng lung linh cho nhụy hoa
-        const center = document.querySelector('.petal-center');
-        center.style.animation = `pulse ${duration/2000}s ease-in-out infinite`;
     }
     
     // Hoàn thành thí nghiệm
@@ -198,8 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsSection.classList.remove('hidden');
         
         // Hiệu ứng hoàn thành
-        progressText.textContent = "Hoa đã nở rồi! 🎉";
-        progressText.style.color = "var(--success)";
+        progressText.textContent = "Thí nghiệm hoàn thành!";
         
         // Hiệu ứng hoa lung linh
         flower.style.animation = 'gentleSway 3s ease-in-out infinite';
@@ -222,9 +229,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let message = '';
         
         if (isCorrect) {
-            message = `🎉 Wow! Bạn đoán đúng rồi! Thật tuyệt vời! `;
+            message = `Chính xác! Bạn đoán đúng rồi! `;
         } else {
-            message = `🤔 Ôi! Dự đoán hơi sai rồi! Lần sau bạn sẽ làm tốt hơn! `;
+            message = `Ôi! Dự đoán hơi sai rồi! `;
         }
         
         message += `Hoa giấy ${selectedMaterial === 'thin' ? 'mỏng' : 'dày'} nở ${timeCategory === 'fast' ? 'rất nhanh' : timeCategory === 'medium' ? 'vừa phải' : 'khá chậm'}!`;
@@ -239,10 +246,9 @@ document.addEventListener('DOMContentLoaded', function() {
         experimentRunning = false;
         
         // Reset giao diện
-        materialCards.forEach(card => card.classList.remove('selected'));
+        materialBtns.forEach(btn => btn.classList.remove('selected'));
         predictionOptions.forEach(option => option.checked = false);
         startBtn.disabled = true;
-        startBtn.style.animation = 'none';
         
         // Reset hoa
         waterDroplets.classList.add('hidden');
@@ -252,10 +258,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset animation
         flower.style.animation = 'none';
         progressFill.style.width = '0%';
-        progressText.textContent = "Hoa đang uống nước... 🌊";
-        progressText.style.color = "var(--primary)";
+        progressText.textContent = "Hoa đang uống nước...";
         
-        // Dừng tất cả animation
+        // Dừng tất cả animation và reset cánh hoa
         const droplets = document.querySelectorAll('.droplet');
         droplets.forEach(droplet => {
             droplet.style.animation = 'none';
