@@ -34,7 +34,7 @@ const planets = {
                 name: "Giới thiệu công cụ vẽ", 
                 icon: "📝", 
                 xp: "30 XP",
-                link: baseUrl + '/views/lessons/technology_drawing_tutorial', 
+                link: baseUrl + '/views/lessons/technology_painter_game', 
                 status: "current" 
             },
             { 
@@ -94,7 +94,7 @@ const planets = {
                 name: "Thực hành Scratch", 
                 icon: "🎮", 
                 xp: "40 XP",
-                link: baseUrl + '/views/lessons/technology_scratch_practice', 
+                link: baseUrl + '/views/lessons/technology_coding_game', 
                 status: "locked" 
             }
         ]
@@ -120,7 +120,7 @@ const planets = {
                 name: "Ghép bộ phận máy tính", 
                 icon: "🧩", 
                 xp: "35 XP",
-                link: baseUrl + '/views/lessons/technology_computer_parts_game', 
+                link: baseUrl + '/views/lessons/technology_computer_parts', 
                 status: "locked" 
             }
         ]

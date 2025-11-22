@@ -7,7 +7,7 @@ require_once __DIR__ . '/../template/header.php';
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/plant_game.css">
 
 <div class="game-wrapper plant-game">
-    <h1>Trò chơi: Lắp ghép bộ phận(<?php echo $plantData['title']; ?>)</h1>
+    <h1>Trò chơi: Lắp ghép bộ phận (<?php echo $plantData['title']; ?>)</h1>
     <p>Hãy kéo các nhãn tên vào đúng vị trí trên cây.</p>
     
     <div class="score-board">Điểm: <span id="score"><?= $_SESSION['plant_score'] ?></span></div>
@@ -53,6 +53,9 @@ require_once __DIR__ . '/../template/header.php';
     window.baseUrl = window.baseUrl || "<?= $base_url ?>";
     // Provide the server-friendly game name so the client can request commit.
     window.gameName = window.gameName || "<?= addslashes($plantData['title']) ?>";
+    
+    // *** TRUYỀN LOẠI CÂY TIẾP THEO SANG JS ***
+    window.nextPlantType = <?= json_encode($nextType) ?>;
 </script>
 <script src="<?= $base_url ?>/public/JS/plant_game.js"></script>
 

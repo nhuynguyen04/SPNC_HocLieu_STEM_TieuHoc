@@ -543,10 +543,18 @@ class LessonController {
             ],
         ];
         
-        // Chọn dữ liệu cây dựa trên $plantType
-        $plantData = $allPlantsData[$plantType] ?? $allPlantsData['hoa']; 
+        // Xác định màn hiện tại và màn kế tiếp
+        $keys = array_keys($allPlantsData); // Lấy danh sách các key ['hoa', 'cothu', ...]
+        $currentIndex = array_search($plantType, $keys);
+        $nextType = null;
+
+        // Nếu tìm thấy và không phải màn cuối cùng
+        if ($currentIndex !== false && isset($keys[$currentIndex + 1])) {
+            $nextType = $keys[$currentIndex + 1];
+        }
         
-        shuffle($plantData['parts']); 
+        $plantData = $allPlantsData[$plantType] ?? $allPlantsData['hoa']; 
+        shuffle($plantData['parts']);
 
         require_once __DIR__ . '/../views/lessons/science_plant_game.php';
     }
