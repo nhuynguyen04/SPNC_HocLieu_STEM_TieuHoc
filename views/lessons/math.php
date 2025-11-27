@@ -45,7 +45,7 @@ $math_data = [
         ],
         [
             'id' => 2,
-            'title' => 'NHẬN BIẾT GÓC',
+            'title' => 'NHẬN BIẾT HÌNH HỌC',
             'icon' => '📐',
             'status' => 'current',
             'color' => '#3B82F6',
@@ -126,8 +126,8 @@ $math_data = [
         ],
         [
             'id' => 5,
-            'title' => 'SIÊU THỊ CỦA BÉ',
-            'icon' => '🛒',
+            'title' => 'ĐỒNG HỒ VÀ THỜI GIAN',
+            'icon' => '🕰️',
             'status' => 'upcoming',
             'color' => '#EC4899',
             'description' => 'Học cộng trừ và nhận biết tiền Việt Nam',
@@ -216,7 +216,7 @@ $_SESSION['math_visited'] = true;
             <div class="planet planet-2 current" data-planet="2">📐</div>
             <div class="planet planet-3" data-planet="3">🧩</div>
             <div class="planet planet-4" data-planet="4">🔢</div>
-            <div class="planet planet-5" data-planet="5">🛒</div>
+            <div class="planet planet-5" data-planet="5">🕰️</div>
         </section>
     </div>
 
