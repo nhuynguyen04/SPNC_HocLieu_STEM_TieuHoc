@@ -30,14 +30,14 @@ $math_data = [
             'icon' => '🎯',
             'status' => 'completed',
             'color' => '#EF4444',
-            'description' => 'Chế tạo máy bắn đá mini học về lực và góc bắn',
+            'description' => 'Trò chơi máy bắn đá mini học về lực và góc bắn',
             'learning_time' => '22 phút',
             'activities' => [
                 [
-                    'type' => 'tutorial',
-                    'title' => 'LÀM MÁY BẮN ĐÁ',
-                    'icon' => '🔨',
-                    'description' => 'Hướng dẫn chế tạo máy bắn đá từ vật liệu đơn giản',
+                    'type' => 'game',
+                    'title' => 'CHẾ TẠO MÁY BẮN ĐÁ',
+                    'icon' => '🎮',
+                    'description' => 'Trò chơi chế tạo máy bắn đá từ vật liệu đơn giản',
                     'status' => 'completed',
                     'xp' => 35
                 ]
@@ -46,25 +46,25 @@ $math_data = [
         [
             'id' => 2,
             'title' => 'NHẬN BIẾT HÌNH HỌC',
-            'icon' => '📐',
+            'icon' => '🔺',
             'status' => 'current',
             'color' => '#3B82F6',
-            'description' => 'Học về các loại góc qua video và trò chơi',
+            'description' => 'Trò chơi học về các hình học qua thử thách',
             'learning_time' => '18 phút',
             'activities' => [
                 [
-                    'type' => 'video',
-                    'title' => 'VIDEO NHẬN BIẾT GÓC',
-                    'icon' => '📺',
-                    'description' => 'Xem video về góc vuông, góc nhọn, góc tù',
+                    'type' => 'game',
+                    'title' => 'TRÒ CHƠI NHẬN BIẾT GÓC',
+                    'icon' => '🎯',
+                    'description' => 'Trò chơi phân biệt góc vuông, góc nhọn, góc tù',
                     'status' => 'current',
                     'xp' => 30
                 ],
                 [
                     'type' => 'game',
-                    'title' => 'TRÒ CHƠI PHÂN LOẠI GÓC',
-                    'icon' => '🎮',
-                    'description' => 'Phân loại các loại góc khác nhau',
+                    'title' => 'THỬ THÁCH HÌNH HỌC',
+                    'icon' => '🧩',
+                    'description' => 'Trò chơi phân loại các hình học khác nhau',
                     'status' => 'locked',
                     'xp' => 25
                 ]
@@ -76,21 +76,21 @@ $math_data = [
             'icon' => '🧩',
             'status' => 'upcoming',
             'color' => '#10B981',
-            'description' => 'Khám phá tangram không gian 3 chiều thú vị',
+            'description' => 'Trò chơi tangram không gian 3 chiều thú vị',
             'learning_time' => '25 phút',
             'activities' => [
                 [
-                    'type' => 'video',
-                    'title' => 'GIỚI THIỆU TANGRAM',
-                    'icon' => '📺',
-                    'description' => 'Video giới thiệu về tangram và lịch sử',
+                    'type' => 'game',
+                    'title' => 'GIỚI THIỆU TANGRAM 3D',
+                    'icon' => '🎮',
+                    'description' => 'Trò chơi làm quen với tangram 3D',
                     'status' => 'locked',
                     'xp' => 30
                 ],
                 [
-                    'type' => 'puzzle',
-                    'title' => 'GHÉP HÌNH TANGRAM',
-                    'icon' => '🧠',
+                    'type' => 'game',
+                    'title' => 'GHÉP HÌNH TANGRAM 3D',
+                    'icon' => '🔷',
                     'description' => 'Thử thách ghép hình với tangram 3D',
                     'status' => 'locked',
                     'xp' => 40
@@ -103,22 +103,22 @@ $math_data = [
             'icon' => '🔢',
             'status' => 'upcoming',
             'color' => '#F59E0B',
-            'description' => 'Học đếm số và nhận biết số qua video vui nhộn',
+            'description' => 'Trò chơi học đếm số và nhận biết số thú vị',
             'learning_time' => '20 phút',
             'activities' => [
                 [
-                    'type' => 'video',
-                    'title' => 'VIDEO ĐẾM SỐ',
-                    'icon' => '📺',
-                    'description' => 'Video học đếm từ 1 đến 100',
+                    'type' => 'game',
+                    'title' => 'TRÒ CHƠI ĐẾM SỐ',
+                    'icon' => '🎲',
+                    'description' => 'Trò chơi học đếm từ 1 đến 100',
                     'status' => 'locked',
                     'xp' => 25
                 ],
                 [
                     'type' => 'game',
-                    'title' => 'TRÒ CHƠI ĐẾM SỐ',
-                    'icon' => '🎲',
-                    'description' => 'Luyện tập đếm số với trò chơi tương tác',
+                    'title' => 'THỬ THÁCH ĐẾM SỐ',
+                    'icon' => '⭐',
+                    'description' => 'Trò chơi luyện tập đếm số tương tác',
                     'status' => 'locked',
                     'xp' => 35
                 ]
@@ -126,26 +126,26 @@ $math_data = [
         ],
         [
             'id' => 5,
-            'title' => 'ĐỒNG HỒ VÀ THỜI GIAN',
-            'icon' => '🕰️',
+            'title' => 'ĐỒNG HỒ THỜI GIAN',
+            'icon' => '⏰',
             'status' => 'upcoming',
             'color' => '#EC4899',
-            'description' => 'Học cộng trừ và nhận biết tiền Việt Nam',
+            'description' => 'Trò chơi học xem đồng hồ và quản lý thời gian',
             'learning_time' => '28 phút',
             'activities' => [
                 [
-                    'type' => 'tutorial',
-                    'title' => 'GIỚI THIỆU TIỀN VN',
-                    'icon' => '💵',
-                    'description' => 'Nhận biết các mệnh giá tiền Việt Nam',
+                    'type' => 'game',
+                    'title' => 'TRÒ CHƠI ĐỒNG HỒ',
+                    'icon' => '🕹️',
+                    'description' => 'Trò chơi học xem giờ và đặt đồng hồ',
                     'status' => 'locked',
                     'xp' => 30
                 ],
                 [
-                    'type' => 'simulation',
-                    'title' => 'MUA SẮM SIÊU THỊ',
-                    'icon' => '🏪',
-                    'description' => 'Thực hành tính toán khi mua sắm',
+                    'type' => 'game',
+                    'title' => 'QUẢN LÝ THỜI GIAN',
+                    'icon' => '⏳',
+                    'description' => 'Trò chơi thực hành quản lý thời gian hàng ngày',
                     'status' => 'locked',
                     'xp' => 45
                 ]
@@ -213,10 +213,10 @@ $_SESSION['math_visited'] = true;
             <div class="orbit orbit-5"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎯</div>
-            <div class="planet planet-2 current" data-planet="2">📐</div>
+            <div class="planet planet-2 current" data-planet="2">🔺</div>
             <div class="planet planet-3" data-planet="3">🧩</div>
             <div class="planet planet-4" data-planet="4">🔢</div>
-            <div class="planet planet-5" data-planet="5">🕰️</div>
+            <div class="planet planet-5" data-planet="5">⏰</div>
         </section>
     </div>
 

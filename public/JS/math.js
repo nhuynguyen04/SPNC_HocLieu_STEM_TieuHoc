@@ -6,42 +6,42 @@ const planets = {
         name: "MÁY BẮN ĐÁ MINI",
         icon: "🎯",
         status: "completed",
-        description: "Chế tạo máy bắn đá mini học về lực và góc bắn",
+        description: "Trò chơi máy bắn đá mini học về lực và góc bắn",
         time: "22 phút",
         xp: "35 XP",
         activities: [
             { 
-                type: "tutorial", 
-                name: "Làm máy bắn đá", 
-                icon: "🔨", 
+                type: "game", 
+                name: "Chế tạo máy bắn đá", 
+                icon: "🎮", 
                 xp: "35 XP", 
-                link: baseUrl + '/views/lessons/math_catapult_tutorial', 
+                link: baseUrl + '/views/lessons/math_catapult_game', 
                 status: "completed" 
             }
         ]
     },
     2: {
-        name: "NHẬN BIẾT GÓC",
-        icon: "📐",
+        name: "NHẬN BIẾT HÌNH HỌC",
+        icon: "🔺",
         status: "current",
-        description: "Học về các loại góc qua video và trò chơi",
+        description: "Trò chơi học về các hình học qua thử thách",
         time: "18 phút",
         xp: "55 XP",
         activities: [
             { 
-                type: "video", 
-                name: "Video nhận biết góc", 
-                icon: "📺", 
+                type: "game", 
+                name: "Trò chơi nhận biết góc", 
+                icon: "🎯", 
                 xp: "30 XP",
-                link: baseUrl + '/views/lessons/math_angles_video', 
+                link: baseUrl + '/views/lessons/math_shapes_game', 
                 status: "current" 
             },
             { 
                 type: "game", 
-                name: "Trò chơi phân loại góc", 
-                icon: "🎮", 
+                name: "Thử thách hình học", 
+                icon: "🧩", 
                 xp: "25 XP",
-                link: baseUrl + '/views/lessons/math_angles_game', 
+                link: baseUrl + '/views/lessons/math_shapes_challenge', 
                 status: "locked" 
             }
         ]
@@ -50,24 +50,24 @@ const planets = {
         name: "TANGRAM 3D", 
         icon: "🧩",
         status: "locked",
-        description: "Khám phá tangram không gian 3 chiều thú vị",
+        description: "Trò chơi tangram không gian 3 chiều thú vị",
         time: "25 phút", 
         xp: "70 XP",
         activities: [
             { 
-                type: "video", 
-                name: "Giới thiệu tangram", 
-                icon: "📺", 
+                type: "game", 
+                name: "Giới thiệu tangram 3D", 
+                icon: "🎮", 
                 xp: "30 XP",
-                link: baseUrl + '/views/lessons/math_tangram_video', 
+                link: baseUrl + '/views/lessons/math_tangram_intro', 
                 status: "locked" 
             },
             { 
-                type: "puzzle", 
-                name: "Ghép hình tangram", 
-                icon: "🧠", 
+                type: "game", 
+                name: "Ghép hình tangram 3D", 
+                icon: "🔷", 
                 xp: "40 XP",
-                link: baseUrl + '/views/lessons/math_tangram_puzzle', 
+                link: baseUrl + '/views/lessons/math_tangram_3d', 
                 status: "locked" 
             }
         ]
@@ -76,50 +76,50 @@ const planets = {
         name: "ĐẾM SỐ THÔNG MINH",
         icon: "🔢",
         status: "locked",
-        description: "Học đếm số và nhận biết số qua video vui nhộn",
+        description: "Trò chơi học đếm số và nhận biết số thú vị",
         time: "20 phút",
         xp: "60 XP",
         activities: [
             { 
-                type: "video", 
-                name: "Video đếm số", 
-                icon: "📺", 
+                type: "game", 
+                name: "Trò chơi đếm số", 
+                icon: "🎲", 
                 xp: "25 XP",
-                link: baseUrl + '/views/lessons/math_counting_video', 
+                link: baseUrl + '/views/lessons/math_counting_game', 
                 status: "locked" 
             },
             { 
                 type: "game", 
-                name: "Trò chơi đếm số", 
-                icon: "🎲", 
+                name: "Thử thách đếm số", 
+                icon: "⭐", 
                 xp: "35 XP",
-                link: baseUrl + '/views/lessons/math_counting_game', 
+                link: baseUrl + '/views/lessons/math_counting_challenge', 
                 status: "locked" 
             }
         ]
     },
     5: {
-        name: "SIÊU THỊ CỦA BÉ",
-        icon: "🛒",
+        name: "ĐỒNG HỒ THỜI GIAN",
+        icon: "⏰",
         status: "locked",
-        description: "Học cộng trừ và nhận biết tiền Việt Nam",
+        description: "Trò chơi học xem đồng hồ và quản lý thời gian",
         time: "28 phút",
         xp: "75 XP",
         activities: [
             { 
-                type: "tutorial", 
-                name: "Giới thiệu tiền VN", 
-                icon: "💵", 
+                type: "game", 
+                name: "Trò chơi đồng hồ", 
+                icon: "🕹️", 
                 xp: "30 XP",
-                link: baseUrl + '/views/lessons/math_money_tutorial', 
+                link: baseUrl + '/views/lessons/math_clock_game', 
                 status: "locked" 
             },
             { 
-                type: "simulation", 
-                name: "Mua sắm siêu thị", 
-                icon: "🏪", 
+                type: "game", 
+                name: "Quản lý thời gian", 
+                icon: "⏳", 
                 xp: "45 XP",
-                link: baseUrl + '/views/lessons/math_shopping_simulation', 
+                link: baseUrl + '/views/lessons/math_time_management', 
                 status: "locked" 
             }
         ]
