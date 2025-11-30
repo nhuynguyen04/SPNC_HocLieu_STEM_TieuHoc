@@ -20,7 +20,7 @@ $technology_data = [
     'stats' => [
         'completed' => 1,
         'current' => 1,
-        'upcoming' => 3,
+        'upcoming' => 7,
         'total_xp' => 75
     ],
     'topics' => [
@@ -150,6 +150,114 @@ $technology_data = [
                     'xp' => 35
                 ]
             ]
+        ],
+        [
+            'id' => 6,
+            'title' => 'TẠO MỘT TẤM THIỆP ĐIỆN TỬ',
+            'icon' => '💌',
+            'status' => 'upcoming',
+            'color' => '#EC4899',
+            'description' => 'Học cách tạo thiệp điện tử và chia sẻ tác phẩm',
+            'learning_time' => '28 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'THIẾT KẾ THIỆP',
+                    'icon' => '🎨',
+                    'description' => 'Học cách thiết kế thiệp điện tử',
+                    'status' => 'locked',
+                    'xp' => 30
+                ],
+                [
+                    'type' => 'share',
+                    'title' => 'CHIA SẺ TÁC PHẨM',
+                    'icon' => '📤',
+                    'description' => 'Chia sẻ thiệp với bạn bè',
+                    'status' => 'locked',
+                    'xp' => 25
+                ]
+            ]
+        ],
+        [
+            'id' => 7,
+            'title' => 'EM LÀ NGƯỜI ĐÁNH MÁY',
+            'icon' => '⌨️',
+            'status' => 'upcoming',
+            'color' => '#10B981',
+            'description' => 'Rèn luyện kỹ năng đánh máy nhanh và chính xác',
+            'learning_time' => '35 phút',
+            'activities' => [
+                [
+                    'type' => 'game',
+                    'title' => 'TRÒ CHƠI ĐÁNH MÁY',
+                    'icon' => '🎮',
+                    'description' => 'Luyện tập đánh máy qua trò chơi',
+                    'status' => 'locked',
+                    'xp' => 40
+                ],
+                [
+                    'type' => 'practice',
+                    'title' => 'THỰC HÀNH TỐC KÝ',
+                    'icon' => '⚡',
+                    'description' => 'Luyện tập tốc độ đánh máy',
+                    'status' => 'locked',
+                    'xp' => 35
+                ]
+            ]
+        ],
+        [
+            'id' => 8,
+            'title' => 'TÌM KIẾM THÔNG TIN HỮU ÍCH',
+            'icon' => '🔍',
+            'status' => 'upcoming',
+            'color' => '#F59E0B',
+            'description' => 'Học kỹ năng tìm kiếm thông tin trên Internet',
+            'learning_time' => '32 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'KỸ NĂNG TÌM KIẾM',
+                    'icon' => '📚',
+                    'description' => 'Học cách tìm kiếm hiệu quả',
+                    'status' => 'locked',
+                    'xp' => 35
+                ],
+                [
+                    'type' => 'practice',
+                    'title' => 'THỰC HÀNH TÌM KIẾM',
+                    'icon' => '🔎',
+                    'description' => 'Thực hành tìm kiếm thông tin',
+                    'status' => 'locked',
+                    'xp' => 30
+                ]
+            ]
+        ],
+        [
+            'id' => 9,
+            'title' => 'KHÁM PHÁ THẾ GIỚI QUA BẢN ĐỒ SỐ',
+            'icon' => '🗺️',
+            'status' => 'upcoming',
+            'color' => '#3B82F6',
+            'description' => 'Tìm hiểu về bản đồ số và khám phá thế giới',
+            'learning_time' => '26 phút',
+            'activities' => [
+                [
+                    'type' => 'explore',
+                    'title' => 'KHÁM PHÁ BẢN ĐỒ',
+                    'icon' => '🌍',
+                    'description' => 'Khám phá thế giới qua bản đồ số',
+                    'status' => 'locked',
+                    'xp' => 30
+                ],
+                [
+                    'type' => 'game',
+                    'title' => 'TRÒ CHƠI ĐỊA LÝ',
+                    'icon' => '🎯',
+                    'description' => 'Trò chơi tìm hiểu địa lý',
+                    'status' => 'locked',
+                    'xp' => 25
+                ]
+            ]
         ]
     ]
 ];
@@ -187,7 +295,7 @@ $_SESSION['technology_visited'] = true;
                 
                 <div class="mission-title">
                     <h1>HỆ MẶT TRỜI CÔNG NGHỆ</h1>
-                    <p>Khám phá 5 hành tinh tri thức</p>
+                    <p>Khám phá 9 hành tinh tri thức</p>
                 </div>
                 
                 <div class="mission-stats">
@@ -211,12 +319,20 @@ $_SESSION['technology_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
+            <div class="orbit orbit-6"></div>
+            <div class="orbit orbit-7"></div>
+            <div class="orbit orbit-8"></div>
+            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🌳</div>
             <div class="planet planet-2 current" data-planet="2">🎨</div>
             <div class="planet planet-3" data-planet="3">🛡️</div>
             <div class="planet planet-4" data-planet="4">🧩</div>
             <div class="planet planet-5" data-planet="5">💻</div>
+            <div class="planet planet-6" data-planet="6">💌</div>
+            <div class="planet planet-7" data-planet="7">⌨️</div>
+            <div class="planet planet-8" data-planet="8">🔍</div>
+            <div class="planet planet-9" data-planet="9">🗺️</div>
         </section>
     </div>
 

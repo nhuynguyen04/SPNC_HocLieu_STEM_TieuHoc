@@ -20,7 +20,7 @@ $engineering_data = [
     'stats' => [
         'completed' => 1,
         'current' => 1,
-        'upcoming' => 3,
+        'upcoming' => 7,
         'total_xp' => 60
     ],
     'topics' => [
@@ -150,6 +150,114 @@ $engineering_data = [
                     'xp' => 45
                 ]
             ]
+        ],
+        [
+            'id' => 6,
+            'title' => 'HỆ THỐNG LỌC NƯỚC CƠ BẢN',
+            'icon' => '💧',
+            'status' => 'upcoming',
+            'color' => '#06B6D4',
+            'description' => 'Tìm hiểu và chế tạo hệ thống lọc nước đơn giản',
+            'learning_time' => '40 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'NGUYÊN LÝ LỌC NƯỚC',
+                    'icon' => '🔬',
+                    'description' => 'Học về các phương pháp lọc nước cơ bản',
+                    'status' => 'locked',
+                    'xp' => 35
+                ],
+                [
+                    'type' => 'experiment',
+                    'title' => 'CHẾ TẠO BỘ LỌC',
+                    'icon' => '🧪',
+                    'description' => 'Tự làm hệ thống lọc nước từ vật liệu đơn giản',
+                    'status' => 'locked',
+                    'xp' => 40
+                ]
+            ]
+        ],
+        [
+            'id' => 7,
+            'title' => 'LÀM ĐÈN TRUNG THU',
+            'icon' => '🏮',
+            'status' => 'upcoming',
+            'color' => '#F59E0B',
+            'description' => 'Sáng tạo đèn Trung thu từ vật liệu tái chế',
+            'learning_time' => '45 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'THIẾT KẾ ĐÈN',
+                    'icon' => '🎨',
+                    'description' => 'Học cách thiết kế đèn Trung thu sáng tạo',
+                    'status' => 'locked',
+                    'xp' => 30
+                ],
+                [
+                    'type' => 'craft',
+                    'title' => 'THỰC HÀNH LÀM ĐÈN',
+                    'icon' => '✂️',
+                    'description' => 'Tự tay làm đèn Trung thu độc đáo',
+                    'status' => 'locked',
+                    'xp' => 35
+                ]
+            ]
+        ],
+        [
+            'id' => 8,
+            'title' => 'CHẾ TẠO DÙ CHO QUẢ TRỨNG',
+            'icon' => '🥚',
+            'status' => 'upcoming',
+            'color' => '#8B5CF6',
+            'description' => 'Thiết kế dù bảo vệ trứng không vỡ khi rơi',
+            'learning_time' => '50 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'NGUYÊN LÝ KHÍ ĐỘNG',
+                    'icon' => '💨',
+                    'description' => 'Tìm hiểu về lực cản không khí và thiết kế dù',
+                    'status' => 'locked',
+                    'xp' => 40
+                ],
+                [
+                    'type' => 'challenge',
+                    'title' => 'THỬ THÁCH TRỨNG RƠI',
+                    'icon' => '🏆',
+                    'description' => 'Thiết kế và thử nghiệm dù bảo vệ trứng',
+                    'status' => 'locked',
+                    'xp' => 45
+                ]
+            ]
+        ],
+        [
+            'id' => 9,
+            'title' => 'THUYỀN NỔI TRÊN MẶT NƯỚC',
+            'icon' => '⛵',
+            'status' => 'upcoming',
+            'color' => '#3B82F6',
+            'description' => 'Chế tạo thuyền từ vật liệu nhẹ và thử nghiệm nổi',
+            'learning_time' => '35 phút',
+            'activities' => [
+                [
+                    'type' => 'tutorial',
+                    'title' => 'NGUYÊN LÝ NỔI',
+                    'icon' => '📚',
+                    'description' => 'Học về lực đẩy Archimedes và thiết kế thuyền',
+                    'status' => 'locked',
+                    'xp' => 30
+                ],
+                [
+                    'type' => 'experiment',
+                    'title' => 'THỬ NGHIỆM THUYỀN',
+                    'icon' => '🌊',
+                    'description' => 'Chế tạo và thử nghiệm thuyền trên nước',
+                    'status' => 'locked',
+                    'xp' => 35
+                ]
+            ]
         ]
     ]
 ];
@@ -187,7 +295,7 @@ $_SESSION['engineering_visited'] = true;
                 
                 <div class="mission-title">
                     <h1>HỆ MẶT TRỜI KỸ THUẬT</h1>
-                    <p>Khám phá 5 hành tinh sáng tạo</p>
+                    <p>Khám phá 9 hành tinh sáng tạo</p>
                 </div>
                 
                 <div class="mission-stats">
@@ -211,12 +319,20 @@ $_SESSION['engineering_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
+            <div class="orbit orbit-6"></div>
+            <div class="orbit orbit-7"></div>
+            <div class="orbit orbit-8"></div>
+            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">👕</div>
             <div class="planet planet-2 current" data-planet="2">🌺</div>
             <div class="planet planet-3" data-planet="3">🌉</div>
             <div class="planet planet-4" data-planet="4">🚗</div>
             <div class="planet planet-5" data-planet="5">🗼</div>
+            <div class="planet planet-6" data-planet="6">💧</div>
+            <div class="planet planet-7" data-planet="7">🏮</div>
+            <div class="planet planet-8" data-planet="8">🥚</div>
+            <div class="planet planet-9" data-planet="9">⛵</div>
         </section>
     </div>
 

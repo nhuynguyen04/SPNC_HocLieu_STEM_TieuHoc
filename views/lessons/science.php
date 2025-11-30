@@ -20,7 +20,7 @@ $science_data = [
     'stats' => [
         'completed' => 2,
         'current' => 1,
-        'upcoming' => 3, 
+        'upcoming' => 7, 
         'total_xp' => 100
     ],
     'topics' => [
@@ -65,7 +65,7 @@ $science_data = [
             'id' => 4,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
-            'status' => 'upcoming',
+            'status' => 'locked',
             'color' => '#84CC16',
             'description' => 'Học cách phân loại rác bảo vệ môi trường',
             'learning_time' => '16 phút',
@@ -79,7 +79,7 @@ $science_data = [
             'id' => 5,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
             'icon' => '🌱',
-            'status' => 'upcoming',
+            'status' => 'locked',
             'color' => '#16a085',
             'description' => 'Học cách nhận biết các bộ phận của cây',
             'learning_time' => '10 phút',
@@ -92,6 +92,54 @@ $science_data = [
                     'status' => 'locked',
                     'xp' => 30
                 ]
+            ]
+        ],
+        [
+            'id' => 6,
+            'title' => 'LỚP HỌC XANH TỪ VẬT LIỆU TÁI CHẾ',
+            'icon' => '🌿',
+            'status' => 'locked',
+            'color' => '#10B981',
+            'description' => 'Học cách tái chế và bảo vệ môi trường',
+            'learning_time' => '18 phút',
+            'activities' => [
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI TÁI CHẾ', 'icon' => '♻️', 'status' => 'locked', 'xp' => 35 ]
+            ]
+        ],
+        [
+            'id' => 7,
+            'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN KHI Ở NHÀ',
+            'icon' => '🔥',
+            'status' => 'locked',
+            'color' => '#EF4444',
+            'description' => 'Học các kỹ năng phòng cháy chữa cháy cơ bản',
+            'learning_time' => '22 phút',
+            'activities' => [
+                [ 'type' => 'game', 'title' => 'THỰC HÀNH AN TOÀN', 'icon' => '🚒', 'status' => 'locked', 'xp' => 40 ]
+            ]
+        ],
+        [
+            'id' => 8,
+            'title' => 'CÁC CƠ QUAN TRONG CƠ THỂ NGƯỜI',
+            'icon' => '👤',
+            'status' => 'locked',
+            'color' => '#8B5CF6',
+            'description' => 'Khám phá cấu trúc và chức năng các cơ quan',
+            'learning_time' => '25 phút',
+            'activities' => [
+                [ 'type' => 'game', 'title' => 'GHÉP HÌNH CƠ THỂ', 'icon' => '🧩', 'status' => 'locked', 'xp' => 45 ]
+            ]
+        ],
+        [
+            'id' => 9,
+            'title' => 'KHUNG XƯƠNG KÌ DIỆU CỦA CHÚNG TA',
+            'icon' => '🦴',
+            'status' => 'locked',
+            'color' => '#F59E0B',
+            'description' => 'Tìm hiểu về hệ xương và chức năng của nó',
+            'learning_time' => '20 phút',
+            'activities' => [
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI XƯƠNG', 'icon' => '🎮', 'status' => 'locked', 'xp' => 40 ]
             ]
         ]
     ]
@@ -130,7 +178,7 @@ $_SESSION['science_visited'] = true;
                 
                 <div class="mission-title">
                     <h1>HỆ MẶT TRỜI KHOA HỌC</h1>
-                    <p>Khám phá 5 hành tinh tri thức</p>
+                    <p>Khám phá 9 hành tinh tri thức</p>
                 </div>
                 
                 <div class="mission-stats">
@@ -155,12 +203,20 @@ $_SESSION['science_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
+            <div class="orbit orbit-6"></div>
+            <div class="orbit orbit-7"></div>
+            <div class="orbit orbit-8"></div>
+            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
             <div class="planet planet-4" data-planet="4">🗑️</div>
             <div class="planet planet-5" data-planet="5">🌱</div>
+            <div class="planet planet-6" data-planet="6">🌿</div>
+            <div class="planet planet-7" data-planet="7">🔥</div>
+            <div class="planet planet-8" data-planet="8">👤</div>
+            <div class="planet planet-9" data-planet="9">🦴</div>
         </section>
     </div>
 

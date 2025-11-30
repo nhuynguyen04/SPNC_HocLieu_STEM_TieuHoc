@@ -124,6 +124,110 @@ const planets = {
                 status: "locked" 
             }
         ]
+    },
+    6: {
+        name: "TẠO MỘT TẤM THIỆP ĐIỆN TỬ",
+        icon: "💌",
+        status: "locked",
+        description: "Học cách tạo thiệp điện tử và chia sẻ tác phẩm với bạn bè",
+        time: "28 phút",
+        xp: "55 XP",
+        activities: [
+            { 
+                type: "tutorial", 
+                name: "Thiết kế thiệp", 
+                icon: "🎨", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/technology_card_design', 
+                status: "locked" 
+            },
+            { 
+                type: "share", 
+                name: "Chia sẻ tác phẩm", 
+                icon: "📤", 
+                xp: "25 XP",
+                link: baseUrl + '/views/lessons/technology_card_share', 
+                status: "locked" 
+            }
+        ]
+    },
+    7: {
+        name: "EM LÀ NGƯỜI ĐÁNH MÁY",
+        icon: "⌨️",
+        status: "locked",
+        description: "Rèn luyện kỹ năng đánh máy nhanh và chính xác",
+        time: "35 phút",
+        xp: "75 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Trò chơi đánh máy", 
+                icon: "🎮", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/technology_typing_game', 
+                status: "locked" 
+            },
+            { 
+                type: "practice", 
+                name: "Thực hành tốc ký", 
+                icon: "⚡", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/technology_typing_practice', 
+                status: "locked" 
+            }
+        ]
+    },
+    8: {
+        name: "TÌM KIẾM THÔNG TIN HỮU ÍCH",
+        icon: "🔍",
+        status: "locked",
+        description: "Học kỹ năng tìm kiếm thông tin trên Internet hiệu quả",
+        time: "32 phút",
+        xp: "65 XP",
+        activities: [
+            { 
+                type: "tutorial", 
+                name: "Kỹ năng tìm kiếm", 
+                icon: "📚", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/technology_search_skills', 
+                status: "locked" 
+            },
+            { 
+                type: "practice", 
+                name: "Thực hành tìm kiếm", 
+                icon: "🔎", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/technology_search_practice', 
+                status: "locked" 
+            }
+        ]
+    },
+    9: {
+        name: "KHÁM PHÁ THẾ GIỚI QUA BẢN ĐỒ SỐ",
+        icon: "🗺️",
+        status: "locked",
+        description: "Tìm hiểu về bản đồ số và khám phá thế giới xung quanh",
+        time: "26 phút",
+        xp: "55 XP",
+        activities: [
+            { 
+                type: "explore", 
+                name: "Khám phá bản đồ", 
+                icon: "🌍", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/technology_map_explore', 
+                status: "locked" 
+            },
+            { 
+                type: "game", 
+                name: "Trò chơi địa lý", 
+                icon: "🎯", 
+                xp: "25 XP",
+                link: baseUrl + '/views/lessons/technology_geography_game', 
+                status: "locked" 
+            }
+        ]
     }
 };
 
@@ -264,7 +368,7 @@ function initTechnologySystem() {
 
     characterBtn.addEventListener('click', function() {
         console.log('🤖 Character clicked');
-        alert('Xin chào! Mình là Robot Công Nghệ! 🤖\nCùng mình khám phá 5 chủ đề công nghệ siêu thú vị nhé!');
+        alert('Xin chào! Mình là Robot Công Nghệ! 🤖\nCùng mình khám phá 9 chủ đề công nghệ siêu thú vị nhé!');
     });
 
     planetInfoOverlay.addEventListener('click', function(e) {

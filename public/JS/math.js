@@ -123,6 +123,110 @@ const planets = {
                 status: "locked" 
             }
         ]
+    },
+    6: {
+        name: "PHÉP ĐỐI XỨNG DIỆU KỲ",
+        icon: "🦋",
+        status: "locked",
+        description: "Khám phá phép đối xứng qua các hình ảnh và trò chơi thú vị",
+        time: "30 phút",
+        xp: "75 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Trò chơi đối xứng", 
+                icon: "🎮", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/math_symmetry_game', 
+                status: "locked" 
+            },
+            { 
+                type: "puzzle", 
+                name: "Ghép hình đối xứng", 
+                icon: "🧩", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/math_symmetry_puzzle', 
+                status: "locked" 
+            }
+        ]
+    },
+    7: {
+        name: "SIÊU THỊ CỦA BÉ",
+        icon: "🛒",
+        status: "locked",
+        description: "Học toán qua mô phỏng mua sắm và tính tiền tại siêu thị",
+        time: "35 phút",
+        xp: "75 XP",
+        activities: [
+            { 
+                type: "simulation", 
+                name: "Mua sắm thông minh", 
+                icon: "💰", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/math_supermarket_simulation', 
+                status: "locked" 
+            },
+            { 
+                type: "game", 
+                name: "Tính tiền nhanh", 
+                icon: "⚡", 
+                xp: "45 XP",
+                link: baseUrl + '/views/lessons/math_money_calculation', 
+                status: "locked" 
+            }
+        ]
+    },
+    8: {
+        name: "MÊ CUNG SỐ HỌC",
+        icon: "🌀",
+        status: "locked",
+        description: "Giải cứu qua mê cung bằng cách giải các bài toán số học thú vị",
+        time: "40 phút",
+        xp: "75 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Thám hiểm mê cung", 
+                icon: "🗺️", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/math_maze_adventure', 
+                status: "locked" 
+            },
+            { 
+                type: "puzzle", 
+                name: "Câu đố mê cung", 
+                icon: "🔐", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/math_maze_puzzle', 
+                status: "locked" 
+            }
+        ]
+    },
+    9: {
+        name: "SẮP XẾP THEO QUY LUẬT",
+        icon: "🔢",
+        status: "locked",
+        description: "Nhận biết và áp dụng các quy luật sắp xếp trong toán học",
+        time: "25 phút",
+        xp: "55 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Tìm quy luật", 
+                icon: "🎯", 
+                xp: "30 XP",
+                link: baseUrl + '/views/lessons/math_pattern_game', 
+                status: "locked" 
+            },
+            { 
+                type: "puzzle", 
+                name: "Sắp xếp thông minh", 
+                icon: "🧠", 
+                xp: "25 XP",
+                link: baseUrl + '/views/lessons/math_pattern_puzzle', 
+                status: "locked" 
+            }
+        ]
     }
 };
 
@@ -266,7 +370,7 @@ function initMathSystem() {
 
     characterBtn.addEventListener('click', function() {
         console.log('🐰 Character clicked');
-        alert('Chào bạn nhỏ! Mình là Thỏ Toán Học! 🐰\nCùng mình khám phá 5 chủ đề toán học siêu vui nhé!');
+        alert('Chào bạn nhỏ! Mình là Thỏ Toán Học! 🐰\nCùng mình khám phá 9 chủ đề toán học siêu vui nhé!');
     });
 
     planetInfoOverlay.addEventListener('click', function(e) {

@@ -69,6 +69,78 @@ const planets = {
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
               link: baseUrl + '/views/lessons/science_plant_game', status: "locked" }
         ]
+    },
+    6: {
+        name: "LỚP HỌC XANH TỪ VẬT LIỆU TÁI CHẾ",
+        icon: "🌿",
+        status: "locked",
+        description: "Học cách tái chế và bảo vệ môi trường từ những vật liệu đơn giản",
+        time: "18 phút",
+        xp: "35 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Trò chơi tái chế", 
+                icon: "♻️", 
+                xp: "35 XP",
+                link: baseUrl + '/views/lessons/science_recycle_game', 
+                status: "locked" 
+            }
+        ]
+    },
+    7: {
+        name: "CẨM NANG PHÒNG TRÁNH HỎA HOẠN KHI Ở NHÀ",
+        icon: "🔥",
+        status: "locked",
+        description: "Học các kỹ năng phòng cháy chữa cháy và an toàn khi ở nhà",
+        time: "22 phút",
+        xp: "40 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Thực hành an toàn", 
+                icon: "🚒", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/science_fire_safety', 
+                status: "locked" 
+            }
+        ]
+    },
+    8: {
+        name: "CÁC CƠ QUAN TRONG CƠ THỂ NGƯỜI",
+        icon: "👤",
+        status: "locked",
+        description: "Khám phá cấu trúc và chức năng của các cơ quan trong cơ thể",
+        time: "25 phút",
+        xp: "45 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Ghép hình cơ thể", 
+                icon: "🧩", 
+                xp: "45 XP",
+                link: baseUrl + '/views/lessons/science_organs_game', 
+                status: "locked" 
+            }
+        ]
+    },
+    9: {
+        name: "KHUNG XƯƠNG KÌ DIỆU CỦA CHÚNG TA",
+        icon: "🦴",
+        status: "locked",
+        description: "Tìm hiểu về hệ xương và các chức năng quan trọng của nó",
+        time: "20 phút",
+        xp: "40 XP",
+        activities: [
+            { 
+                type: "game", 
+                name: "Trò chơi xương", 
+                icon: "🎮", 
+                xp: "40 XP",
+                link: baseUrl + '/views/lessons/science_skeleton_game', 
+                status: "locked" 
+            }
+        ]
     }
 };
 
