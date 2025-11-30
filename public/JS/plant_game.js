@@ -151,49 +151,49 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Finish button: commit score to server then navigate back on success
+    // Finish button
     if (finishButton) {
         finishButton.addEventListener('click', async (e) => {
             e.preventDefault();
+            
+            // Kiểm tra xem đã ghép đủ chưa (logic client)
+            if (correctDrops < totalDrops) {
+                showFeedback('Bạn chưa ghép xong tất cả các bộ phận!', 'hint');
+                return;
+            }
+
             finishButton.disabled = true;
             finishButton.textContent = 'Đang xử lý...';
+            
             try {
                 const resp = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    // send explicit game_id to avoid relying on name resolution
                     body: JSON.stringify({ action: 'commit', game_id: 2, total_drops: totalDrops })
                 });
+                
+                // ... (đoạn xử lý json giống cũ) ...
                 const ct = resp.headers.get('content-type') || '';
                 let data = null;
                 if (ct.indexOf('application/json') !== -1) data = await resp.json();
-                else data = { success: false, message: 'Non-JSON response' };
+                else data = { success: false };
 
                 if (data && data.success) {
-                    // update score display if server included newScore
-                    if (data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
-                    if (data.score !== undefined) scoreDisplay.textContent = data.score;
-                    if (data.completed) showFeedback('🎉 Điểm đã được lưu và hoàn thành!', 'win');
-                    else showFeedback('Điểm đã được lưu.', 'win');
-
-                    // behave like Back button after short delay
-                    setTimeout(() => {
-                        const href = backButton ? backButton.getAttribute('href') : `${baseUrl}/views/lessons/science.php`;
-                        window.location.href = href;
-                    }, 1500);
+                    // *** QUAN TRỌNG: GỌI HÀM HIỆN MODAL ***
+                    showWinModal(); 
                 } else {
-                    const msg = (data && data.message) ? data.message : 'Không thể lưu điểm.';
-                    if (data && data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
-                    showFeedback(msg, 'hint');
+                    showFeedback('Có lỗi xảy ra khi lưu điểm.', 'hint');
                 }
             } catch (err) {
-                console.error('Finish commit error:', err);
-                showFeedback('Lỗi khi lưu điểm. Vui lòng thử lại.', 'hint');
+                console.error(err);
             } finally {
                 finishButton.disabled = false;
                 finishButton.textContent = 'Hoàn thành';
             }
         });
     }
+
+
 
     // Hàm hiển thị thông báo
     function showFeedback(message, type) {
@@ -234,6 +234,52 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (error) {
             console.error("Lỗi cập nhật điểm:", error);
+        }
+    }
+
+    function showWinModal() {
+        const winModal = document.getElementById('win-modal');
+        const nextLevelBtn = document.getElementById('next-level-btn');
+        const replayAllBtn = document.getElementById('replay-all-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        
+        // Lấy biến từ window (do view truyền sang)
+        const nextType = window.nextPlantType; 
+
+        // Hiển thị modal
+        if (winModal) winModal.style.display = 'flex';
+
+        // Kiểm tra xem có màn tiếp theo không
+        if (nextType) {
+            // CÒN MÀN -> Hiện nút Next
+            if(nextLevelBtn) {
+                nextLevelBtn.style.display = 'block';
+                nextLevelBtn.onclick = () => {
+                    window.location.href = `${baseUrl}/views/lessons/plant-game?type=${nextType}`;
+                };
+            }
+            if(replayAllBtn) replayAllBtn.style.display = 'none';
+        } else {
+            // HẾT MÀN -> Hiện nút Chơi lại từ đầu
+            if(nextLevelBtn) nextLevelBtn.style.display = 'none';
+            if(replayAllBtn) {
+                replayAllBtn.style.display = 'block';
+                replayAllBtn.onclick = () => {
+                    window.location.href = `${baseUrl}/views/lessons/plant-game?type=hoa`;
+                };
+            }
+            
+            // Đổi lời chúc
+            const title = document.querySelector('#win-modal h2');
+            const msg = document.querySelector('#win-modal p');
+            if(title) title.textContent = "🏆 HOÀN THÀNH TẤT CẢ! 🏆";
+            if(msg) msg.textContent = "Bạn đã giải mã hết các loại cây. Quá tuyệt vời!";
+        }
+
+        if(closeModalBtn) {
+            closeModalBtn.onclick = () => {
+                if(winModal) winModal.style.display = 'none';
+            };
         }
     }
 });

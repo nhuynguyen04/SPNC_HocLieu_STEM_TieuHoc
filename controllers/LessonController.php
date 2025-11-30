@@ -1263,4 +1263,7 @@ class LessonController {
         require_once __DIR__ . '/../views/lessons/engineering_flower_mechanism.php';
     }
 
+    public function showBridgeGame() {
+        require_once 'views/lessons/engineering_bridge_game.php';
+    }
 }

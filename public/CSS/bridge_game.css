@@ -1,0 +1,27 @@
+/* public/CSS/bridge_game.css */
+body { 
+    margin: 0; 
+    padding: 0; 
+    overflow: hidden; 
+    background-color: #87CEEB; 
+    font-family: Arial, sans-serif; 
+    user-select: none; 
+    background-image: url('../images/bridge_game/bg_milkyway_stars.png');
+}
+#ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.header-bar { display: flex; justify-content: space-between; padding: 20px; pointer-events: auto; }
+.btn { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #fff; color: white; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: transform 0.1s; }
+.btn:active { transform: scale(0.95); }
+.btn-replay { background: #f1c40f; }
+.btn-play { background: #e67e22; }
+.btn-next { background: #2ecc71; opacity: 0.5; pointer-events: none; }
+.btn-next.active { opacity: 1; pointer-events: auto; cursor: pointer; }
+.game-info { font-size: 24px; color: #d35400; font-weight: bold; text-shadow: 1px 1px 0 #fff; }
+
+#supply-zone {
+    position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 150px; border: 4px solid #e67e22; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; pointer-events: none;
+}
+#supply-label { position: absolute; top: -25px; color: #e67e22; font-weight: bold; background: white; padding: 0 10px; border-radius: 5px; }
+#status-msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; font-weight: bold; color: white; text-shadow: 2px 2px 4px #000; display: none; z-index: 10; }
