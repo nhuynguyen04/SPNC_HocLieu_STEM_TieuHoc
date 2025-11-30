@@ -10,11 +10,14 @@ $subjects = [
         'gradient' => 'linear-gradient(135deg, #4CAF50 0%, #81C784 100%)',
         'icon' => '🔬',
         'lessons' => [
-            ['title' => 'Thế giới màu sắc', 'type' => 'TLCH - TC', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Bí kíp ăn uống lành mạnh', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Ngày và đêm', 'type' => 'TLCH', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Cẩm nang phòng tránh hỏa hoạn khi ở nhà', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Thùng rác thân thiện', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Thế giới màu sắc', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Bí kíp ăn uống lành mạnh', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Ngày và đêm', 'type' => 'Trả lời câu hỏi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Thùng rác thân thiện', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Các bộ phận của cây', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Cẩm nang phòng tránh hỏa hoạn khi ở nhà', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Các cơ quan trong cơ thể người', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Khung xương kì diệu của chúng ta ', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
         ]
     ],
     'cong_nghe' => [
@@ -23,9 +26,8 @@ $subjects = [
         'gradient' => 'linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)',
         'icon' => '💻',
         'lessons' => [
-            ['title' => 'Cây gia đình', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Cây gia đình', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Em là họa sĩ máy tính', 'type' => 'Chia sẻ tác phẩm', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'An toàn trên Internet', 'type' => 'TLCH', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Lập trình viên nhí với Scratch', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Các bộ phận của máy tính', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
         ]

@@ -70,8 +70,7 @@ $science_data = [
             'description' => 'Học cách phân loại rác bảo vệ môi trường',
             'learning_time' => '16 phút',
             'activities' => [
-                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHÂN LOẠI', 'icon' => '♻️', 'status' => 'locked', 'xp' => 30 ],
-                [ 'type' => 'question', 'title' => 'TRẢ LỜI CÂU HỎI', 'icon' => '❓', 'status' => 'locked', 'xp' => 20 ]
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHÂN LOẠI', 'icon' => '♻️', 'status' => 'locked', 'xp' => 30 ]
             ]
         ],
 
@@ -96,18 +95,6 @@ $science_data = [
         ],
         [
             'id' => 6,
-            'title' => 'LỚP HỌC XANH TỪ VẬT LIỆU TÁI CHẾ',
-            'icon' => '🌿',
-            'status' => 'locked',
-            'color' => '#10B981',
-            'description' => 'Học cách tái chế và bảo vệ môi trường',
-            'learning_time' => '18 phút',
-            'activities' => [
-                [ 'type' => 'game', 'title' => 'TRÒ CHƠI TÁI CHẾ', 'icon' => '♻️', 'status' => 'locked', 'xp' => 35 ]
-            ]
-        ],
-        [
-            'id' => 7,
             'title' => 'CẨM NANG PHÒNG TRÁNH HỎA HOẠN KHI Ở NHÀ',
             'icon' => '🔥',
             'status' => 'locked',
@@ -119,7 +106,7 @@ $science_data = [
             ]
         ],
         [
-            'id' => 8,
+            'id' => 7,
             'title' => 'CÁC CƠ QUAN TRONG CƠ THỂ NGƯỜI',
             'icon' => '👤',
             'status' => 'locked',
@@ -131,7 +118,7 @@ $science_data = [
             ]
         ],
         [
-            'id' => 9,
+            'id' => 8,
             'title' => 'KHUNG XƯƠNG KÌ DIỆU CỦA CHÚNG TA',
             'icon' => '🦴',
             'status' => 'locked',
@@ -206,17 +193,15 @@ $_SESSION['science_visited'] = true;
             <div class="orbit orbit-6"></div>
             <div class="orbit orbit-7"></div>
             <div class="orbit orbit-8"></div>
-            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎨</div>
             <div class="planet planet-2 completed" data-planet="2">🍎</div>
             <div class="planet planet-3 current" data-planet="3">🌓</div>
             <div class="planet planet-4" data-planet="4">🗑️</div>
             <div class="planet planet-5" data-planet="5">🌱</div>
-            <div class="planet planet-6" data-planet="6">🌿</div>
-            <div class="planet planet-7" data-planet="7">🔥</div>
-            <div class="planet planet-8" data-planet="8">👤</div>
-            <div class="planet planet-9" data-planet="9">🦴</div>
+            <div class="planet planet-6" data-planet="6">🔥</div>
+            <div class="planet planet-7" data-planet="7">👤</div>
+            <div class="planet planet-8" data-planet="8">🦴</div>
         </section>
     </div>
 

@@ -52,10 +52,8 @@ const planets = {
         time: "16 phút",
         xp: "50 XP",
         activities: [
-                        { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
-                            link: baseUrl + '/views/lessons/science_trash_game', status: "locked" },
-            { type: "question", name: "Trả lời câu hỏi", icon: "❓", xp: "20 XP",
-              link: baseUrl + '/views/lessons/science_trash_questions', status: "locked" }
+            { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
+                link: baseUrl + '/views/lessons/science_trash_game', status: "locked" }
         ]
     },
     5: {
@@ -71,24 +69,6 @@ const planets = {
         ]
     },
     6: {
-        name: "LỚP HỌC XANH TỪ VẬT LIỆU TÁI CHẾ",
-        icon: "🌿",
-        status: "locked",
-        description: "Học cách tái chế và bảo vệ môi trường từ những vật liệu đơn giản",
-        time: "18 phút",
-        xp: "35 XP",
-        activities: [
-            { 
-                type: "game", 
-                name: "Trò chơi tái chế", 
-                icon: "♻️", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/science_recycle_game', 
-                status: "locked" 
-            }
-        ]
-    },
-    7: {
         name: "CẨM NANG PHÒNG TRÁNH HỎA HOẠN KHI Ở NHÀ",
         icon: "🔥",
         status: "locked",
@@ -106,7 +86,7 @@ const planets = {
             }
         ]
     },
-    8: {
+    7: {
         name: "CÁC CƠ QUAN TRONG CƠ THỂ NGƯỜI",
         icon: "👤",
         status: "locked",
@@ -124,7 +104,7 @@ const planets = {
             }
         ]
     },
-    9: {
+    8: {
         name: "KHUNG XƯƠNG KÌ DIỆU CỦA CHÚNG TA",
         icon: "🦴",
         status: "locked",
