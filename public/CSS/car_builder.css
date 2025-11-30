@@ -1,0 +1,115 @@
+.car-builder {
+    width: 95%; max-width: 1200px; margin: 110px auto 20px auto;
+    background: #2c3e50; /* Màu xưởng tối */
+    padding: 20px; border-radius: 15px;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    border: 5px solid #95a5a6;
+}
+.header-game h1 { color: #f1c40f; margin: 0; }
+.instruction { text-align: center; color: #bdc3c7; font-style: italic; margin-bottom: 20px; }
+
+#workshop-area { display: flex; gap: 20px; height: 550px; }
+
+/* CỘT TRÁI: DANH SÁCH PHỤ TÙNG */
+.parts-selector {
+    width: 40%; background: #34495e;
+    border-radius: 10px; padding: 15px;
+    overflow-y: auto;
+}
+.part-category h3 { 
+    color: #3498db; border-bottom: 1px solid #555; 
+    padding-bottom: 5px; margin-top: 0;
+}
+.part-options {
+    display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;
+}
+.part-item {
+    min-width: 80px; height: 80px;
+    background: #fff; border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; border: 3px solid transparent;
+    transition: transform 0.2s;
+}
+.part-item:hover { transform: scale(1.05); }
+.part-item.selected { border-color: #2ecc71; background: #e8f8f5; }
+.part-item img { width: 50px; height: 50px; object-fit: contain; }
+.part-item span { font-size: 0.8em; color: #333; font-weight: bold; margin-top: 2px; }
+
+/* CỘT PHẢI: REVIEW & STATS */
+.preview-area {
+    width: 60%; display: flex; flex-direction: column; gap: 20px;
+}
+
+/* Khung hiển thị xe lắp ráp */
+.car-preview-box {
+    flex: 2; background-color: #555; background-size: cover;
+    border-radius: 10px; border: 4px solid #7f8c8d;
+    position: relative; display: flex; justify-content: center; align-items: center;
+}
+#car-assembly {
+    width: 300px; height: 200px; position: relative;
+}
+/* Các lớp ảnh chồng lên nhau */
+.layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; transition: all 0.3s; }
+.layer.body { z-index: 2; }
+.layer.wheel { z-index: 3; width: 60px; height: 60px; bottom: 10px; top: auto; }
+.layer.wheel.front { left: 200px; } /* Vị trí bánh trước */
+.layer.wheel.back { left: 40px; }   /* Vị trí bánh sau */
+.layer.engine { z-index: 1; opacity: 0.8; } /* Động cơ nằm sau khung */
+.layer.addon { z-index: 4; }
+
+/* Bảng chỉ số */
+.stats-board {
+    flex: 1; background: #ecf0f1; border-radius: 10px; padding: 15px; color: #333;
+}
+.stats-board h3 { margin: 0 0 10px 0; color: #2c3e50; text-align: center; }
+.stat-row { display: flex; align-items: center; margin-bottom: 8px; }
+.stat-label { width: 100px; font-weight: bold; }
+.progress-bar {
+    flex: 1; height: 20px; background: #bdc3c7; border-radius: 10px; overflow: hidden; margin: 0 10px;
+}
+.progress-fill { height: 100%; transition: width 0.5s; }
+.progress-fill.speed { background: #e74c3c; }
+.progress-fill.power { background: #f39c12; }
+.progress-fill.grip { background: #2980b9; }
+.stat-val { width: 30px; font-weight: bold; text-align: right; }
+
+.game-btn.run {
+    width: 100%; padding: 15px; font-size: 1.5em; background: #2ecc71;
+    color: white; border: none; border-radius: 8px; cursor: pointer;
+    font-weight: bold; box-shadow: 0 5px 0 #27ae60; transition: transform 0.1s;
+}
+.game-btn.run:active { transform: translateY(4px); box-shadow: none; }
+
+/* Modal Simulation */
+.modal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 999;
+    justify-content: center; align-items: center;
+}
+.sim-content {
+    background: #fff; width: 80%; max-width: 800px; padding: 20px;
+    border-radius: 15px; text-align: center; color: #333;
+}
+.sim-stage {
+    width: 100%; height: 300px; background-size: cover; background-position: center;
+    position: relative; border: 2px solid #333; margin: 15px 0; overflow: hidden;
+}
+.sim-car {
+    position: absolute; bottom: 20px; left: 10px; width: 150px; height: 100px;
+    transition: left 3s linear; /* Animation chạy xe */
+}
+.sim-car img { width: 100%; height: 100%; object-fit: contain; position: absolute; }
+/* Chỉnh lại vị trí bánh xe trong sim */
+.sim-car .wheel.front { left: 100px; top: 60px; width: 35px; height: 35px; animation: spin 0.5s linear infinite; }
+.sim-car .wheel.back { left: 20px; top: 60px; width: 35px; height: 35px; animation: spin 0.5s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.flag-pole { position: absolute; bottom: 20px; right: 20px; font-size: 3em; }
+
+#sim-message { font-size: 1.5em; font-weight: bold; min-height: 1.5em; }
+#sim-actions button { margin: 0 10px; padding: 10px 20px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer; color: white; }
+#next-level-btn { background: #3498db; }
+#retry-btn { background: #e67e22; }

@@ -1266,4 +1266,74 @@ class LessonController {
     public function showBridgeGame() {
         require_once 'views/lessons/engineering_bridge_game.php';
     }
+
+    /**
+     * TRÒ CHƠI CHẾ TẠO XE
+     */
+    public function showCarBuilderGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Dữ liệu màn chơi (Yêu cầu chỉ số khác nhau)
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Đường Đua Tốc Độ',
+                'desc' => 'Đường bằng phẳng và dài. Hãy chế tạo chiếc xe có Tốc độ cao nhất!',
+                'bg' => 'bg_track.jpg',
+                'req_speed' => 80,    // Yêu cầu Tốc độ
+                'req_power' => 20,    // Yêu cầu Sức mạnh (Leo dốc)
+                'req_grip' => 20      // Yêu cầu Độ bám (Đường trơn)
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Vượt Đèo Dốc',
+                'desc' => 'Ngọn núi rất cao! Xe cần Động cơ mạnh và Bánh lớn để leo dốc.',
+                'bg' => 'bg_hill.jpg',
+                'req_speed' => 30,
+                'req_power' => 70,    // Cần sức mạnh lớn
+                'req_grip' => 40
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Đầm Lầy Trơn Trượt',
+                'desc' => 'Đường rất trơn. Nếu không có Độ bám tốt, xe sẽ bị trượt!',
+                'bg' => 'bg_mud.jpg',
+                'req_speed' => 40,
+                'req_power' => 40,
+                'req_grip' => 80      // Cần độ bám cao
+            ]
+        ];
+
+        // Dữ liệu các bộ phận xe
+        $parts = [
+            'body' => [
+                ['id' => 'sport', 'name' => 'Xe Đua', 'img' => 'body_sport.png', 'speed' => 40, 'power' => 10, 'grip' => 10],
+                ['id' => 'truck', 'name' => 'Xe Tải', 'img' => 'body_truck.png', 'speed' => 10, 'power' => 40, 'grip' => 20],
+                ['id' => 'buggy', 'name' => 'Xe Địa Hình', 'img' => 'body_buggy.png', 'speed' => 25, 'power' => 25, 'grip' => 25],
+            ],
+            'engine' => [
+                ['id' => 'v4', 'name' => 'Động cơ V4', 'img' => 'engine_v4.png', 'speed' => 20, 'power' => 10, 'grip' => 0],
+                ['id' => 'v8', 'name' => 'Động cơ V8', 'img' => 'engine_v8.png', 'speed' => 40, 'power' => 30, 'grip' => 0],
+                ['id' => 'electric', 'name' => 'Động cơ Điện', 'img' => 'engine_electric.png', 'speed' => 30, 'power' => 20, 'grip' => 0],
+            ],
+            'wheel' => [
+                ['id' => 'small', 'name' => 'Bánh Nhỏ', 'img' => 'wheel_small.png', 'speed' => 20, 'power' => 0, 'grip' => 10],
+                ['id' => 'big', 'name' => 'Bánh Lớn', 'img' => 'wheel_big.png', 'speed' => 10, 'power' => 20, 'grip' => 30],
+                ['id' => 'chain', 'name' => 'Bánh Xích', 'img' => 'wheel_chains.png', 'speed' => 5, 'power' => 30, 'grip' => 50],
+            ],
+            'addon' => [
+                ['id' => 'none', 'name' => 'Không', 'img' => '', 'speed' => 0, 'power' => 0, 'grip' => 0],
+                ['id' => 'spoiler', 'name' => 'Cánh Gió', 'img' => 'spoiler.png', 'speed' => 10, 'power' => 0, 'grip' => 20],
+                ['id' => 'booster', 'name' => 'Tên Lửa', 'img' => 'booster.png', 'speed' => 30, 'power' => 10, 'grip' => -10], // Tăng tốc nhưng giảm bám
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/engineering_car_builder.php';
+    }
 }

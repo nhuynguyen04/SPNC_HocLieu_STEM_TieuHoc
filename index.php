@@ -121,6 +121,10 @@ switch ($route) {
     case '/views/lessons/engineering_bridge_game':
         $lessonController->showBridgeGame();
         break;
+        
+    case '/views/lessons/engineering_car_builder':
+        $lessonController->showCarBuilderGame();
+        break;
 
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
