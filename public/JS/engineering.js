@@ -47,10 +47,10 @@ const planets = {
         ]
     },
     3: {
-        name: "XÂY CẦU GIẤY", 
+        name: "XÂY CẦU", 
         icon: "🌉",
         status: "locked",
-        description: "Thiết kế và xây dựng cầu từ giấy A4 chịu lực",
+        description: "Thiết kế và xây dựng cầu",
         time: "35 phút", 
         xp: "75 XP",
         activities: [
@@ -67,13 +67,13 @@ const planets = {
                 name: "Thử thách cầu giấy", 
                 icon: "🏗️", 
                 xp: "35 XP",
-                link: baseUrl + '/views/lessons/engineering_bridge_challenge', 
+                link: baseUrl + '/views/lessons/engineering_bridge_game', 
                 status: "locked" 
             }
         ]
     },
     4: {
-        name: "CHẾ TẠO XE BONG BÓNG",
+        name: "CHẾ TẠO XE",
         icon: "🚗",
         status: "locked",
         description: "Tạo xe chạy bằng lực đẩy từ bong bóng xà phòng",
@@ -90,10 +90,10 @@ const planets = {
             },
             { 
                 type: "experiment", 
-                name: "Thí nghiệm xe bong bóng", 
+                name: "Trò chơi chế tạo xe", 
                 icon: "🧪", 
                 xp: "40 XP",
-                link: baseUrl + '/views/lessons/engineering_balloon_car_experiment', 
+                link: baseUrl + '/views/lessons/engineering_car_builder', 
                 status: "locked" 
             }
         ]
