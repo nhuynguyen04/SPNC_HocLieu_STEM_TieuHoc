@@ -110,6 +110,8 @@
 </div>
 
 <script>
+    window.baseUrl = "<?= $base_url ?>";
+
     const bgImageName = "<?= $currentConfig['bg_image'] ?>";
     const timeLimit = <?= $timeLimit ?>;
 </script>

@@ -1,250 +1,296 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    const draggableParts = document.querySelectorAll(".draggable-label");
-    const dropzones = document.querySelectorAll(".dropzone");
-    const feedbackBox = document.getElementById("plant-feedback");
-    const scoreDisplay = document.getElementById("score"); 
-    const resetButton = document.getElementById("plantResetButton");
-    const finishButton = document.getElementById('plantFinishButton');
-    const backButton = document.querySelector('.back-button');
+    const canvas = document.getElementById("drawing-canvas");
+    const ctx = canvas.getContext("2d");
     
-    // Local reference to baseUrl (defined on the window by the view).
-    const baseUrl = window.baseUrl || '';
-    // Lấy biến màn tiếp theo từ View
-    const nextPlantType = window.nextPlantType;
+    // Các công cụ và nút bấm
+    const toolBtns = document.querySelectorAll(".tool-btn");
+    const colorSwatches = document.querySelectorAll(".color-swatch");
+    const colorPicker = document.getElementById("color-picker");
+    const sizeSlider = document.getElementById("size-slider");
+    const clearBtn = document.getElementById("clear-btn");
+    const saveBtn = document.getElementById("save-btn");
+    const undoBtn = document.getElementById("undo-btn");
 
-    let draggedItem = null;
-    let correctDrops = 0;
-    const totalDrops = dropzones.length; // Đếm số lượng dropzone
+    // Lấy biến từ PHP thông qua window (đã sửa ở bước trước)
+    const appBaseUrl = window.baseUrl || ""; 
 
-    // 1. Xử lý kéo
-    draggableParts.forEach(part => {
-        part.addEventListener("dragstart", (e) => {
-            if (part.classList.contains('dropped')) {
-                e.preventDefault();
-                return;
-            }
-            draggedItem = e.target; 
-            e.dataTransfer.setData("text/plain", e.target.id);
-            setTimeout(() => e.target.classList.add("dragging"), 0);
-        });
+    // Biến trạng thái
+    let isDrawing = false;
+    let currentTool = "brush"; // brush, eraser, line, rect, circle, triangle, bucket
+    let currentColor = "#000000";
+    let currentSize = 5;
+    let startX, startY;
+    let snapshot; 
+    
+    // Lịch sử Undo
+    let history = [];
+    let historyStep = -1;
 
-        part.addEventListener("dragend", () => {
-            if(draggedItem) draggedItem.classList.remove("dragging");
-            draggedItem = null;
-        });
-    });
+    // --- 1. KHỞI TẠO ---
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
 
-    // 2. Xử lý thả
-    dropzones.forEach(zone => {
-        zone.addEventListener("dragover", (e) => {
-            e.preventDefault(); 
-            if (zone.dataset.targetPart !== "filled") { 
-                zone.classList.add("drag-over");
-            }
-        });
-
-        zone.addEventListener("dragleave", () => {
-            zone.classList.remove("drag-over");
-        });
-
-        zone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            zone.classList.remove("drag-over");
-
-            const droppedItemID = e.dataTransfer.getData("text/plain");
-            const droppedItem = document.getElementById(droppedItemID); 
-
-            if (!droppedItem) return;
-
-            const partName = droppedItem.dataset.partName;
-            const targetName = zone.dataset.targetPart;
-            let attempt = parseInt(droppedItem.dataset.attempt, 10);
-
-            if (partName === targetName) {
-                // ĐÚNG
-                zone.appendChild(droppedItem); 
-                
-                droppedItem.classList.add("dropped");
-                droppedItem.setAttribute("draggable", "false");
-                
-                zone.dataset.targetPart = "filled"; 
-
-                let points = 0;
-                if (attempt === 1) {
-                    points = 10;
-                    updateScore(points);
-                }
-
-                correctDrops++; 
-                
-                if (correctDrops === totalDrops) {
-                    // *** LOGIC CHUYỂN MÀN MỚI ***
-                    if (nextPlantType) {
-                        showFeedback("🎉 Xuất sắc! Đang chuyển sang cây tiếp theo...", "win");
-                        // Tự động chuyển sau 2 giây
-                        setTimeout(() => {
-                            // Cấu tạo URL mới: giữ nguyên đường dẫn, chỉ đổi tham số ?type=...
-                            // Cách an toàn nhất là dùng URL object
-                            const currentUrl = new URL(window.location.href);
-                            currentUrl.searchParams.set('type', nextPlantType);
-                            window.location.href = currentUrl.toString();
-                        }, 2000);
-                    } else {
-                        // Hết màn
-                        if (points > 0) {
-                            showFeedback("🏆 CHÚC MỪNG! Bạn đã hoàn thành tất cả các cây!", "win");
-                        } else {
-                            showFeedback("🏆 Bạn đã hoàn thành tất cả các cây!", "win");
-                        }
-                        // Có thể thêm nút về menu chính hoặc alert tại đây
-                    }
-                    // ******************************
-                    
-                } else {
-                    if (points > 0) {
-                        showFeedback(`Chính xác! `, "win");
-                    } else {
-                        showFeedback("Đúng rồi!", "win");
-                    }
-                }
-                
-            } else if (targetName === "filled") {
-                showFeedback("Vị trí này đã được ghép đúng rồi!", "hint");
-            } else {
-                // SAI
-                droppedItem.dataset.attempt = attempt + 1;
-                
-                let targetNameVietnamese = targetName;
-                if(targetName === 'hoa') targetNameVietnamese = 'Hoa';
-                else if(targetName === 'la') targetNameVietnamese = 'Lá';
-                else if(targetName === 'than') targetNameVietnamese = 'Thân';
-                else if(targetName === 're') targetNameVietnamese = 'Rễ';
-                else if(targetName === 'trai' || targetName === 'qua') targetNameVietnamese = 'Quả';
-                else if(targetName === 'cu') targetNameVietnamese = 'Củ';
-                else if(targetName === 'canh') targetNameVietnamese = 'Cành';
-                
-                showFeedback(`Sai vị trí! Vị trí này là dành cho '${targetNameVietnamese}'.`, "wrong");
-            }
-        });
-    });
-
-    // 3. Logic cho nút Reset
-    resetButton.addEventListener('click', () => {
-        fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'reset' })
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload(); 
-            } else {
-                alert("Lỗi! Không thể chơi lại.");
-            }
-        })
-        .catch(error => console.error('Lỗi reset:', error));
-    });
-
-    // Back button
-    if (backButton) {
-        backButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            const href = backButton.getAttribute('href');
-            fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'reset' })
-            })
-            .then(() => {
-                window.location.href = href;
-            })
-            .catch((err) => {
-                console.error('Lỗi reset khi nhấn Quay lại:', err);
-                window.location.href = href;
-            });
-        });
+    function pushHistory() {
+        historyStep++;
+        if (historyStep < history.length) {
+            history.length = historyStep;
+        }
+        history.push(canvas.toDataURL());
     }
 
-    // Finish button
-    if (finishButton) {
-        finishButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            finishButton.disabled = true;
-            finishButton.textContent = 'Đang xử lý...';
-            try {
-                const resp = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'commit', game_id: 2, total_drops: totalDrops })
-                });
-                const ct = resp.headers.get('content-type') || '';
-                let data = null;
-                if (ct.indexOf('application/json') !== -1) data = await resp.json();
-                else data = { success: false, message: 'Non-JSON response' };
-
-                if (data && data.success) {
-                    if (data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
-                    if (data.score !== undefined) scoreDisplay.textContent = data.score;
-                    if (data.completed) showFeedback('🎉 Điểm đã được lưu và hoàn thành!', 'win');
-                    else showFeedback('Điểm đã được lưu.', 'win');
-
-                    setTimeout(() => {
-                        const href = backButton ? backButton.getAttribute('href') : `${baseUrl}/views/lessons/science.php`;
-                        window.location.href = href;
-                    }, 1500);
-                } else {
-                    const msg = (data && data.message) ? data.message : 'Không thể lưu điểm.';
-                    if (data && data.newScore !== undefined) scoreDisplay.textContent = data.newScore;
-                    showFeedback(msg, 'hint');
-                }
-            } catch (err) {
-                console.error('Finish commit error:', err);
-                showFeedback('Lỗi khi lưu điểm. Vui lòng thử lại.', 'hint');
-            } finally {
-                finishButton.disabled = false;
-                finishButton.textContent = 'Hoàn thành';
-            }
-        });
+    // --- 2. XỬ LÝ ẢNH NỀN ---
+    if (typeof bgImageName !== 'undefined' && bgImageName !== "") {
+        const img = new Image();
+        img.src = `${appBaseUrl}/public/images/painter/${bgImageName}`;
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            pushHistory();
+        };
+        img.onerror = function() {
+            // Nếu lỗi ảnh thì vẽ trắng
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            pushHistory();
+        }
+    } else {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        pushHistory();
     }
 
-    // Hàm hiển thị thông báo
-    function showFeedback(message, type) {
-        feedbackBox.textContent = message;
-        feedbackBox.className = type;
+    // --- 3. THUẬT TOÁN ĐỔ MÀU (FLOOD FILL) ---
+    // Hàm chuyển đổi HEX sang RGB
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 0, g: 0, b: 0 };
+    }
+
+    // Hàm lấy màu tại 1 điểm pixel
+    function getColorAtPixel(imageData, x, y) {
+        const index = (y * imageData.width + x) * 4;
+        return {
+            r: imageData.data[index],
+            g: imageData.data[index + 1],
+            b: imageData.data[index + 2],
+            a: imageData.data[index + 3]
+        };
+    }
+
+    // Hàm so sánh màu
+    function colorsMatch(c1, c2) {
+        return c1.r === c2.r && c1.g === c2.g && c1.b === c2.b && c1.a === c2.a;
+    }
+
+    // Hàm thực thi đổ màu (Sử dụng ngăn xếp để tránh đệ quy gây tràn bộ nhớ)
+    function floodFill(startX, startY, fillColorHex) {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const width = imageData.width;
+        const height = imageData.height;
+        const targetColor = getColorAtPixel(imageData, startX, startY);
+        const fillColor = hexToRgb(fillColorHex);
         
-        if (type === "win") {
-            feedbackBox.style.color = "#2ecc71";
-        } else if (type === "wrong") {
-            feedbackBox.style.color = "#e74c3c";
+        // Thêm kênh alpha cho màu cần tô (255 là không trong suốt)
+        fillColor.a = 255; 
+
+        // Nếu màu cần tô giống hệt màu hiện tại thì không làm gì cả
+        if (colorsMatch(targetColor, fillColor)) return;
+
+        const stack = [[startX, startY]];
+
+        while (stack.length > 0) {
+            const [x, y] = stack.pop();
+            const pixelIndex = (y * width + x) * 4;
+
+            const currentColor = {
+                r: imageData.data[pixelIndex],
+                g: imageData.data[pixelIndex + 1],
+                b: imageData.data[pixelIndex + 2],
+                a: imageData.data[pixelIndex + 3]
+            };
+
+            if (colorsMatch(currentColor, targetColor)) {
+                // Tô màu mới
+                imageData.data[pixelIndex] = fillColor.r;
+                imageData.data[pixelIndex + 1] = fillColor.g;
+                imageData.data[pixelIndex + 2] = fillColor.b;
+                imageData.data[pixelIndex + 3] = fillColor.a;
+
+                // Kiểm tra 4 hướng: Trái, Phải, Lên, Xuống
+                if (x > 0) stack.push([x - 1, y]);
+                if (x < width - 1) stack.push([x + 1, y]);
+                if (y > 0) stack.push([x, y - 1]);
+                if (y < height - 1) stack.push([x, y + 1]);
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    // --- 4. CÁC HÀM VẼ CƠ BẢN ---
+    const startDraw = (e) => {
+        isDrawing = true;
+        startX = e.offsetX;
+        startY = e.offsetY;
+
+        // Xử lý riêng cho công cụ Xô màu (Bucket)
+        if (currentTool === "bucket") {
+            // Gọi hàm đổ màu
+            // Lưu ý: Cần chờ một chút để UI không bị đơ nếu ảnh quá lớn (nhưng 800x500 thì vẫn nhanh)
+            setTimeout(() => {
+                floodFill(startX, startY, currentColor);
+                pushHistory(); // Lưu lịch sử sau khi đổ màu
+            }, 0);
+            
+            isDrawing = false; // Xô màu chỉ là 1 click, không phải kéo chuột
+            return;
+        }
+        
+        ctx.beginPath();
+        ctx.lineWidth = currentSize;
+        
+        if (currentTool === "eraser") {
+            ctx.strokeStyle = "#ffffff"; 
         } else {
-            feedbackBox.style.color = "#e67e22";
+            ctx.strokeStyle = currentColor;
+            ctx.fillStyle = currentColor;
         }
-    }
 
-    // Hàm cập nhật điểm
-    async function updateScore(points) {
-        try {
-            const response = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'add_points', points: points, total_drops: totalDrops })
-            });
-            const contentType = response.headers.get('content-type') || '';
-            let data = null;
-            if (contentType.indexOf('application/json') !== -1) {
-                data = await response.json();
-            } else {
-                const text = await response.text();
-                console.error('Non-JSON response from update-plant-score:', text);
-                return;
-            }
+        snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    };
 
-            if (data && data.newScore !== undefined) {
-                scoreDisplay.textContent = data.newScore;
-            }
-        } catch (error) {
-            console.error("Lỗi cập nhật điểm:", error);
+    const drawing = (e) => {
+        if (!isDrawing) return;
+        if (currentTool === "bucket") return; // Xô màu không vẽ khi di chuyển
+
+        // Nếu là hình khối, cần xóa và vẽ lại trên snapshot cũ
+        if (["line", "rect", "circle", "triangle"].includes(currentTool)) {
+            ctx.putImageData(snapshot, 0, 0);
         }
-    }
+
+        const currentX = e.offsetX;
+        const currentY = e.offsetY;
+
+        switch (currentTool) {
+            case "brush":
+            case "eraser":
+                ctx.lineTo(currentX, currentY);
+                ctx.stroke();
+                break;
+            case "line":
+                drawLine(currentX, currentY);
+                break;
+            case "rect":
+                drawRect(currentX, currentY);
+                break;
+            case "circle":
+                drawCircle(currentX, currentY);
+                break;
+            case "triangle":
+                drawTriangle(currentX, currentY);
+                break;
+        }
+    };
+
+    const stopDraw = () => {
+        if (!isDrawing) return;
+        isDrawing = false;
+        // Chỉ lưu lịch sử khi không phải là bucket (bucket đã lưu lúc click rồi)
+        if(currentTool !== 'bucket') {
+             pushHistory();
+        }
+    };
+
+    // Hàm vẽ hình khối
+    const drawLine = (x, y) => {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    };
+
+    const drawRect = (x, y) => {
+        ctx.beginPath();
+        ctx.rect(startX, startY, x - startX, y - startY);
+        ctx.stroke();
+    };
+
+    const drawCircle = (x, y) => {
+        ctx.beginPath();
+        let radius = Math.sqrt(Math.pow((startX - x), 2) + Math.pow((startY - y), 2));
+        ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+    };
+
+    const drawTriangle = (x, y) => {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(x, y);
+        ctx.lineTo(startX * 2 - x, y);
+        ctx.closePath();
+        ctx.stroke();
+    };
+
+    // --- 5. SỰ KIỆN CHUỘT ---
+    canvas.addEventListener("mousedown", startDraw);
+    canvas.addEventListener("mousemove", drawing);
+    canvas.addEventListener("mouseup", stopDraw);
+    canvas.addEventListener("mouseout", stopDraw);
+
+    // --- 6. CHỨC NĂNG CÔNG CỤ ---
+    toolBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (btn.id === "undo-btn" || btn.id === "clear-btn") return;
+            document.querySelector(".tool-btn.active").classList.remove("active");
+            btn.classList.add("active");
+            currentTool = btn.dataset.tool;
+        });
+    });
+
+    colorSwatches.forEach(swatch => {
+        swatch.addEventListener("click", () => {
+            document.querySelector(".color-swatch.selected").classList.remove("selected");
+            swatch.classList.add("selected");
+            currentColor = swatch.dataset.color;
+            colorPicker.value = currentColor;
+        });
+    });
+
+    colorPicker.addEventListener("input", (e) => {
+        currentColor = e.target.value;
+        const selectedSwatch = document.querySelector(".color-swatch.selected");
+        if(selectedSwatch) selectedSwatch.classList.remove("selected");
+    });
+
+    sizeSlider.addEventListener("change", (e) => ctx.lineWidth = e.target.value);
+    sizeSlider.addEventListener("input", (e) => currentSize = e.target.value);
+
+    clearBtn.addEventListener("click", () => {
+        if(confirm("Bạn có chắc muốn xóa hết không?")) {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            pushHistory();
+        }
+    });
+
+    undoBtn.addEventListener("click", () => {
+        if (historyStep > 0) {
+            historyStep--;
+            const canvasPic = new Image();
+            canvasPic.src = history[historyStep];
+            canvasPic.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(canvasPic, 0, 0);
+            };
+        }
+    });
+
+    saveBtn.addEventListener("click", () => {
+        const link = document.createElement("a");
+        link.download = `tranh-ve-cua-em-${Date.now()}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+    });
 });
