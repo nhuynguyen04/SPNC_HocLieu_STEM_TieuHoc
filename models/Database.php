@@ -216,7 +216,10 @@ class Database {
                 (2, 'Thùng rác thân thiện', 'Phân loại rác đúng cách', 50),
                 (2, 'Lắp ghép bộ phận', 'Lắp ghép các bộ phận của cây', 50),
                 (4, 'Hoa yêu thương nở rộ', 'Thiết kế hoa giấy cơ học nở rộ khi kéo dây', 50),
-                (3, 'Cây gia đình', 'Tìm hiểu về các mối quan hệ gia đình qua cây phả hệ', 50)
+                (3, 'Cây gia đình', 'Tìm hiểu về các mối quan hệ gia đình qua cây phả hệ', 50),
+                (3, 'Em làm họa sĩ máy tính', 'Khám phá các công cụ vẽ đơn giản trên máy tính', 50),
+                (3, 'Các bộ phận của máy tính', 'Tìm hiểu các thành phần cơ bản của máy tính', 50),
+                (3, 'Em là người đánh máy', 'Rèn luyện kỹ năng đánh máy nhanh và chính xác',50)
                 ");
 
 

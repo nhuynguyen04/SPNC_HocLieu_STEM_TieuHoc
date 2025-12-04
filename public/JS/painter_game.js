@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Lấy biến từ PHP thông qua window (đã sửa ở bước trước)
     const appBaseUrl = window.baseUrl || ""; 
+    const timeLimitSeconds = typeof timeLimit !== 'undefined' ? parseInt(timeLimit, 10) : 300;
 
     // Biến trạng thái
     let isDrawing = false;
@@ -293,4 +294,107 @@ document.addEventListener("DOMContentLoaded", () => {
         link.href = canvas.toDataURL();
         link.click();
     });
+
+    // --- TIMER + SUBMIT HANDLING ---
+    const timeDisplay = document.getElementById('time-display');
+    const submitBtn = document.getElementById('submit-btn');
+    const homeBtn = document.getElementById('home-btn');
+
+    let timerInterval = null;
+    let remainingSeconds = timeLimitSeconds;
+
+    function formatTime(sec) {
+        const m = Math.floor(sec / 60).toString().padStart(2, '0');
+        const s = (sec % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
+
+    function updateTimeDisplay() {
+        if (timeDisplay) timeDisplay.textContent = formatTime(remainingSeconds);
+    }
+
+    function startTimer() {
+        // do not start again if already running
+        if (timerInterval) return;
+        remainingSeconds = timeLimitSeconds;
+        updateTimeDisplay();
+        timerInterval = setInterval(() => {
+            remainingSeconds--;
+            updateTimeDisplay();
+            if (remainingSeconds <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                remainingSeconds = 0;
+                updateTimeDisplay();
+                // Auto-submit when time ends (no alert by default)
+                try { performSubmit(false); } catch (e) { console.error('Auto-submit failed', e); }
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function resetTimer() {
+        stopTimer();
+        remainingSeconds = timeLimitSeconds;
+        updateTimeDisplay();
+    }
+
+    // Initialize display and start timer immediately on page load
+    updateTimeDisplay();
+    // Start timer automatically when user opens the page
+    startTimer();
+
+    // Reset timer when user clears the canvas
+    clearBtn.addEventListener('click', () => {
+        // After canvas cleared in existing handler, reset timer too
+        resetTimer();
+    });
+
+    // Reset when clicking home (navigation will happen, but reset for UX)
+    if (homeBtn) {
+        homeBtn.addEventListener('click', (e) => {
+            resetTimer();
+            // allow navigation to proceed
+        });
+    }
+
+    // Helper: perform submit (used by button and auto-submit)
+    async function performSubmit(showAlerts = true) {
+        // disable submit while in progress
+        if (submitBtn) submitBtn.disabled = true;
+        try {
+            const resp = await fetch(`${appBaseUrl}/views/lessons/update-painter-score`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'commit' })
+            });
+            const j = await resp.json();
+            if (j && j.success) {
+                if (showAlerts) alert('Đã nộp bài và lưu điểm: ' + (j.message || 'Thành công'));
+            } else {
+                if (showAlerts) alert('Kết quả nộp bài: ' + (j.message || JSON.stringify(j)));
+            }
+        } catch (err) {
+            console.error('Submit error', err);
+            if (showAlerts) alert('Lỗi khi nộp bài. Vui lòng thử lại.');
+        } finally {
+            // stop timer after submit
+            stopTimer();
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    }
+
+    // Submit button triggers performSubmit (but does not start timer now)
+    if (submitBtn) {
+        submitBtn.addEventListener('click', (e) => {
+            performSubmit(true);
+        });
+    }
+
 });

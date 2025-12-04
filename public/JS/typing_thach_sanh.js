@@ -13,11 +13,22 @@ const finalScoreEl = document.getElementById('final-score');
 const endTitleEl = document.getElementById('end-title');
 const endMessageEl = document.getElementById('end-message');
 
+// Quick-complete elements
+const quickCompleteBtn = document.getElementById('quick-complete-btn');
+const quickCompleteModal = document.getElementById('quick-complete-modal');
+const qcTotalEl = document.getElementById('qc-total');
+const qcMaxEl = document.getElementById('qc-max');
+const qcPctEl = document.getElementById('qc-pct');
+const qcReplayBtn = document.getElementById('qc-replay');
+const qcBackBtn = document.getElementById('qc-back');
+
 let currentLevelWords = [];
 let activeEnemies = [];
 let score = 0;
 const maxLives = 5;
 let lives = maxLives;
+
+let spawnedCount = 0;
 
 const GAME_DURATION = 180; // 3 phút
 let timeLeft = GAME_DURATION;
@@ -39,10 +50,25 @@ function startGame(level) {
     score = 0;
     lives = maxLives;
     timeLeft = GAME_DURATION; // Reset thời gian
+    spawnedCount = 0;
     
     scoreEl.innerText = score;
     livesEl.innerText = lives;
     updateTimeDisplay(); // Hiện 03:00
+
+    // Clear previous modal/percent displays so each run is fresh
+    try {
+        if (qcTotalEl) qcTotalEl.innerText = 0;
+        if (qcPctEl) qcPctEl.innerText = '0%';
+        const finalPctEl = document.getElementById('final-pct');
+        if (finalPctEl) finalPctEl.innerText = '0%';
+        if (finalScoreEl) finalScoreEl.innerText = 0;
+    } catch (e) { /* ignore */ }
+
+    // Reset server-side commit flag so user can submit again after replay
+    try {
+        fetch(`${baseUrl}/views/lessons/reset-thach-sanh-commit`, { method: 'POST' }).catch(() => {});
+    } catch (e) { /* ignore */ }
     
     activeEnemies = [];
     enemiesContainer.innerHTML = '';
@@ -61,7 +87,7 @@ function startGame(level) {
         updateTimeDisplay();
 
         if (timeLeft <= 0) {
-            victory(); // Hết giờ -> Chiến thắng
+            victory(); // Hết giờ -> Chiến thắng and auto-save
         }
     }, 1000);
 
@@ -95,9 +121,25 @@ function victory() {
         Điểm gốc: ${score}<br>
         Thưởng mạng (${lives}): +${bonusPoints}
     `;
-    finalScoreEl.innerText = totalScore;
+    if (finalScoreEl) finalScoreEl.innerText = totalScore;
     
     gameOverModal.style.display = 'flex';
+
+    // Compute percent and save score to server (only on time-up victory)
+    try {
+        // New rule: percent must be computed from the player's base score only (no lives bonus)
+        const pct = Math.min(100, Math.max(0, Math.round((score / 720) * 100)));
+        // display percent on result screen (final-pct element)
+        const finalPctEl = document.getElementById('final-pct');
+        if (finalPctEl) finalPctEl.innerText = pct + '%';
+
+        // send to server
+        fetch(`${baseUrl}/views/lessons/update-thach-sanh-score`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'commit', score_pct: pct, game_name: 'Em là người đánh máy' })
+        }).then(r => r.json()).then(j => console.log('saved', j)).catch(e => console.error(e));
+    } catch (e) { console.error(e); }
 }
 
 function gameLoop() {
@@ -147,9 +189,92 @@ function endGame() {
     endTitleEl.innerText = "KẾT THÚC!";
     endTitleEl.style.color = "#e74c3c";
     endMessageEl.innerText = "Bạn đã hết mạng. Buôn làng bị tàn phá!";
-    finalScoreEl.innerText = score;
+    if (finalScoreEl) finalScoreEl.innerText = score;
+
+    // Show a small failure modal (reuse quick-complete modal) that mirrors quick-complete layout
+    try {
+        if (quickCompleteModal) {
+            // set header and message for failure
+            const hdr = quickCompleteModal.querySelector('h3');
+            if (hdr) hdr.innerText = 'Thất bại';
+            const msg = document.getElementById('qc-msg');
+            if (msg) msg.innerText = 'Hãy thử lại lần nữa xem!';
+
+            // compute percent from base score only
+            const pct = Math.min(100, Math.max(0, Math.round((score / 720) * 100)));
+            if (qcPctEl) qcPctEl.innerText = pct + '%';
+
+            // hide big game over modal if visible
+            if (gameOverModal) gameOverModal.style.display = 'none';
+
+            quickCompleteModal.style.display = 'flex';
+            return;
+        }
+    } catch (e) { /* ignore and fallback to full modal */ }
+
+    // fallback to original full modal
     gameOverModal.style.display = 'flex';
 }
+
+// Quick-complete logic: calculate percentage and show quick modal, then save
+function quickComplete() {
+    if (!isPlaying) return;
+    isPlaying = false;
+    clearInterval(gameInterval);
+    clearInterval(gameTimerInterval);
+    document.removeEventListener('keydown', handleTyping);
+
+    // Don't include lives bonus when computing percent — use current base score only
+    const bonusPoints = lives * 50;
+    let totalScore = (typeof score === 'number') ? score + bonusPoints : 0;
+
+
+    // Use requested formula: percent = (current totalScore) / 720 * 100
+    const pct = Math.min(100, Math.max(0, Math.round((score / 720) * 100)));
+
+    // Update quick modal
+    // set header/message for quick-complete
+    try {
+        if (quickCompleteModal) {
+            const hdr = quickCompleteModal.querySelector('h3');
+            if (hdr) hdr.innerText = 'Hoàn thành nhanh';
+            const msg = document.getElementById('qc-msg');
+            if (msg) msg.innerText = '';
+        }
+    } catch (e) {}
+
+    if (qcTotalEl) qcTotalEl.innerText = totalScore;
+    if (qcMaxEl) qcMaxEl.innerText = 720;
+    if (qcPctEl) qcPctEl.innerText = pct + '%';
+
+    if (quickCompleteModal) quickCompleteModal.style.display = 'flex';
+
+    // send to server to save
+    try {
+        fetch(`${baseUrl}/views/lessons/update-thach-sanh-score`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'commit', score_pct: pct, game_name: 'Em là người đánh máy' })
+        }).then(r => r.json()).then(j => console.log('Quick complete saved', j)).catch(e => console.error(e));
+    } catch (e) { console.error(e); }
+}
+
+// Hook quick-complete button
+if (quickCompleteBtn) {
+    quickCompleteBtn.addEventListener('click', (e) => {
+        quickComplete();
+    });
+}
+
+// Quick modal buttons
+if (qcReplayBtn) qcReplayBtn.addEventListener('click', () => location.reload());
+if (qcBackBtn) qcBackBtn.addEventListener('click', () => window.location.href = baseUrl + '/views/lessons/technology.php');
+
+// End modal buttons
+const replayBtn = document.getElementById('replay-btn');
+const backBtn = document.getElementById('back-btn');
+if (replayBtn) replayBtn.addEventListener('click', () => location.reload());
+if (backBtn) backBtn.addEventListener('click', () => window.location.href = baseUrl + '/views/lessons/technology.php');
 
 function spawnEnemy() {
     const word = currentLevelWords[Math.floor(Math.random() * currentLevelWords.length)];
@@ -168,13 +293,16 @@ function spawnEnemy() {
     enemyDiv.innerHTML = `<div class="enemy-word">${word}</div><img src="${imgSrc}">`;
     enemiesContainer.appendChild(enemyDiv);
 
+    // increment spawned count for session
+    spawnedCount++;
+
     activeEnemies.push({
         el: enemyDiv,
         word: word,
         remaining: word,
         top: -120,
         speed: isBoss ? 0.5 : 0.9,
-        isDead: false // Cờ đánh dấu quái đang bị tiêu diệt
+        isDead: false 
     });
 }
 
