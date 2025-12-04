@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalMessage = document.getElementById('modal-message');
     const nextLevelBtn = document.getElementById('next-level-btn');
     const restartGameBtn = document.getElementById('restart-game-btn');
+    const backToTechnologyBtn = document.getElementById('back-to-technology-btn');
     const treeCanvas = document.getElementById('tree-canvas');
 
     // Game Variables
@@ -305,55 +306,74 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.draggable-char, .person-node').forEach(el => el.draggable = false);
 
         if (status === 'win') {
-            // === TRƯỜNG HỢP THẮNG ===
             modalTitle.textContent = "Chúc Mừng!";
-            modalTitle.style.color = "#2ecc71"; // Màu xanh
+            modalTitle.style.color = "#2ecc71"; 
             modalMessage.textContent = "Bạn đã sắp xếp chính xác gia đình này!";
             
-            // Kiểm tra xem còn level tiếp theo không
-            // Lưu ý: Chuyển về số nguyên để so sánh cho chính xác
+          
             const currentId = parseInt(CURRENT_LEVEL_DATA.id);
             const totalLevels = parseInt(TOTAL_GAME_LEVELS);
 
             if (currentId < totalLevels) {
-                // Vẫn còn level -> Hiện nút Next
                 nextLevelBtn.style.display = 'inline-block';
                 nextLevelBtn.textContent = "Cấp độ tiếp theo";
                 
-                // Gán sự kiện click để chuyển trang
                 nextLevelBtn.onclick = () => { 
                     const nextLevelId = currentId + 1;
-                    // Chuyển hướng sang level tiếp theo
                     window.location.href = `${BASE_URL}/views/lessons/technology_family_tree_game?level=${nextLevelId}`;
                 };
             } else {
-                // Đã là level cuối cùng -> Ẩn nút Next
                 nextLevelBtn.style.display = 'none';
                 modalMessage.textContent = "Xuất sắc! Bạn đã hoàn thành tất cả các gia đình!";
+                if (backToTechnologyBtn) {
+                    backToTechnologyBtn.style.display = 'inline-block';
+                    backToTechnologyBtn.onclick = () => {
+                        window.location.href = `${BASE_URL}/views/lessons/technology.php`;
+                    };
+                }
+
+                try {
+                    fetch(`${BASE_URL}/views/lessons/update-family-tree-score`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'commit' })
+                    })
+                    .then(r => r.json())
+                    .then(j => {
+                        console.log('family tree commit response', j);
+                        if (j && j.success) {
+                            const info = document.createElement('div');
+                            info.className = 'server-info';
+                            info.textContent = 'Điểm đã được lưu: 100%';
+                            modalMessage.appendChild(info);
+                        }
+                    })
+                    .catch(err => console.error('Error committing family tree score', err));
+                } catch (e) {
+                    console.error('Commit error', e);
+                }
             }
 
             restartGameBtn.textContent = "Chơi lại level này";
-            restartGameBtn.className = "game-btn"; // Màu xanh
+            restartGameBtn.className = "game-btn";
             restartGameBtn.onclick = () => { 
                 window.location.reload(); 
             };
             
         } else { 
-            // === TRƯỜNG HỢP THUA ===
             modalTitle.textContent = "Thất bại...";
-            modalTitle.style.color = "#e74c3c"; // Màu đỏ
+            modalTitle.style.color = "#e74c3c"; 
             modalMessage.textContent = "Bạn đã hết lượt thử. Đừng nản chí nhé!";
             
-            nextLevelBtn.style.display = 'none'; // Ẩn nút Next
+            nextLevelBtn.style.display = 'none'; 
             
             restartGameBtn.textContent = "Thử lại ngay ↺";
-            restartGameBtn.className = "game-btn reset"; // Màu đỏ
+            restartGameBtn.className = "game-btn reset"; 
             restartGameBtn.onclick = () => { 
                 window.location.reload();
             };
         }
 
-        // Hiển thị Modal
         gameOverModal.style.display = 'flex';
     }
 });

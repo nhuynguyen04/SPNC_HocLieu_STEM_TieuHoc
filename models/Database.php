@@ -209,13 +209,16 @@ class Database {
                 ('Công nghệ', 'Lập trình và robot', '🤖', '#96CEB4'),
                 ('Kỹ thuật', 'Xây dựng và sáng tạo', '⚙️', '#FFD166')");
 
-                // Insert sample games mapped to topics. Use passing_score as legacy threshold (percent)
-                $this->conn->exec("INSERT INTO games (topic_id, game_name, description, passing_score) VALUES
+                $this->conn->exec("INSERT INTO games (topic_id, game_name, description, passing_score) VALUES 
                 (2, 'Tháp dinh dưỡng', 'Sắp xếp các nhóm thực phẩm theo tháp dinh dưỡng', 50),
                 (2, 'Pha màu', 'Pha màu đúng tỉ lệ', 20),
                 (2, 'Ngày và đêm', 'Trả lời các câu hỏi', 20),
                 (2, 'Thùng rác thân thiện', 'Phân loại rác đúng cách', 50),
-                (2, 'Lắp ghép bộ phận', 'Lắp ghép các bộ phận của cây', 2)");
+                (2, 'Lắp ghép bộ phận', 'Lắp ghép các bộ phận của cây', 50),
+                (4, 'Hoa yêu thương nở rộ', 'Thiết kế hoa giấy cơ học nở rộ khi kéo dây', 50),
+                (3, 'Cây gia đình', 'Tìm hiểu về các mối quan hệ gia đình qua cây phả hệ', 50)
+                ");
+
 
 
     

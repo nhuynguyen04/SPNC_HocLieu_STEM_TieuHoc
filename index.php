@@ -91,6 +91,11 @@ switch ($route) {
     case '/views/lessons/technology_family_tree_game':
         $lessonController->showFamilyTree();
         break;
+    case '/views/lessons/update-family-tree-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateFamilyTreeScore();
+        }
+        break;
 
     case '/views/lessons/technology_coding_game':
         $lessonController->showCodingGame();
@@ -116,6 +121,11 @@ switch ($route) {
 
     case '/views/lessons/engineering_flower_mechanism':
         $lessonController->showFlowerMechanismGame();
+        break;
+    case '/views/lessons/update-flower-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateFlowerScore();
+        }
         break;
 
     case '/views/lessons/engineering_bridge_game':

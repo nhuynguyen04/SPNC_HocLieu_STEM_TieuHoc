@@ -1173,6 +1173,117 @@ class LessonController {
         require_once __DIR__ . '/../views/lessons/engineering_flower_mechanism.php';
     }
 
+  
+    public function updateFlowerScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        $correct = isset($data['correct']) ? (bool)$data['correct'] : false;
+        if (!$correct) {
+            echo json_encode(['success' => false, 'message' => 'Prediction incorrect; not saved']);
+            return;
+        }
+
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+
+            if (empty($gameId)) {
+                $stmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                $stmt->execute([':tid' => 4]);
+                $r = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($r) $gameId = (int)$r['id'];
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for flower experiment']);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Commit score for Family Tree game when final level completed
+     * Saves 100% for the user for a game in topic_id = 3 (Technology)
+     */
+    public function updateFamilyTreeScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        // allow caller to provide game_id, otherwise find by topic_id = 3
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+            if (empty($gameId)) {
+                $stmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                $stmt->execute([':tid' => 3]);
+                $r = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($r) $gameId = (int)$r['id'];
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for family tree']);
+                return;
+            }
+
+            // Prevent duplicate commits for this session
+            if (!empty($_SESSION['family_tree_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => 100]);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['family_tree_committed'] = true;
+            }
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
     public function showBridgeGame() {
         require_once 'views/lessons/engineering_bridge_game.php';
     }
