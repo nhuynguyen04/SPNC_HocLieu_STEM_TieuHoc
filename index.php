@@ -126,6 +126,10 @@ switch ($route) {
         $lessonController->showCarBuilderGame();
         break;
 
+    case '/views/lessons/math_angle_game':
+        $lessonController->showMathAngleGame();
+        break;
+
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly

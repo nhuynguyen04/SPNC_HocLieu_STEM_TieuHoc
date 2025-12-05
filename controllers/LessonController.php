@@ -1336,4 +1336,44 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/engineering_car_builder.php';
     }
+
+    /**
+     * HẬU NGHỆ BẮN MẶT TRỜI
+     */
+    public function showMathAngleGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Dữ liệu các màn chơi
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Bình Minh (Góc Nhọn)',
+                'desc' => 'Mặt trời vừa mọc ở phía Đông. Hãy bắn hạ nó! Góc bắn nhỏ hơn 90°.',
+                'sun_pos' => ['x' => 0.8, 'y' => 0.4],
+                'type' => 'acute'
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Giữa Trưa (Góc Vuông)',
+                'desc' => 'Mặt trời đang đứng bóng. Góc bắn là 90°.',
+                'sun_pos' => ['x' => 0.5, 'y' => 0.15],
+                'type' => 'right'
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Hoàng Hôn (Góc Tù)',
+                'desc' => 'Mặt trời lặn về phía Tây. Hãy bắn vòng qua núi! Góc bắn lớn hơn 90°.',
+                'sun_pos' => ['x' => 0.2, 'y' => 0.4],
+                'type' => 'obtuse'
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/math_angle_game.php';
+    }
 }
