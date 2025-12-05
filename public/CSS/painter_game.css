@@ -42,6 +42,33 @@
     color: #2980b9;
 }
 
+/* Left controls wrapper (home + submit) */
+.header-game .left-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Submit button (Nộp bài) - match size/feel of home button and use #2980b9 */
+.header-game .submit-btn {
+    background: #2980b9;
+    color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.15);
+    transition: transform 0.12s ease, background 0.12s ease;
+}
+.header-game .submit-btn:hover { transform: translateY(-1px); background: #2471a3; }
+
+
 /* Đồng hồ đếm ngược */
 .timer-box {
     font-size: 1.5em;

@@ -26,6 +26,7 @@
         
         <div class="hud-item lives-box">Mạng: <span id="lives">5</span> ❤️</div>
         <a href="<?= $base_url ?>/views/main_lesson.php" class="exit-btn"><i class="fas fa-sign-out-alt"></i> Thoát</a>
+        <button id="quick-complete-btn" class="game-btn quick-complete">Hoàn thành nhanh</button>
     </div>
 
     <div id="game-stage">
@@ -44,8 +45,24 @@
         <div class="modal-content">
             <h2 id="end-title">KẾT THÚC!</h2>
             <p id="end-message">Buôn làng đã bị tấn công.</p>
-            <p class="final-score">Tổng điểm: <span id="final-score">0</span></p>
-            <button class="game-btn" onclick="location.reload()">Chơi lại</button>
+            <p class="final-pct">tiến độ hoàn thành: <span id="final-pct">0%</span></p>
+            <div class="modal-actions">
+                <button id="replay-btn" class="game-btn">Chơi lại</button>
+                <button id="back-btn" class="game-btn">Quay lại</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick completion summary modal -->
+    <div id="quick-complete-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Hoàn thành nhanh</h3>
+            <p id="qc-msg" class="qc-msg">&nbsp;</p>
+            <p>tiến độ hoàn thành: <strong><span id="qc-pct">0%</span></strong></p>
+            <div class="modal-actions">
+                <button id="qc-replay" class="game-btn">Chơi lại</button>
+                <button id="qc-back" class="game-btn">Quay lại</button>
+            </div>
         </div>
     </div>
 </div>

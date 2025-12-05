@@ -79,7 +79,6 @@ require_once __DIR__ . '/../template/header.php';
                     </div>
                     
                     <div class="result-message" id="resultMessage">
-                        <!-- Kết quả sẽ hiển thị ở đây -->
                     </div>
                     
                     <div class="action-buttons">
@@ -87,14 +86,13 @@ require_once __DIR__ . '/../template/header.php';
                             Thử Lại Nhé!
                         </button>
                         <button id="nextGame" class="experiment-btn next-game">
-                            Game Tiếp Theo
+                            Quay lại
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Khu vực hiển thị hoa bên phải -->
         <div class="flower-display">
             <div class="game-title-section">
                 <h1 class="game-title">HOA YÊU THƯƠNG NỞ RỘ</h1>
@@ -106,7 +104,6 @@ require_once __DIR__ . '/../template/header.php';
             <div class="flower-container">
                 <div class="flower-stage">
                     <div class="flower" id="flower">
-                        <!-- Cánh hoa sẽ được tạo bằng JavaScript -->
                     </div>
                     <div class="stem"></div>
                     <div class="leaf leaf-1"></div>
@@ -131,4 +128,8 @@ require_once __DIR__ . '/../template/header.php';
 </div>
 
 <script src="<?= $base_url ?>/public/JS/flower_mechanism.js"></script>
+<script>
+    window.baseUrl = window.baseUrl || "<?= $base_url ?>";
+    window.gameName = window.gameName || "Hoa Yêu Thương Nở Rộ";
+</script>
 <?php require_once __DIR__ . '/../template/footer.php'; ?>

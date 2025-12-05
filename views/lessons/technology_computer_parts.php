@@ -37,7 +37,10 @@
         <div class="modal-content">
             <h2>Chúc mừng!</h2>
             <p>Bạn đã lắp ráp máy tính thành công! Em giỏi quá!</p>
-            <button id="restart-game-btn" class="game-btn">Chơi lại</button>
+            <div class="modal-actions">
+                <button id="restart-game-btn" class="game-btn">Chơi lại</button>
+                <button id="back-to-tech-btn" class="game-btn">Quay lại</button>
+            </div>
         </div>
     </div>
 </div>

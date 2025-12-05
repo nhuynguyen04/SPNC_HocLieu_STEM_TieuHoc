@@ -189,3 +189,28 @@
     min-width: 120px;
     justify-content: center;
 }
+
+/* Quick-complete button: position under Exit at top-right and match exit colors */
+.game-hud .quick-complete {
+    position: absolute;
+    right: 15px;
+    top: 55px; /* slightly below the exit button */
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    color: #c0392b; /* match exit text color */
+    border: 2px solid #c0392b;
+    font-weight: bold;
+}
+
+/* Modal action buttons (Chơi lại / Quay lại) should match exit color */
+.modal .game-btn {
+    background: rgba(255,255,255,0.95);
+    color: #c0392b;
+    border: 2px solid #c0392b;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+/* final percent text styling */
+.final-pct { font-size: 1.2em; font-weight: bold; margin: 10px 0; }
