@@ -87,6 +87,14 @@ switch ($route) {
     case '/views/lessons/science_day_night':
         $lessonController->showDayNightLesson();
         break;
+    
+    case '/views/lessons/math_shapes_challenge':
+        $lessonController->showMathAngleGame();
+        break;
+
+    case '/views/lessons/math_number_game':
+        $lessonController->showMathNumberGame();
+        break;
 
     case '/views/lessons/technology_family_tree_game':
         $lessonController->showFamilyTree();

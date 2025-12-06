@@ -30,19 +30,11 @@ const planets = {
         activities: [
             { 
                 type: "game", 
-                name: "Trò chơi nhận biết góc", 
-                icon: "🎯", 
-                xp: "30 XP",
-                link: baseUrl + '/views/lessons/math_shapes_game', 
-                status: "current" 
-            },
-            { 
-                type: "game", 
                 name: "Thử thách hình học", 
                 icon: "🧩", 
                 xp: "25 XP",
                 link: baseUrl + '/views/lessons/math_shapes_challenge', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
@@ -75,7 +67,7 @@ const planets = {
     4: {
         name: "ĐẾM SỐ THÔNG MINH",
         icon: "🔢",
-        status: "locked",
+        status: "upcoming",
         description: "Trò chơi học đếm số và nhận biết số thú vị",
         time: "20 phút",
         xp: "60 XP",
@@ -85,16 +77,8 @@ const planets = {
                 name: "Trò chơi đếm số", 
                 icon: "🎲", 
                 xp: "25 XP",
-                link: baseUrl + '/views/lessons/math_counting_game', 
-                status: "locked" 
-            },
-            { 
-                type: "game", 
-                name: "Thử thách đếm số", 
-                icon: "⭐", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/math_counting_challenge', 
-                status: "locked" 
+                link: baseUrl + '/views/lessons/math_number_game', 
+                status: "upcoming" 
             }
         ]
     },

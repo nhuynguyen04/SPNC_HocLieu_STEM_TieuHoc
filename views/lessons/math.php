@@ -54,18 +54,10 @@ $math_data = [
             'activities' => [
                 [
                     'type' => 'game',
-                    'title' => 'TRÒ CHƠI NHẬN BIẾT GÓC',
-                    'icon' => '🎯',
-                    'description' => 'Trò chơi phân biệt góc vuông, góc nhọn, góc tù',
-                    'status' => 'current',
-                    'xp' => 30
-                ],
-                [
-                    'type' => 'game',
                     'title' => 'THỬ THÁCH HÌNH HỌC',
                     'icon' => '🧩',
                     'description' => 'Trò chơi phân loại các hình học khác nhau',
-                    'status' => 'locked',
+                    'status' => 'current',
                     'xp' => 25
                 ]
             ]
@@ -111,16 +103,8 @@ $math_data = [
                     'title' => 'TRÒ CHƠI ĐẾM SỐ',
                     'icon' => '🎲',
                     'description' => 'Trò chơi học đếm từ 1 đến 100',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
-                ],
-                [
-                    'type' => 'game',
-                    'title' => 'THỬ THÁCH ĐẾM SỐ',
-                    'icon' => '⭐',
-                    'description' => 'Trò chơi luyện tập đếm số tương tác',
-                    'status' => 'locked',
-                    'xp' => 35
                 ]
             ]
         ],

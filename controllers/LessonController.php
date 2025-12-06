@@ -712,6 +712,22 @@ class LessonController {
         exit();
     }
 
+    public function showMathAngleGame() {
+         // khởi tạo session score nếu cần
+         if (!isset($_SESSION['angle_score'])) {
+             $_SESSION['angle_score'] = 0;
+         }
+         require_once __DIR__ . '/../views/lessons/math_shapes_challenge.php';
+    }
+
+    public function showMathNumberGame() {
+        // khởi tạo session score nếu cần
+        if (!isset($_SESSION['number_score'])) {
+          $_SESSION['number_score'] = 0;
+        }
+        require_once __DIR__ . '/../views/lessons/math_number_game.php';
+   }
+
     /**
      * Hiển thị TRÒ CHƠI PHÂN LOẠI RÁC
      */
