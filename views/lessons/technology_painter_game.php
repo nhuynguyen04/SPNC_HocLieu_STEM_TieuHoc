@@ -5,7 +5,11 @@
 
 <div class="game-wrapper painter-game">
     <div class="header-game">
-        <a href="<?= $base_url ?>/views/main_lesson.php" class="home-btn"><i class="fas fa-home"></i></a>
+        <div class="left-controls">
+            <a href="<?= $base_url ?>/views/main_lesson.php" class="home-btn" id="home-btn"><i class="fas fa-home"></i></a>
+            <button id="submit-btn" class="submit-btn" title="Nộp bài">Nộp bài</button>
+        </div>
+
         <h1>Em làm họa sĩ: <?= $currentConfig['title'] ?></h1>
         
         <div class="timer-box">
@@ -110,6 +114,8 @@
 </div>
 
 <script>
+    window.baseUrl = "<?= $base_url ?>";
+
     const bgImageName = "<?= $currentConfig['bg_image'] ?>";
     const timeLimit = <?= $timeLimit ?>;
 </script>

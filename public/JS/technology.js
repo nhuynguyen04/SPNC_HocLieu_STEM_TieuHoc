@@ -42,7 +42,7 @@ const planets = {
                 name: "Chia sẻ tác phẩm", 
                 icon: "🖼️", 
                 xp: "20 XP",
-                link: baseUrl + '/views/lessons/technology_art_share', 
+                link: baseUrl + '/views/lessons/technology_painter_game', 
                 status: "locked" 
             }
         ]
@@ -74,10 +74,10 @@ const planets = {
         ]
     },
     4: {
-        name: "LẬP TRÌNH VIÊN NHÍ VỚI SCRATCH",
+        name: "LẬP TRÌNH KHỐI",
         icon: "🧩",
         status: "locked",
-        description: "Làm quen với lập trình qua nền tảng Scratch",
+        description: "Làm quen với lập trình các khối lệnh",
         time: "30 phút",
         xp: "70 XP",
         activities: [
@@ -164,7 +164,7 @@ const planets = {
                 name: "Trò chơi đánh máy", 
                 icon: "🎮", 
                 xp: "40 XP",
-                link: baseUrl + '/views/lessons/technology_typing_game', 
+                link: baseUrl + '/views/lessons/technology_typing_thach_sanh', 
                 status: "locked" 
             },
             { 

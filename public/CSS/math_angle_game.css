@@ -1,0 +1,264 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #2c3e50;
+    font-family: 'Quicksand', 'Segoe UI', sans-serif;
+}
+
+/* Khung bao quanh Game */
+.math-game.game-wrapper {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border: none;
+    border-radius: 0;
+    box-sizing: border-box;
+}
+
+/* Header & Hướng dẫn */
+.game-ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 20px;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.header-game, .instruction-box {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.header-game {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-game h1 {
+    margin: 0;
+    font-size: 1.6em;
+    color: #f1c40f;
+    text-shadow: 2px 2px 0 #d35400;
+}
+
+.home-btn {
+    color: #fff;
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.home-btn:hover { transform: scale(1.1); color: #3498db; }
+
+.instruction-box {
+    max-width: 400px;
+    text-align: center;
+}
+.instruction-box p { margin: 0 0 5px 0; font-size: 1.1em; line-height: 1.4; }
+
+.angle-hint {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #2ecc71;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+/* Khu vực chơi */
+#game-stage {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+    background-image: url('../images/angle_game/bg_myth.png');
+    background-size: cover;
+    background-position: center bottom;
+    
+    z-index: 1;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Công cụ đo độ */
+.controls-overlay {
+    position: absolute;
+    bottom: 145px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    pointer-events: auto;
+}
+
+.protractor-container {
+    position: relative;
+    width: 360px; 
+    height: 180px;
+    border-top-left-radius: 180px;
+    border-top-right-radius: 180px;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Kẻ vạch giữa thước đo độ */
+.protractor-bg {
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 2px; height: 15px;
+    background: #fff;
+    transform: translateX(-50%);
+}
+
+#angle-slider {
+    width: 380px;
+    margin-top: 170px;
+    margin-left: -10px;
+    cursor: pointer;
+    height: 30px; 
+}
+
+/* NÚT BẮN */
+.fire-btn {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    z-index: 60;
+
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 0;
+    border: 5px solid #fff;
+
+    background: radial-gradient(circle, #ff5e62 0%, #ff9966 100%);
+    color: white;
+    font-size: 1.8em;
+    font-weight: 900;
+    cursor: pointer;
+    
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 5px 10px rgba(255,255,255,0.3);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fire-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(255, 94, 98, 0.6);
+}
+
+.fire-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+
+.fire-btn:disabled {
+    background: #7f8c8d;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+    box-shadow: none;
+}
+
+/* Hiệu ứng chữ TRƯỢT RỒI */
+.miss-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5em;
+    font-weight: 900;
+    color: #e74c3c;
+    text-shadow: 4px 4px 0 #fff, 0 0 30px rgba(231, 76, 60, 0.8);
+    z-index: 200;
+    pointer-events: none;
+    animation: popOut 1.5s forwards;
+    white-space: nowrap;
+}
+
+.hidden { display: none !important; }
+
+@keyframes popOut {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    20% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* Modal Kết quả */
+.modal {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0;
+    width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85);
+    justify-content: center; 
+    align-items: center; 
+    z-index: 300;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: #fff;
+    color: #333;
+    padding: 50px;
+    border-radius: 30px;
+    text-align: center;
+    border: 6px solid #f1c40f;
+    min-width: 400px;
+    box-shadow: 0 0 60px rgba(241, 196, 15, 0.4);
+    animation: zoomIn 0.3s ease-out;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal h2 { font-size: 3em; margin-top: 0; margin-bottom: 15px; }
+.modal p { font-size: 1.5em; margin-bottom: 30px; color: #555; }
+
+.game-btn {
+    padding: 15px 40px;
+    margin: 10px;
+    font-size: 1.4em;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+}
+.game-btn:hover { transform: translateY(-4px); }
+.game-btn:active { transform: translateY(2px); box-shadow: none; }
+
+#next-level-btn { background: #2ecc71; }
+#retry-btn { background: #3498db; }

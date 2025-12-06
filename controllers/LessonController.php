@@ -438,10 +438,6 @@ class LessonController {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        
-        if (!isset($_SESSION['plant_score'])) {
-            $_SESSION['plant_score'] = 0;
-        }
 
         $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
         
@@ -552,6 +548,11 @@ class LessonController {
         if ($currentIndex !== false && isset($keys[$currentIndex + 1])) {
             $nextType = $keys[$currentIndex + 1];
         }
+        // Xác định màn trước đó (nếu có)
+        $prevType = null;
+        if ($currentIndex !== false && isset($keys[$currentIndex - 1])) {
+            $prevType = $keys[$currentIndex - 1];
+        }
         
         $plantData = $allPlantsData[$plantType] ?? $allPlantsData['hoa']; 
         shuffle($plantData['parts']);
@@ -566,150 +567,59 @@ class LessonController {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if (!isset($_SESSION['plant_score'])) {
-            $_SESSION['plant_score'] = 0;
-        }
         $data = json_decode(file_get_contents('php://input'), true);
-        if ($data) {
-            if ($data['action'] === 'add_points' && isset($data['points'])) {
-                $_SESSION['plant_score'] += (int)$data['points'];
-            } elseif ($data['action'] === 'reset') { 
-                $_SESSION['plant_score'] = 0;
-            } elseif ($data['action'] === 'commit') {
-                require_once __DIR__ . '/../models/Database.php';
-                require_once __DIR__ . '/../models/Score.php';
-                $userId = $_SESSION['user_id'] ?? null;
-                $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
-                $gameName = isset($data['game_name']) ? trim($data['game_name']) : null;
-
-                if (empty($userId)) {
-                    header('Content-Type: application/json');
-                    echo json_encode(['success' => false, 'message' => 'User not logged in']);
-                    exit();
-                }
-
-                try {
-                    $db = (new Database())->getConnection();
-
-                    // If game_id not provided, try several strategies to find the game record
-                    if (empty($gameId)) {
-                        if (!empty($gameName)) {
-                            // 1) exact match
-                            $stmt = $db->prepare("SELECT id FROM games WHERE game_name = :name LIMIT 1");
-                            $stmt->execute([':name' => $gameName]);
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                            if ($row) {
-                                $gameId = (int)$row['id'];
-                            }
-                        }
-
-                        if (empty($gameId) && !empty($gameName)) {
-                            // 2) looser match using LIKE
-                            $stmt2 = $db->prepare("SELECT id FROM games WHERE game_name LIKE :like LIMIT 1");
-                            $stmt2->execute([':like' => '%' . $gameName . '%']);
-                            $r2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-                            if ($r2) $gameId = (int)$r2['id'];
-                        }
-
-                        if (empty($gameId)) {
-                            try {
-                                $tf = $db->prepare("SELECT id FROM games WHERE topic_id = :tid LIMIT 1");
-                                $tf->execute([':tid' => 2]);
-                                $rf = $tf->fetch(PDO::FETCH_ASSOC);
-                                if ($rf) $gameId = (int)$rf['id'];
-                            } catch (Exception $e) {
-                                // ignore
-                            }
-                        }
-
-                        if (empty($gameId)) {
-                            error_log('updatePlantScore: could not resolve game_id for game_name=' . ($gameName ?? 'NULL'));
-                        } else {
-                            error_log('updatePlantScore: resolved game_id=' . $gameId . ' for game_name=' . ($gameName ?? 'NULL'));
-                        }
-                    }
-
-                        if (empty($gameId)) {
-                            header('Content-Type: application/json');
-                            echo json_encode(['success' => false, 'message' => 'Game not found for commit']);
-                            exit();
-                        }
-
-                    // compute raw score and percentage
-                    $raw = isset($_SESSION['plant_score']) ? (int)$_SESSION['plant_score'] : 0;
-                    $totalDrops = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
-                    if ($totalDrops && $totalDrops > 0) {
-                        $maxPoints = $totalDrops * 10; // 10 points per correct first-attempt
-                        $pct = (int) round(($maxPoints > 0) ? (($raw / $maxPoints) * 100) : 0);
-                    } else {
-                        // fallback: if client didn't send total_drops, assume raw is already percentage
-                        $pct = max(0, min(100, $raw));
-                    }
-
-                    // Prevent double-commit during the same session
-                    if (!empty($_SESSION['plant_committed'])) {
-                        header('Content-Type: application/json');
-                        echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => $pct]);
-                        exit();
-                    }
-
-                    // Get passing_score from games
-                    $passingScore = null;
-                    try {
-                        $pstmt = $db->prepare("SELECT passing_score FROM games WHERE id = :gid LIMIT 1");
-                        $pstmt->execute([':gid' => $gameId]);
-                        $prow = $pstmt->fetch(PDO::FETCH_ASSOC);
-                        if ($prow && $prow['passing_score'] !== null) {
-                            $passingScore = (int)$prow['passing_score'];
-                        }
-                    } catch (Exception $e) {
-                        // ignore and use fallback
-                    }
-
-                    if ($passingScore === null) {
-                        // fallback to 50%
-                        $passingScore = 50;
-                    }
-
-                    if ($pct >= $passingScore) {
-                        $res = Score::saveAndMark($userId, $gameId, $pct);
-                        // If save was successful, mark session as committed to avoid duplicates
-                        if (is_array($res) && !empty($res['success'])) {
-                            $_SESSION['plant_committed'] = true;
-                            // reset session score to avoid duplicate saves and inform client
-                            $_SESSION['plant_score'] = 0;
-                            $res['newScore'] = 0;
-                        }
-                        header('Content-Type: application/json');
-                        echo json_encode($res);
-                        exit();
-                    } else {
-                        header('Content-Type: application/json');
-                        echo json_encode(['success' => false, 'message' => 'Chưa đủ điểm để hoàn thành', 'newScore' => $pct, 'required' => $passingScore]);
-                        exit();
-                    }
-                } catch (Exception $e) {
-                    header('Content-Type: application/json');
-                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-                    exit();
-                }
-            }
-        }
-        // return percentage to client
-        $raw = isset($_SESSION['plant_score']) ? (int)$_SESSION['plant_score'] : 0;
-        $pct = 0;
-        // if client provided total_drops, convert raw points to percent
-        $totalDropsResp = isset($data['total_drops']) ? (int)$data['total_drops'] : null;
-        if ($totalDropsResp && $totalDropsResp > 0) {
-            $maxPointsResp = $totalDropsResp * 10;
-            $pct = (int) round(($maxPointsResp > 0) ? (($raw / $maxPointsResp) * 100) : 0);
-        } else {
-            // fallback: assume raw is percentage
-            $pct = max(0, min(100, $raw));
-        }
         header('Content-Type: application/json');
-        echo json_encode(['newScore' => $pct]);
-        exit();
+
+        // Only support commit action for this game now. We no longer track per-plant scores.
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            exit();
+        }
+
+        // commit: mark this game as 100% completed for the logged-in user
+        require_once __DIR__ . '/../models/Database.php';
+        require_once __DIR__ . '/../models/Score.php';
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            exit();
+        }
+
+        // Allow caller to provide game_id, but default to 5 for Plant game
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : 5;
+
+        try {
+            $db = (new Database())->getConnection();
+            // Ensure game exists; if not, try to find a games record with topic_id=2
+            $gstmt = $db->prepare('SELECT id FROM games WHERE id = :gid LIMIT 1');
+            $gstmt->execute([':gid' => $gameId]);
+            $grow = $gstmt->fetch(PDO::FETCH_ASSOC);
+            if (!$grow) {
+                $tstmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                $tstmt->execute([':tid' => 2]);
+                $trow = $tstmt->fetch(PDO::FETCH_ASSOC);
+                if ($trow) $gameId = (int)$trow['id'];
+            }
+
+            $pct = 100;
+
+            // Prevent duplicate commits in session
+            if (!empty($_SESSION['plant_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => $pct]);
+                exit();
+            }
+
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['plant_committed'] = true;
+            }
+            echo json_encode($res);
+            exit();
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            exit();
+        }
     }
 
     public function showMathAngleGame() {
@@ -1279,6 +1189,392 @@ class LessonController {
         require_once __DIR__ . '/../views/lessons/engineering_flower_mechanism.php';
     }
 
+  
+    public function updateFlowerScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        $correct = isset($data['correct']) ? (bool)$data['correct'] : false;
+        if (!$correct) {
+            echo json_encode(['success' => false, 'message' => 'Prediction incorrect; not saved']);
+            return;
+        }
+
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+
+            if (empty($gameId)) {
+                // Prefer exact match for the flower experiment game name
+                $preferred = ['Hoa yêu thương nở rộ', 'Hoa yêu thương'];
+                foreach ($preferred as $nm) {
+                    $pstmt = $db->prepare('SELECT id FROM games WHERE game_name = :name LIMIT 1');
+                    $pstmt->execute([':name' => $nm]);
+                    $pr = $pstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($pr) { $gameId = (int)$pr['id']; break; }
+                }
+                // Looser match
+                if (empty($gameId)) {
+                    $lstmt = $db->prepare('SELECT id FROM games WHERE game_name LIKE :like LIMIT 1');
+                    $lstmt->execute([':like' => '%Hoa%']);
+                    $lr = $lstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($lr) $gameId = (int)$lr['id'];
+                }
+                // Fallback to topic_id
+                if (empty($gameId)) {
+                    $stmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                    $stmt->execute([':tid' => 4]);
+                    $r = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($r) $gameId = (int)$r['id'];
+                }
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for flower experiment']);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Commit score for Family Tree game when final level completed
+     * Saves 100% for the user for a game in topic_id = 3 (Technology)
+     */
+    public function updateFamilyTreeScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        // allow caller to provide game_id, otherwise find by topic_id = 3
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+            if (empty($gameId)) {
+                // Prefer exact match for the Family Tree game name
+                $preferred = ['Cây gia đình', 'Gia đình'];
+                foreach ($preferred as $nm) {
+                    $pstmt = $db->prepare('SELECT id FROM games WHERE game_name = :name LIMIT 1');
+                    $pstmt->execute([':name' => $nm]);
+                    $pr = $pstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($pr) { $gameId = (int)$pr['id']; break; }
+                }
+                // Looser match
+                if (empty($gameId)) {
+                    $lstmt = $db->prepare('SELECT id FROM games WHERE game_name LIKE :like LIMIT 1');
+                    $lstmt->execute([':like' => '%Cây gia đình%']);
+                    $lr = $lstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($lr) $gameId = (int)$lr['id'];
+                }
+                // Fallback to topic_id
+                if (empty($gameId)) {
+                    $tstmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                    $tstmt->execute([':tid' => 3]);
+                    $trow = $tstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($trow) $gameId = (int)$trow['id'];
+                }
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for family tree']);
+                return;
+            }
+
+            // Prevent duplicate commits for this session
+            if (!empty($_SESSION['family_tree_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => 100]);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['family_tree_committed'] = true;
+            }
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Commit score for Computer Parts game when user completes assembly
+     * Saves 100% for the user for a game in topic_id = 3 (Technology)
+     */
+    public function updateComputerPartsScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+            if (empty($gameId)) {
+                // Prefer exact match for the game name
+                $preferred = ['Các bộ phận của máy tính', 'Các bộ phận máy tính', 'Các bộ phận của máy tính'];
+                foreach ($preferred as $nm) {
+                    $pstmt = $db->prepare('SELECT id FROM games WHERE game_name = :name LIMIT 1');
+                    $pstmt->execute([':name' => $nm]);
+                    $pr = $pstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($pr) { $gameId = (int)$pr['id']; break; }
+                }
+                if (empty($gameId)) {
+                    $lstmt = $db->prepare('SELECT id FROM games WHERE game_name LIKE :like LIMIT 1');
+                    $lstmt->execute([':like' => '%bộ phận máy tính%']);
+                    $lr = $lstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($lr) $gameId = (int)$lr['id'];
+                }
+                if (empty($gameId)) {
+                    $tstmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                    $tstmt->execute([':tid' => 3]);
+                    $trow = $tstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($trow) $gameId = (int)$trow['id'];
+                }
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for computer parts']);
+                return;
+            }
+
+            if (!empty($_SESSION['computer_parts_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => 100]);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['computer_parts_committed'] = true;
+            }
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Commit score for Thach Sanh typing game
+     * Expects JSON: { action: 'commit', score_pct: <int>, game_name?: string }
+     */
+    public function updateThachSanhScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit' || !isset($data['score_pct'])) {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action or missing score_pct']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        $scorePct = (int)$data['score_pct'];
+        $gameName = isset($data['game_name']) ? trim($data['game_name']) : null;
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+            if (empty($gameId)) {
+                if (!empty($gameName)) {
+                    $pstmt = $db->prepare('SELECT id FROM games WHERE game_name = :name LIMIT 1');
+                    $pstmt->execute([':name' => $gameName]);
+                    $pr = $pstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($pr) $gameId = (int)$pr['id'];
+                }
+                if (empty($gameId)) {
+                    $lstmt = $db->prepare('SELECT id FROM games WHERE game_name LIKE :like LIMIT 1');
+                    $lstmt->execute([':like' => '%Thạch%']);
+                    $lr = $lstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($lr) $gameId = (int)$lr['id'];
+                }
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for typing game']);
+                return;
+            }
+
+            // Prevent duplicate commits in session
+            if (!empty($_SESSION['thach_sanh_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => $scorePct]);
+                return;
+            }
+
+            $res = Score::saveAndMark((int)$userId, $gameId, max(0, min(100, $scorePct)));
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['thach_sanh_committed'] = true;
+            }
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Reset commit flag for Thạch Sanh so user can re-submit after replay
+     */
+    public function resetThachSanhCommit() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+        try {
+            if (!empty($_SESSION['thach_sanh_committed'])) {
+                unset($_SESSION['thach_sanh_committed']);
+            }
+            echo json_encode(['success' => true, 'message' => 'reset']);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * API: Commit score for Painter game when user presses submit
+     * Saves 100% for the user for a game in topic_id = 3 (Technology)
+     */
+    public function updatePainterScore() {
+        if (session_status() == PHP_SESSION_NONE) session_start();
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data || !isset($data['action']) || $data['action'] !== 'commit') {
+            echo json_encode(['success' => false, 'message' => 'Unsupported action']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in']);
+            return;
+        }
+
+        // allow caller to provide game_id, otherwise find by topic_id = 3
+        $gameId = isset($data['game_id']) ? (int)$data['game_id'] : null;
+
+        try {
+            require_once __DIR__ . '/../models/Database.php';
+            require_once __DIR__ . '/../models/Score.php';
+
+            $db = (new Database())->getConnection();
+            if (empty($gameId)) {
+                // Prefer exact match for the painter game name to avoid picking another game with same topic
+                $preferredNames = [
+                    'Em làm họa sĩ máy tính',
+                    'Em làm họa sĩ',
+                    'Họa sĩ máy tính'
+                ];
+                foreach ($preferredNames as $nm) {
+                    $pstmt = $db->prepare('SELECT id FROM games WHERE game_name = :name LIMIT 1');
+                    $pstmt->execute([':name' => $nm]);
+                    $pr = $pstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($pr) { $gameId = (int)$pr['id']; break; }
+                }
+                // Looser match by keyword
+                if (empty($gameId)) {
+                    $lstmt = $db->prepare('SELECT id FROM games WHERE game_name LIKE :like LIMIT 1');
+                    $lstmt->execute([':like' => '%họa sĩ%']);
+                    $lr = $lstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($lr) $gameId = (int)$lr['id'];
+                }
+                // Fallback to any game under topic_id=3
+                if (empty($gameId)) {
+                    $tstmt = $db->prepare('SELECT id FROM games WHERE topic_id = :tid LIMIT 1');
+                    $tstmt->execute([':tid' => 3]);
+                    $trow = $tstmt->fetch(PDO::FETCH_ASSOC);
+                    if ($trow) $gameId = (int)$trow['id'];
+                }
+            }
+
+            if (empty($gameId)) {
+                echo json_encode(['success' => false, 'message' => 'Could not resolve game id for painter']);
+                return;
+            }
+
+            // Prevent duplicate commits for this session
+            if (!empty($_SESSION['painter_committed'])) {
+                echo json_encode(['success' => true, 'message' => 'Already committed', 'newScore' => 100]);
+                return;
+            }
+
+            $pct = 100;
+            $res = Score::saveAndMark((int)$userId, $gameId, $pct);
+            if (is_array($res) && !empty($res['success'])) {
+                $_SESSION['painter_committed'] = true;
+            }
+            echo json_encode($res);
+            return;
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            return;
+        }
+    }
+
     public function showBridgeGame() {
         require_once 'views/lessons/engineering_bridge_game.php';
     }
@@ -1351,5 +1647,45 @@ class LessonController {
         $totalLevels = count($levels);
 
         require_once __DIR__ . '/../views/lessons/engineering_car_builder.php';
+    }
+
+    /**
+     * HẬU NGHỆ BẮN MẶT TRỜI
+     */
+    public function showMathAngleGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        // Dữ liệu các màn chơi
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Bình Minh (Góc Nhọn)',
+                'desc' => 'Mặt trời vừa mọc ở phía Đông. Hãy bắn hạ nó! Góc bắn nhỏ hơn 90°.',
+                'sun_pos' => ['x' => 0.8, 'y' => 0.4],
+                'type' => 'acute'
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Giữa Trưa (Góc Vuông)',
+                'desc' => 'Mặt trời đang đứng bóng. Góc bắn là 90°.',
+                'sun_pos' => ['x' => 0.5, 'y' => 0.15],
+                'type' => 'right'
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Hoàng Hôn (Góc Tù)',
+                'desc' => 'Mặt trời lặn về phía Tây. Hãy bắn vòng qua núi! Góc bắn lớn hơn 90°.',
+                'sun_pos' => ['x' => 0.2, 'y' => 0.4],
+                'type' => 'obtuse'
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/math_angle_game.php';
     }
 }

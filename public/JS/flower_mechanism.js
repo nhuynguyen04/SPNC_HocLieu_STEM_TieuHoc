@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedPrediction = null;
     let experimentRunning = false;
     
+    const baseUrl = window.baseUrl || '';
+
     // Khởi tạo
     function init() {
         setupEventListeners();
@@ -75,10 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Nút thử lại
         restartBtn.addEventListener('click', resetExperiment);
         
-        // Nút game tiếp theo
+        // Nút quay lại (trở về trang engineering)
         nextGameBtn.addEventListener('click', function() {
-            alert('Chuyển đến game tiếp theo!');
-            // Có thể thêm chức năng chuyển trang ở đây
+            // Navigate back to engineering lessons page
+            window.location.href = baseUrl + '/views/lessons/engineering.php';
         });
     }
     
@@ -237,6 +239,32 @@ document.addEventListener('DOMContentLoaded', function() {
         message += `Hoa giấy ${selectedMaterial === 'thin' ? 'mỏng' : 'dày'} nở ${timeCategory === 'fast' ? 'rất nhanh' : timeCategory === 'medium' ? 'vừa phải' : 'khá chậm'}!`;
         
         resultMessage.textContent = message;
+
+        // If prediction is correct, commit 100% to server for this engineering game
+        if (isCorrect) {
+            // send commit to server
+            try {
+                fetch(baseUrl + '/views/lessons/update-flower-score', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'commit', correct: true })
+                })
+                .then(r => r.json())
+                .then(j => {
+                    console.log('flower commit response', j);
+                    if (j && j.success) {
+                        // Optionally inform user
+                        const info = document.createElement('div');
+                        info.className = 'server-info';
+                        info.textContent = 'Điểm đã được lưu: 100%';
+                        resultMessage.appendChild(info);
+                    }
+                })
+                .catch(err => console.error('Error committing flower score', err));
+            } catch (e) {
+                console.error('Commit error', e);
+            }
+        }
     }
     
     // Reset thí nghiệm

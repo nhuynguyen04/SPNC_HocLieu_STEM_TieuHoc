@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const draggableParts = document.querySelectorAll(".draggable-label");
     const dropzones = document.querySelectorAll(".dropzone");
     const feedbackBox = document.getElementById("plant-feedback");
-    const scoreDisplay = document.getElementById("score"); 
     const resetButton = document.getElementById("plantResetButton");
     const finishButton = document.getElementById('plantFinishButton');
     const backButton = document.querySelector('.back-button');
@@ -68,11 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 zone.dataset.targetPart = "filled"; 
 
+                // points are awarded once per finished plant (handled on Finish click)
                 let points = 0;
-                if (attempt === 1) {
-                    points = 10;
-                    updateScore(points);
-                }
 
                 correctDrops++; 
                 
@@ -111,57 +107,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 3. Logic cho nút Reset
-    resetButton.addEventListener('click', () => {
-        fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'reset' })
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload(); 
-            } else {
-                alert("Lỗi! Không thể chơi lại.");
-            }
-        })
-        .catch(error => console.error('Lỗi reset:', error));
-    });
-
-    // Back button: reset score on server then navigate back
+    // Back button: simply navigate back (no server-side scoring to reset)
     if (backButton) {
         backButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            const href = backButton.getAttribute('href');
-            fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'reset' })
-            })
-            .then(() => {
-                // navigate after reset
-                window.location.href = href;
-            })
-            .catch((err) => {
-                console.error('Lỗi reset khi nhấn Quay lại:', err);
-                // still navigate even if reset failed
-                window.location.href = href;
-            });
+            // allow normal navigation
         });
     }
 
-    // Finish button: commit score to server then navigate back on success
-    // Finish button
+    // Finish button: if there is a next plant, navigate to it (do NOT commit here).
+    // Only commit to DB when on the last plant (no next plant type available).
     if (finishButton) {
         finishButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            
+
             // Kiểm tra xem đã ghép đủ chưa (logic client)
             if (correctDrops < totalDrops) {
                 showFeedback('Bạn chưa ghép xong tất cả các bộ phận!', 'hint');
                 return;
             }
 
+            // If there is a next plant type, navigate to it (no scoring calls)
+            const nextType = window.nextPlantType || null;
+            if (nextType) {
+                window.location.href = `${baseUrl}/views/lessons/science_plant_game?type=${encodeURIComponent(nextType)}`;
+                return;
+            }
+
+            // Otherwise (no next) perform commit to DB
             finishButton.disabled = true;
             finishButton.textContent = 'Đang xử lý...';
             
@@ -169,19 +141,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 const resp = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'commit', game_id: 2, total_drops: totalDrops })
+                    body: JSON.stringify({ action: 'commit', game_id: 5 })
                 });
                 
-                // ... (đoạn xử lý json giống cũ) ...
                 const ct = resp.headers.get('content-type') || '';
                 let data = null;
                 if (ct.indexOf('application/json') !== -1) data = await resp.json();
                 else data = { success: false };
 
                 if (data && data.success) {
-                    // *** QUAN TRỌNG: GỌI HÀM HIỆN MODAL ***
+                    // Show modal and allow replay/next logic from modal
                     showWinModal(); 
                 } else {
+                    console.error('commit response', data);
                     showFeedback('Có lỗi xảy ra khi lưu điểm.', 'hint');
                 }
             } catch (err) {
@@ -209,33 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Hàm cập nhật điểm
-    async function updateScore(points) {
-        try {
-            const response = await fetch(`${baseUrl}/views/lessons/update-plant-score`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'add_points', points: points, total_drops: totalDrops })
-            });
-            // Parse response safely: if server returns JSON, use it; otherwise log text for debugging.
-            const contentType = response.headers.get('content-type') || '';
-            let data = null;
-            if (contentType.indexOf('application/json') !== -1) {
-                data = await response.json();
-            } else {
-                const text = await response.text();
-                console.error('Non-JSON response from update-plant-score:', text);
-                // Try to recover: don't throw, just return
-                return;
-            }
-
-            if (data && data.newScore !== undefined) {
-                scoreDisplay.textContent = data.newScore;
-            }
-        } catch (error) {
-            console.error("Lỗi cập nhật điểm:", error);
-        }
-    }
+    // No scoring update function: scoring has been removed for the Plant game.
 
     function showWinModal() {
         const winModal = document.getElementById('win-modal');
@@ -255,17 +201,33 @@ document.addEventListener("DOMContentLoaded", () => {
             if(nextLevelBtn) {
                 nextLevelBtn.style.display = 'block';
                 nextLevelBtn.onclick = () => {
-                    window.location.href = `${baseUrl}/views/lessons/plant-game?type=${nextType}`;
+                    window.location.href = `${baseUrl}/views/lessons/science_plant_game?type=${encodeURIComponent(nextType)}`;
                 };
             }
             if(replayAllBtn) replayAllBtn.style.display = 'none';
+            // Always show 'Back to lessons' button so user can return to lessons list
+            const backToLessonsBtn = document.getElementById('back-to-lessons-btn');
+            if (backToLessonsBtn) {
+                backToLessonsBtn.style.display = 'block';
+                backToLessonsBtn.onclick = () => {
+                    window.location.href = `${baseUrl}/views/lessons/science.php`;
+                };
+            }
         } else {
             // HẾT MÀN -> Hiện nút Chơi lại từ đầu
             if(nextLevelBtn) nextLevelBtn.style.display = 'none';
             if(replayAllBtn) {
                 replayAllBtn.style.display = 'block';
                 replayAllBtn.onclick = () => {
-                    window.location.href = `${baseUrl}/views/lessons/plant-game?type=hoa`;
+                    window.location.href = `${baseUrl}/views/lessons/science_plant_game?type=hoa`;
+                };
+            }
+            // Show 'Back to lessons' alongside replay
+            const backToLessonsBtn2 = document.getElementById('back-to-lessons-btn');
+            if (backToLessonsBtn2) {
+                backToLessonsBtn2.style.display = 'block';
+                backToLessonsBtn2.onclick = () => {
+                    window.location.href = `${baseUrl}/views/lessons/science.php`;
                 };
             }
             

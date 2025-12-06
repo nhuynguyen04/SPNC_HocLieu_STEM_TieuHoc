@@ -60,9 +60,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 draggedElement.style.display = 'none';
 
                 correctDrops++;
-                
+
                 if (correctDrops === TOTAL_PARTS) {
-                    setTimeout(() => showModal(true), 500); 
+                    setTimeout(() => {
+                        showModal(true);
+                        // send commit to server to save completion (100%)
+                        try {
+                            fetch(`${baseUrl}/views/lessons/update-computer-parts-score`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ action: 'commit' })
+                            }).then(r => r.json()).then(j => {
+                                if (j && j.success) {
+                                    console.log('Computer parts: saved', j);
+                                } else {
+                                    console.warn('Computer parts save response', j);
+                                }
+                            }).catch(err => console.error('Save error', err));
+                        } catch (err) { console.error(err); }
+                    }, 500);
                 }
                 
             } else {
@@ -78,6 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
     restartBtn.addEventListener('click', () => {
         window.location.reload();
     });
+
+    // Back to technology page button
+    const backBtn = document.getElementById('back-to-tech-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            window.location.href = baseUrl + '/views/lessons/technology.php';
+        });
+    }
 
     // Hiển thị thông báo
     function showFeedback(message, type) {

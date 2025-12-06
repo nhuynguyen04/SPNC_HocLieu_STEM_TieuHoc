@@ -117,6 +117,7 @@
             <button id="next-level-btn" class="game-btn" style="display: none;">Cấp độ tiếp theo</button>
             
             <button id="restart-game-btn" class="game-btn">Chơi lại</button>
+            <button id="back-to-technology-btn" class="game-btn" style="display:none; margin-top:8px;">Quay lại</button>
         </div>
     </div>
 </div>

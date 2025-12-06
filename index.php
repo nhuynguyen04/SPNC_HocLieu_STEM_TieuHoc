@@ -99,6 +99,11 @@ switch ($route) {
     case '/views/lessons/technology_family_tree_game':
         $lessonController->showFamilyTree();
         break;
+    case '/views/lessons/update-family-tree-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateFamilyTreeScore();
+        }
+        break;
 
     case '/views/lessons/technology_coding_game':
         $lessonController->showCodingGame();
@@ -113,17 +118,42 @@ switch ($route) {
     case '/views/lessons/technology_computer_parts':
         $lessonController->showComputerPartsGame();
         break;
+    case '/views/lessons/update-computer-parts-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateComputerPartsScore();
+        }
+        break;
 
     case '/views/lessons/technology_typing_thach_sanh':
         $lessonController->showThachSanhGame();
+        break;
+    case '/views/lessons/update-thach-sanh-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateThachSanhScore();
+        }
+        break;
+    case '/views/lessons/reset-thach-sanh-commit':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->resetThachSanhCommit();
+        }
         break;
 
     case '/views/lessons/technology_painter_game':
         $lessonController->showPainterGame();
         break;
+    case '/views/lessons/update-painter-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updatePainterScore();
+        }
+        break;
 
     case '/views/lessons/engineering_flower_mechanism':
         $lessonController->showFlowerMechanismGame();
+        break;
+    case '/views/lessons/update-flower-score':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $lessonController->updateFlowerScore();
+        }
         break;
 
     case '/views/lessons/engineering_bridge_game':
@@ -132,6 +162,10 @@ switch ($route) {
         
     case '/views/lessons/engineering_car_builder':
         $lessonController->showCarBuilderGame();
+        break;
+
+    case '/views/lessons/math_angle_game':
+        $lessonController->showMathAngleGame();
         break;
 
     // --- FORGOT PASSWORD VIEW ---
