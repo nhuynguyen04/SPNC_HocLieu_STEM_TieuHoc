@@ -622,7 +622,7 @@ class LessonController {
         }
     }
 
-    public function showMathAngleGame() {
+    public function showMathShapesGame() {
          // khởi tạo session score nếu cần
          if (!isset($_SESSION['angle_score'])) {
              $_SESSION['angle_score'] = 0;
@@ -1687,5 +1687,166 @@ class LessonController {
         $totalLevels = count($levels);
 
         require_once __DIR__ . '/../views/lessons/math_angle_game.php';
+    }
+
+    /**
+     * TRÒ CHƠI TANGRAM
+     */
+    public function showTangramGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        if (!isset($_SESSION['math_score'])) { $_SESSION['math_score'] = 0; }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Màn 1: Chú Mèo Đang Ngồi',
+                'desc' => 'Hãy sắp xếp 7 mảnh ghép để tạo thành hình chú mèo.',
+                'silhouetteShape' => 'cat', 
+                
+                // GIẢI PHÁP (Scale 60) - Đã khớp hình con mèo
+                'solution' => [
+                    // 1. Đầu mèo (Hình vuông)
+                    'square'        => ['x' => 273, 'y' => -99,  'rot' => 0],
+
+                    // 2. Tai trái (Tam giác nhỏ 1)
+                    'small1'        => ['x' => 306, 'y' => -160, 'rot' => 2],
+
+                    // 3. Tai phải (Tam giác nhỏ 2)
+                    'small2'        => ['x' => 241, 'y' => -161, 'rot' => 6],
+
+                    // 4. Thân trên (Tam giác lớn 2)
+                    'big2'          => ['x' => 212, 'y' => 82,   'rot' => 2],
+
+                    // 5. Lưng/Cổ (Tam giác vừa)
+                    'medium'        => ['x' => 359, 'y' => 49,   'rot' => 2],
+
+                    // 6. Thân dưới (Tam giác lớn 1)
+                    'big1'          => ['x' => 195, 'y' => 213,  'rot' => 1],
+
+                    // 7. Đuôi (Hình bình hành)
+                    'parallelogram' => ['x' => 60,  'y' => 225,  'rot' => 0]
+                ]
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Màn 2: Chú Ngựa Phi',
+                'desc' => 'Sắp xếp các mảnh ghép để tạo hình chú ngựa đang phi nước đại.',
+                'silhouetteShape' => 'horse', 
+                'solution' => [
+                    // 1. Đầu ngựa (Tam giác vừa)
+                    'medium'        => ['x' => 312, 'y' => -240, 'rot' => 0],
+
+                    // 2. Cổ ngựa (Hình vuông)
+                    'square'        => ['x' => 270, 'y' => -109, 'rot' => 1],
+
+                    // 3. Thân trên (Tam giác lớn 2)
+                    'big2'          => ['x' => 271, 'y' => -24,  'rot' => 3],
+
+                    // 4. Thân dưới (Tam giác lớn 1)
+                    'big1'          => ['x' => 166, 'y' => 56,   'rot' => 2],
+
+                    // 5. Đuôi (Hình bình hành)
+                    'parallelogram' => ['x' => 72,  'y' => 150,  'rot' => 2],
+
+                    // 6. Chân trước (Tam giác nhỏ 1)
+                    'small1'        => ['x' => 397, 'y' => -33,  'rot' => 4],
+
+                    // 7. Chân sau (Tam giác nhỏ 2)
+                    'small2'        => ['x' => 252, 'y' => 168,  'rot' => 1],
+                ]
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Màn 3: Chú Thỏ Đáng Yêu',
+                'desc' => 'Hãy ghép các khối hình để tạo thành chú thỏ.',
+                'silhouetteShape' => 'rabbit', 
+                'solution' => [
+                    // 1. Tai thỏ (Hình bình hành) - Nằm cao nhất
+                    'parallelogram' => ['x' => 228, 'y' => -196, 'rot' => 3],
+
+                    // 2. Đầu thỏ (Hình vuông)
+                    'square'        => ['x' => 148, 'y' => -109, 'rot' => 1],
+
+                    // 3. Thân trên (Tam giác lớn 2)
+                    'big2'          => ['x' => 234, 'y' => -24,  'rot' => 1],
+
+                    // 4. Chân trước (Tam giác nhỏ 1)
+                    'small1'        => ['x' => 158, 'y' => 20,   'rot' => 2],
+
+                    // 5. Thân dưới (Tam giác lớn 1)
+                    'big1'          => ['x' => 319, 'y' => 63,   'rot' => 5],
+
+                    // 6. Đuôi (Tam giác nhỏ 2)
+                    'small2'        => ['x' => 207, 'y' => 134,  'rot' => 2],
+
+                    // 7. Chân sau (Tam giác vừa) - Nằm thấp nhất
+                    'medium'        => ['x' => 241, 'y' => 192,  'rot' => 5],
+                ]
+            ],
+            4 => [
+                'id' => 4,
+                'title' => 'Màn 4: Chú Cá Vàng',
+                'desc' => 'Sắp xếp các mảnh ghép để tạo thành hình chú cá đang bơi.',
+                'silhouetteShape' => 'fish', 
+                'solution' => [
+                    // 1. Thân trước (Hình vuông) - Phần đầu
+                    'square'        => ['x' => 221, 'y' => 1,    'rot' => 1],
+
+                    // 2. Thân trên (Tam giác lớn 1) - Lưng cá
+                    'big1'          => ['x' => 134, 'y' => -39,  'rot' => 7],
+
+                    // 3. Thân dưới (Tam giác lớn 2) - Bụng cá
+                    'big2'          => ['x' => 133, 'y' => 49,   'rot' => 5],
+
+                    // 4. Vây lưng (Tam giác nhỏ 1)
+                    'small1'        => ['x' => 201, 'y' => -66,  'rot' => 1],
+
+                    // 5. Vây bụng (Tam giác nhỏ 2)
+                    'small2'        => ['x' => 199, 'y' => 68,   'rot' => 3],
+
+                    // 6. Đuôi phần gốc (Tam giác vừa)
+                    'medium'        => ['x' => 267, 'y' => -45,  'rot' => 6],
+
+                    // 7. Đuôi phần ngọn (Hình bình hành)
+                    'parallelogram' => ['x' => 308, 'y' => 43,   'rot' => 1],
+                ]
+            ],
+            5 => [
+                'id' => 5,
+                'title' => 'Màn 5: Cánh Bướm Xinh',
+                'desc' => 'Hãy ghép hình để tạo thành chú bướm đang bay.',
+                'silhouetteShape' => 'butterfly', 
+                'solution' => [
+                    // 1. Cánh lớn bên trái (Tam giác lớn 1)
+                    'big1'          => ['x' => 79,  'y' => -89, 'rot' => 1],
+
+                    // 2. Cánh lớn bên phải (Tam giác lớn 2)
+                    'big2'          => ['x' => 342, 'y' => -90, 'rot' => 7],
+
+                    // 3. Đầu/Thân trên (Hình vuông)
+                    'square'        => ['x' => 165, 'y' => -1,  'rot' => 1],
+
+                    // 4. Cánh nhỏ dưới trái (Tam giác nhỏ 2)
+                    'small2'        => ['x' => 98,  'y' => -22, 'rot' => 5],
+
+                    // 5. Cánh nhỏ dưới phải (Tam giác nhỏ 1)
+                    'small1'        => ['x' => 145, 'y' => 66,  'rot' => 3],
+
+                    // 6. Thân dưới (Hình bình hành)
+                    'parallelogram' => ['x' => 255, 'y' => 43,  'rot' => 1],
+
+                    // 7. Đuôi (Tam giác vừa)
+                    'medium'        => ['x' => 302, 'y' => 42,  'rot' => 4],
+                ]
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/math_tangram.php';
     }
 }

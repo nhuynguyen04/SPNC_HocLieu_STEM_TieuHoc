@@ -89,7 +89,7 @@ switch ($route) {
         break;
     
     case '/views/lessons/math_shapes_challenge':
-        $lessonController->showMathAngleGame();
+        $lessonController->showMathShapesGame();
         break;
 
     case '/views/lessons/math_number_game':
@@ -166,6 +166,10 @@ switch ($route) {
 
     case '/views/lessons/math_angle_game':
         $lessonController->showMathAngleGame();
+        break;
+
+    case '/views/lessons/math_tangram_3d':
+        $lessonController->showTangramGame();
         break;
 
     // --- FORGOT PASSWORD VIEW ---
