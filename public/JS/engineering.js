@@ -35,14 +35,6 @@ const planets = {
                 xp: "35 XP",
                 link: baseUrl + '/views/lessons/engineering_flower_mechanism', 
                 status: "current" 
-            },
-            { 
-                type: "question", 
-                name: "Trả lời câu hỏi", 
-                icon: "❓", 
-                xp: "25 XP",
-                link: baseUrl + '/views/lessons/engineering_mechanism_questions', 
-                status: "locked" 
             }
         ]
     },
@@ -54,14 +46,6 @@ const planets = {
         time: "35 phút", 
         xp: "75 XP",
         activities: [
-            { 
-                type: "tutorial", 
-                name: "Kỹ thuật xây cầu", 
-                icon: "📐", 
-                xp: "40 XP",
-                link: baseUrl + '/views/lessons/engineering_bridge_tutorial', 
-                status: "locked" 
-            },
             { 
                 type: "challenge", 
                 name: "Thử thách cầu giấy", 
@@ -81,14 +65,6 @@ const planets = {
         xp: "70 XP",
         activities: [
             { 
-                type: "tutorial", 
-                name: "Nguyên lý đẩy", 
-                icon: "💨", 
-                xp: "30 XP",
-                link: baseUrl + '/views/lessons/engineering_balloon_car_tutorial', 
-                status: "locked" 
-            },
-            { 
                 type: "experiment", 
                 name: "Trò chơi chế tạo xe", 
                 icon: "🧪", 
@@ -99,32 +75,6 @@ const planets = {
         ]
     },
     5: {
-        name: "THÁP GIẤY CAO NHẤT",
-        icon: "🗼",
-        status: "locked",
-        description: "Thi đua xây tháp giấy cao và vững chắc nhất",
-        time: "32 phút",
-        xp: "80 XP",
-        activities: [
-            { 
-                type: "tutorial", 
-                name: "Kỹ thuật xây tháp", 
-                icon: "📏", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/engineering_tower_tutorial', 
-                status: "locked" 
-            },
-            { 
-                type: "competition", 
-                name: "Cuộc thi tháp giấy", 
-                icon: "🏆", 
-                xp: "45 XP",
-                link: baseUrl + '/views/lessons/engineering_tower_competition', 
-                status: "locked" 
-            }
-        ]
-    },
-    6: {
         name: "HỆ THỐNG LỌC NƯỚC CƠ BẢN",
         icon: "💧",
         status: "locked",
@@ -133,97 +83,11 @@ const planets = {
         xp: "75 XP",
         activities: [
             { 
-                type: "tutorial", 
-                name: "Nguyên lý lọc nước", 
-                icon: "🔬", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/engineering_water_filter_tutorial', 
-                status: "locked" 
-            },
-            { 
                 type: "experiment", 
                 name: "Chế tạo bộ lọc", 
                 icon: "🧪", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/engineering_water_filter_experiment', 
-                status: "locked" 
-            }
-        ]
-    },
-    7: {
-        name: "LÀM ĐÈN TRUNG THU",
-        icon: "🏮",
-        status: "locked",
-        description: "Sáng tạo đèn Trung thu từ vật liệu tái chế và thiết kế độc đáo",
-        time: "45 phút",
-        xp: "65 XP",
-        activities: [
-            { 
-                type: "tutorial", 
-                name: "Thiết kế đèn", 
-                icon: "🎨", 
-                xp: "30 XP",
-                link: baseUrl + '/views/lessons/engineering_lantern_design', 
-                status: "locked" 
-            },
-            { 
-                type: "craft", 
-                name: "Thực hành làm đèn", 
-                icon: "✂️", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/engineering_lantern_craft', 
-                status: "locked" 
-            }
-        ]
-    },
-    8: {
-        name: "CHẾ TẠO DÙ CHO QUẢ TRỨNG",
-        icon: "🥚",
-        status: "locked",
-        description: "Thiết kế dù bảo vệ trứng không vỡ khi rơi từ độ cao",
-        time: "50 phút",
-        xp: "85 XP",
-        activities: [
-            { 
-                type: "tutorial", 
-                name: "Nguyên lý khí động", 
-                icon: "💨", 
-                xp: "40 XP",
-                link: baseUrl + '/views/lessons/engineering_egg_parachute_tutorial', 
-                status: "locked" 
-            },
-            { 
-                type: "challenge", 
-                name: "Thử thách trứng rơi", 
-                icon: "🏆", 
-                xp: "45 XP",
-                link: baseUrl + '/views/lessons/engineering_egg_parachute_challenge', 
-                status: "locked" 
-            }
-        ]
-    },
-    9: {
-        name: "THUYỀN NỔI TRÊN MẶT NƯỚC",
-        icon: "⛵",
-        status: "locked",
-        description: "Chế tạo thuyền từ vật liệu nhẹ và thử nghiệm khả năng nổi",
-        time: "35 phút",
-        xp: "65 XP",
-        activities: [
-            { 
-                type: "tutorial", 
-                name: "Nguyên lý nổi", 
-                icon: "📚", 
-                xp: "30 XP",
-                link: baseUrl + '/views/lessons/engineering_boat_tutorial', 
-                status: "locked" 
-            },
-            { 
-                type: "experiment", 
-                name: "Thử nghiệm thuyền", 
-                icon: "🌊", 
-                xp: "35 XP",
-                link: baseUrl + '/views/lessons/engineering_boat_experiment', 
                 status: "locked" 
             }
         ]
@@ -370,7 +234,7 @@ function initEngineeringSystem() {
 
     characterBtn.addEventListener('click', function() {
         console.log('👷‍♂️ Character clicked');
-        alert('Chào nhà kỹ sư nhí! Mình là Thợ Máy Thông Thái! 👷‍♂️\nCùng mình chế tạo 9 dự án siêu thú vị nhé!');
+        alert('Chào nhà kỹ sư nhí! Mình là Thợ Máy Thông Thái! 👷‍♂️\nCùng mình chế tạo 5 dự án siêu thú vị nhé!');
     });
 
     planetInfoOverlay.addEventListener('click', function(e) {

@@ -191,7 +191,7 @@ body {
 
 .solar-system {
     position: relative;
-    height: 1000px;
+    height: 600px;
     margin: 50px 0;
     perspective: 1000px;
 }
@@ -233,10 +233,6 @@ body {
 .orbit-3 { width: 400px; height: 400px; }
 .orbit-4 { width: 500px; height: 500px; }
 .orbit-5 { width: 600px; height: 600px; }
-.orbit-6 { width: 700px; height: 700px; }
-.orbit-7 { width: 800px; height: 800px; }
-.orbit-8 { width: 900px; height: 900px; }
-.orbit-9 { width: 1000px; height: 1000px; }
 
 .planet {
     position: absolute;
@@ -312,34 +308,6 @@ body {
     animation: orbit-5 65s linear infinite;
 }
 
-.planet-6 {
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle at 50% 50%, #16A34A, #15803D);
-    animation: orbit-6 75s linear infinite;
-}
-
-.planet-7 {
-    width: 68px;
-    height: 68px;
-    background: radial-gradient(circle at 45% 45%, #EF4444, #DC2626);
-    animation: orbit-7 95s linear infinite;
-}
-
-.planet-8 {
-    width: 76px;
-    height: 76px;
-    background: radial-gradient(circle at 35% 35%, #8B5CF6, #7C3AED);
-    animation: orbit-8 105s linear infinite;
-}
-
-.planet-9 {
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle at 50% 50%, #F59E0B, #D97706);
-    animation: orbit-9 115s linear infinite;
-}
-
 @keyframes orbit-1 {
     0% { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg) translateX(100px) rotate(-360deg); }
@@ -363,26 +331,6 @@ body {
 @keyframes orbit-5 {
     0% { transform: translate(-50%, -50%) rotate(288deg) translateX(300px) rotate(-288deg); }
     100% { transform: translate(-50%, -50%) rotate(648deg) translateX(300px) rotate(-648deg); }
-}
-
-@keyframes orbit-6 {
-    0% { transform: translate(-50%, -50%) rotate(360deg) translateX(350px) rotate(-360deg); }
-    100% { transform: translate(-50%, -50%) rotate(720deg) translateX(350px) rotate(-720deg); }
-}
-
-@keyframes orbit-7 {
-    0% { transform: translate(-50%, -50%) rotate(72deg) translateX(400px) rotate(-72deg); }
-    100% { transform: translate(-50%, -50%) rotate(432deg) translateX(400px) rotate(-432deg); }
-}
-
-@keyframes orbit-8 {
-    0% { transform: translate(-50%, -50%) rotate(144deg) translateX(450px) rotate(-144deg); }
-    100% { transform: translate(-50%, -50%) rotate(504deg) translateX(450px) rotate(-504deg); }
-}
-
-@keyframes orbit-9 {
-    0% { transform: translate(-50%, -50%) rotate(216deg) translateX(500px) rotate(-216deg); }
-    100% { transform: translate(-50%, -50%) rotate(576deg) translateX(500px) rotate(-576deg); }
 }
 
 .planet.completed::after {
@@ -773,17 +721,13 @@ body {
     background: rgba(34, 197, 94, 0.2);
 }
 
-.planet[data-planet="4"], .planet[data-planet="5"], .planet[data-planet="6"], .planet[data-planet="7"], .planet[data-planet="8"], .planet[data-planet="9"]{
+.planet[data-planet="4"], .planet[data-planet="5"] {
     opacity: 0.6;
     filter: grayscale(0.7);
 }
 
 .planet[data-planet="4"]::before,
-.planet[data-planet="5"]::before,
-.planet[data-planet="6"]::before,
-.planet[data-planet="7"]::before,
-.planet[data-planet="8"]::before,
-.planet[data-planet="9"]::before {
+.planet[data-planet="5"]::before {
     content: '🔒';
     position: absolute;
     top: -5px;
@@ -817,21 +761,17 @@ body {
         height: 500px;
     }
     
-    .orbit-1 { width: 80px; height: 80px; }
-    .orbit-2 { width: 160px; height: 160px; }
-    .orbit-3 { width: 240px; height: 240px; }
-    .orbit-4 { width: 320px; height: 320px; }
     .orbit-5 { width: 400px; height: 400px; }
-    .orbit-6 { width: 450px; height: 450px; }
-    .orbit-7 { width: 520px; height: 520px; }
-    .orbit-8 { width: 590px; height: 590px; }
-    .orbit-9 { width: 660px; height: 660px; }
+    .orbit-4 { width: 320px; height: 320px; }
+    .orbit-3 { width: 240px; height: 240px; }
+    .orbit-2 { width: 160px; height: 160px; }
+    .orbit-1 { width: 80px; height: 80px; }
     
     .planet {
         font-size: 1.4rem;
     }
     
-    .planet-1, .planet-2, .planet-3, .planet-4, .planet-5, .planet-6, .planet-7, .planet-8, .planet-9 {
+    .planet-1, .planet-2, .planet-3, .planet-4, .planet-5 {
         width: 50px;
         height: 50px;
     }

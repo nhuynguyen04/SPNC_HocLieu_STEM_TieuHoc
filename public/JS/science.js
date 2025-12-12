@@ -22,7 +22,7 @@ const planets = {
         time: "20 phút",
         xp: "50 XP",
         activities: [
-            { type: "game", name: "Trò chơi dinh dưỡng", icon: "🧩", xp: "50 XP",
+            { type: "game", name: "Trò chơi tháp dinh dưỡng", icon: "🧩", xp: "50 XP",
               link: baseUrl + '/views/lessons/science_nutrition_game', status: "completed" }
         ]
     },
@@ -52,7 +52,7 @@ const planets = {
         time: "16 phút",
         xp: "50 XP",
         activities: [
-            { type: "game", name: "Trò chơi phân loại", icon: "♻️", xp: "30 XP",
+            { type: "game", name: "Trò chơi phân loại rác", icon: "♻️", xp: "30 XP",
                 link: baseUrl + '/views/lessons/science_trash_game', status: "locked" }
         ]
     },
@@ -66,60 +66,6 @@ const planets = {
         activities: [
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
               link: baseUrl + '/views/lessons/science_plant_game', status: "locked" }
-        ]
-    },
-    6: {
-        name: "CẨM NANG PHÒNG TRÁNH HỎA HOẠN KHI Ở NHÀ",
-        icon: "🔥",
-        status: "locked",
-        description: "Học các kỹ năng phòng cháy chữa cháy và an toàn khi ở nhà",
-        time: "22 phút",
-        xp: "40 XP",
-        activities: [
-            { 
-                type: "game", 
-                name: "Thực hành an toàn", 
-                icon: "🚒", 
-                xp: "40 XP",
-                link: baseUrl + '/views/lessons/science_fire_safety', 
-                status: "locked" 
-            }
-        ]
-    },
-    7: {
-        name: "CÁC CƠ QUAN TRONG CƠ THỂ NGƯỜI",
-        icon: "👤",
-        status: "locked",
-        description: "Khám phá cấu trúc và chức năng của các cơ quan trong cơ thể",
-        time: "25 phút",
-        xp: "45 XP",
-        activities: [
-            { 
-                type: "game", 
-                name: "Ghép hình cơ thể", 
-                icon: "🧩", 
-                xp: "45 XP",
-                link: baseUrl + '/views/lessons/science_organs_game', 
-                status: "locked" 
-            }
-        ]
-    },
-    8: {
-        name: "KHUNG XƯƠNG KÌ DIỆU CỦA CHÚNG TA",
-        icon: "🦴",
-        status: "locked",
-        description: "Tìm hiểu về hệ xương và các chức năng quan trọng của nó",
-        time: "20 phút",
-        xp: "40 XP",
-        activities: [
-            { 
-                type: "game", 
-                name: "Trò chơi xương", 
-                icon: "🎮", 
-                xp: "40 XP",
-                link: baseUrl + '/views/lessons/science_skeleton_game', 
-                status: "locked" 
-            }
         ]
     }
 };

@@ -295,7 +295,7 @@ $_SESSION['technology_visited'] = true;
                 
                 <div class="mission-title">
                     <h1>HỆ MẶT TRỜI CÔNG NGHỆ</h1>
-                    <p>Khám phá 9 hành tinh tri thức</p>
+                    <p>Khám phá 5 hành tinh tri thức</p>
                 </div>
                 
                 <div class="mission-stats">
@@ -319,20 +319,12 @@ $_SESSION['technology_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
-            <div class="orbit orbit-6"></div>
-            <div class="orbit orbit-7"></div>
-            <div class="orbit orbit-8"></div>
-            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🌳</div>
             <div class="planet planet-2 current" data-planet="2">🎨</div>
-            <div class="planet planet-3" data-planet="3">🛡️</div>
+            <div class="planet planet-3" data-planet="3">⌨️</div>
             <div class="planet planet-4" data-planet="4">🧩</div>
             <div class="planet planet-5" data-planet="5">💻</div>
-            <div class="planet planet-6" data-planet="6">💌</div>
-            <div class="planet planet-7" data-planet="7">⌨️</div>
-            <div class="planet planet-8" data-planet="8">🔍</div>
-            <div class="planet planet-9" data-planet="9">🗺️</div>
         </section>
     </div>
 

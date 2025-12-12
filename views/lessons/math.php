@@ -26,7 +26,7 @@ $math_data = [
     'topics' => [
         [
             'id' => 1,
-            'title' => 'MÁY BẮN ĐÁ MINI',
+            'title' => 'HẬU NGHỆ BẮN MẶT TRỜI',
             'icon' => '🎯',
             'status' => 'completed',
             'color' => '#EF4444',
@@ -134,114 +134,6 @@ $math_data = [
                     'xp' => 45
                 ]
             ]
-        ],
-        [
-            'id' => 6,
-            'title' => 'PHÉP ĐỐI XỨNG DIỆU KỲ',
-            'icon' => '🦋',
-            'status' => 'upcoming',
-            'color' => '#EC4899',
-            'description' => 'Khám phá phép đối xứng qua các hình ảnh và trò chơi thú vị',
-            'learning_time' => '30 phút',
-            'activities' => [
-                [
-                    'type' => 'game',
-                    'title' => 'TRÒ CHƠI ĐỐI XỨNG',
-                    'icon' => '🎮',
-                    'description' => 'Trò chơi nhận biết và tạo hình đối xứng',
-                    'status' => 'locked',
-                    'xp' => 35
-                ],
-                [
-                    'type' => 'puzzle',
-                    'title' => 'GHÉP HÌNH ĐỐI XỨNG',
-                    'icon' => '🧩',
-                    'description' => 'Thử thách ghép hình đối xứng hoàn chỉnh',
-                    'status' => 'locked',
-                    'xp' => 40
-                ]
-            ]
-        ],
-        [
-            'id' => 7,
-            'title' => 'SIÊU THỊ CỦA BÉ',
-            'icon' => '🛒',
-            'status' => 'upcoming',
-            'color' => '#10B981',
-            'description' => 'Học toán qua mô phỏng mua sắm tại siêu thị',
-            'learning_time' => '35 phút',
-            'activities' => [
-                [
-                    'type' => 'simulation',
-                    'title' => 'MUA SẮM THÔNG MINH',
-                    'icon' => '💰',
-                    'description' => 'Mô phỏng mua sắm và tính tiền tại siêu thị',
-                    'status' => 'locked',
-                    'xp' => 30
-                ],
-                [
-                    'type' => 'game',
-                    'title' => 'TÍNH TIỀN NHANH',
-                    'icon' => '⚡',
-                    'description' => 'Trò chơi tính toán tổng tiền mua hàng',
-                    'status' => 'locked',
-                    'xp' => 45
-                ]
-            ]
-        ],
-        [
-            'id' => 8,
-            'title' => 'MÊ CUNG SỐ HỌC',
-            'icon' => '🌀',
-            'status' => 'upcoming',
-            'color' => '#F59E0B',
-            'description' => 'Giải cứu qua mê cung bằng cách giải các bài toán số học',
-            'learning_time' => '40 phút',
-            'activities' => [
-                [
-                    'type' => 'game',
-                    'title' => 'THÁM HIỂM MÊ CUNG',
-                    'icon' => '🗺️',
-                    'description' => 'Trò chơi giải toán để tìm đường ra mê cung',
-                    'status' => 'locked',
-                    'xp' => 40
-                ],
-                [
-                    'type' => 'puzzle',
-                    'title' => 'CÂU ĐỐ MÊ CUNG',
-                    'icon' => '🔐',
-                    'description' => 'Giải câu đố toán học để mở khóa mê cung',
-                    'status' => 'locked',
-                    'xp' => 35
-                ]
-            ]
-        ],
-        [
-            'id' => 9,
-            'title' => 'SẮP XẾP THEO QUY LUẬT',
-            'icon' => '🔢',
-            'status' => 'upcoming',
-            'color' => '#3B82F6',
-            'description' => 'Nhận biết và áp dụng các quy luật sắp xếp trong toán học',
-            'learning_time' => '25 phút',
-            'activities' => [
-                [
-                    'type' => 'game',
-                    'title' => 'TÌM QUY LUẬT',
-                    'icon' => '🎯',
-                    'description' => 'Trò chơi phát hiện quy luật trong dãy số',
-                    'status' => 'locked',
-                    'xp' => 30
-                ],
-                [
-                    'type' => 'puzzle',
-                    'title' => 'SẮP XẾP THÔNG MINH',
-                    'icon' => '🧠',
-                    'description' => 'Thử thách sắp xếp theo quy luật logic',
-                    'status' => 'locked',
-                    'xp' => 25
-                ]
-            ]
         ]
     ]
 ];
@@ -279,7 +171,7 @@ $_SESSION['math_visited'] = true;
                 
                 <div class="mission-title">
                     <h1>HỆ MẶT TRỜI TOÁN HỌC</h1>
-                    <p>Khám phá 9 hành tinh số học</p>
+                    <p>Khám phá 5 hành tinh số học</p>
                 </div>
                 
                 <div class="mission-stats">
@@ -303,20 +195,12 @@ $_SESSION['math_visited'] = true;
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-5"></div>
-            <div class="orbit orbit-6"></div>
-            <div class="orbit orbit-7"></div>
-            <div class="orbit orbit-8"></div>
-            <div class="orbit orbit-9"></div>
             
             <div class="planet planet-1 completed" data-planet="1">🎯</div>
             <div class="planet planet-2 current" data-planet="2">🔺</div>
             <div class="planet planet-3" data-planet="3">🧩</div>
             <div class="planet planet-4" data-planet="4">🔢</div>
             <div class="planet planet-5" data-planet="5">⏰</div>
-            <div class="planet planet-6" data-planet="6">🦋</div>
-            <div class="planet planet-7" data-planet="7">🛒</div>
-            <div class="planet planet-8" data-planet="8">🌀</div>
-            <div class="planet planet-9" data-planet="9">🔢</div>
         </section>
     </div>
 
