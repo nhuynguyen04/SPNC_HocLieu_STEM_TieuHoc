@@ -58,7 +58,7 @@ const planets = {
         ]
     },
     4: {
-        name: "LẬP TRÌNH KHỐI",
+        name: "SƠN TINH (LẬP TRÌNH KHỐI)",
         icon: "🧩",
         status: "locked",
         description: "Làm quen với lập trình các khối lệnh",

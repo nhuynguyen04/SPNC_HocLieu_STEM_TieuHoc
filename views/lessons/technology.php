@@ -99,7 +99,7 @@ $technology_data = [
         ],
         [
             'id' => 4,
-            'title' => 'LẬP TRÌNH VIÊN NHÍ VỚI SCRATCH',
+            'title' => 'SƠN TINH (LẬP TRÌNH KHỐI)',
             'icon' => '🧩',
             'status' => 'upcoming',
             'color' => '#8B5CF6',
