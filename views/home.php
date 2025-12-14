@@ -15,9 +15,6 @@ $subjects = [
             ['title' => 'Ngày và đêm', 'type' => 'Trả lời câu hỏi', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Thùng rác thân thiện', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
             ['title' => 'Các bộ phận của cây', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Cẩm nang phòng tránh hỏa hoạn khi ở nhà', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Các cơ quan trong cơ thể người', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Khung xương kì diệu của chúng ta ', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
         ]
     ],
     'cong_nghe' => [
@@ -28,8 +25,9 @@ $subjects = [
         'lessons' => [
             ['title' => 'Cây gia đình', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
             ['title' => 'Em là họa sĩ máy tính', 'type' => 'Chia sẻ tác phẩm', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Lập trình viên nhí với Scratch', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Các bộ phận của máy tính', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Em là người đánh máy', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Sơn Tinh (lập trình khối)', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Các bộ phận của máy tính', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ],
     'ky_thuat' => [
@@ -38,11 +36,11 @@ $subjects = [
         'gradient' => 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
         'icon' => '⚙️',
         'lessons' => [
-            ['title' => 'Dụng cụ gấp áo', 'type' => 'TC', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Hoa yêu thương nở rộ', 'type' => 'TC - TLCH', 'has_video' => true, 'status' => 'complete'],
-            ['title' => 'Xây cầu giấy', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Chế tạo xe bong bóng', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Tháp giấy cao nhất', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Dụng cụ gấp áo', 'type' => 'Trò chơi', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Hoa yêu thương nở rộ', 'type' => 'Trò chơi - TLCH', 'has_video' => true, 'status' => 'complete'],
+            ['title' => 'Xây cầu giấy', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Chế tạo xe bong bóng', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Hệ thống lọc nước cơ bản', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ],
     'toan' => [
@@ -51,11 +49,11 @@ $subjects = [
         'gradient' => 'linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%)',
         'icon' => '🔢',
         'lessons' => [
-            ['title' => 'Máy bắn đá mini', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Tangram 3D', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Đếm số', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Nhận biết hình học', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
-            ['title' => 'Siêu thị của bé', 'type' => 'TC', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Hậu Nghệ bắn mặt trời', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Nhận biết hình học', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Tangram 3D', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Đếm số thông minh', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
+            ['title' => 'Đồng hồ và thời gian', 'type' => 'Trò chơi', 'has_video' => false, 'status' => 'incomplete'],
         ]
     ]
 ];
