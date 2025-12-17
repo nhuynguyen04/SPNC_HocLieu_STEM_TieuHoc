@@ -87,14 +87,6 @@ switch ($route) {
     case '/views/lessons/science_day_night':
         $lessonController->showDayNightLesson();
         break;
-    
-    case '/views/lessons/math_shapes_challenge':
-        $lessonController->showMathShapesGame();
-        break;
-
-    case '/views/lessons/math_number_game':
-        $lessonController->showMathNumberGame();
-        break;
 
     case '/views/lessons/technology_family_tree_game':
         $lessonController->showFamilyTree();
@@ -164,8 +156,20 @@ switch ($route) {
         $lessonController->showCarBuilderGame();
         break;
 
+    case '/views/lessons/engineering_water_filter':
+        $lessonController->showWaterFilterGame();
+        break;
+
     case '/views/lessons/math_angle_game':
         $lessonController->showMathAngleGame();
+        break;
+
+    case '/views/lessons/math_shapes_challenge':
+        $lessonController->showMathShapesGame();
+        break;
+
+    case '/views/lessons/math_number_game':
+        $lessonController->showMathNumberGame();
         break;
 
     case '/views/lessons/math_tangram_3d':
