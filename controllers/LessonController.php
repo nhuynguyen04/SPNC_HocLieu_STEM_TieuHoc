@@ -1849,4 +1849,29 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/math_tangram.php';
     }
+
+    /**
+     * TRÒ CHƠI LỌC NƯỚC
+     */
+    public function showWaterFilterGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Dữ liệu Game
+        $gameData = [
+            'title' => 'Máy Lọc Nước Mini',
+            'desc' => 'Hãy sắp xếp các lớp vật liệu để lọc nước bẩn thành nước sạch nhé!',
+            'materials' => [
+                ['id' => 'gravel', 'name' => 'Sỏi', 'img' => 'gravel.png', 'desc' => 'Lọc rác lớn'],
+                ['id' => 'sand', 'name' => 'Cát', 'img' => 'sand.png', 'desc' => 'Lọc bụi nhỏ'],
+                ['id' => 'charcoal', 'name' => 'Than', 'img' => 'charcoal.png', 'desc' => 'Khử mùi & độc'],
+                ['id' => 'cotton', 'name' => 'Bông', 'img' => 'cotton.png', 'desc' => 'Lọc cặn cuối cùng']
+            ],
+            'correct_order' => ['cotton', 'charcoal', 'sand', 'gravel']
+        ];
+
+        require_once __DIR__ . '/../views/lessons/engineering_water_filter.php';
+    }
 }
