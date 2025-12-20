@@ -96,7 +96,6 @@
 </div>
 
 <script>
-    const baseUrl = "<?= $base_url ?>";
     const levelData = <?= json_encode($currentLevel) ?>;
     const totalLevels = <?= $totalLevels ?>;
 </script>
