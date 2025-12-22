@@ -1,0 +1,273 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #2c3e50;
+}
+
+.tower-game-mode.game-wrapper {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    position: relative;
+}
+
+/* UI Layer (Nằm trên canvas) */
+.game-ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.header-game,
+.instruction-box {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #2c3e50;
+}
+
+.header-game h1 {
+    margin: 0 0 0 15px;
+    font-size: 1.5em;
+    color: #d35400;
+}
+
+.instruction-box {
+    max-width: 400px;
+}
+
+.instruction-box small {
+    display: block;
+    margin-top: 5px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Container chứa Matter.js Canvas */
+#physics-container {
+    width: 100%;
+    height: 100%;
+    /* Ảnh nền giống trong ví dụ */
+    background: linear-gradient(to bottom, #d4e6f1 0%, #87ceeb 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Canvas do Matter.js tạo ra */
+#physics-container canvas {
+    display: block;
+}
+
+.game-btn {
+    padding: 12px 30px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+}
+
+.reset {
+    background: #e74c3c;
+}
+
+.reset:hover {
+    background: #c0392b;
+}
+
+.reset:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+
+    /* --- BẮT BUỘC THÊM 2 DÒNG NÀY --- */
+    z-index: 1000;
+    /* Đảm bảo nổi lên trên cùng */
+    pointer-events: auto;
+    /* BẬT LẠI khả năng click chuột */
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 5px solid #2ecc71;
+}
+
+.modal-content h2 {
+    color: #2ecc71;
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* Ẩn controls layer cũ */
+.controls-layer {
+    display: none;
+}
+
+/* THANH CÔNG CỤ MỚI */
+.build-toolbar {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 30px;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+/* Kho chứa Node (Inventory) */
+.node-inventory {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: grab;
+    position: relative;
+    padding: 5px 15px;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.node-inventory:hover {
+    background: #ecf0f1;
+}
+
+.node-inventory:active {
+    cursor: grabbing;
+}
+
+.node-icon {
+    width: 30px;
+    height: 30px;
+    background: #7f8c8d;
+    border: 2px solid #bdc3c7;
+    border-radius: 50%;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.node-count {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.tooltip {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #34495e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.node-inventory:hover .tooltip {
+    opacity: 1;
+}
+
+/* Nút Reset nhỏ gọn */
+.tool-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #e74c3c;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #c0392b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tool-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* Ghost Node (Hình mờ đi theo chuột khi kéo từ UI ra) */
+.node-ghost {
+    width: 30px;
+    height: 30px;
+    background: rgba(127, 140, 141, 0.5);
+    border: 2px dashed #2c3e50;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    display: none;
+    /* Mặc định ẩn */
+}
+
+.lose-content {
+    border: 5px solid #e74c3c !important;
+    /* Viền đỏ */
+}
+
+.lose-content h2 {
+    color: #e74c3c !important;
+}
+
+/* Container cho các nút bấm trong modal */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Nút về trang chủ */
+.home-btn-ui {
+    background: #34495e;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.home-btn-ui:hover {
+    background: #2c3e50;
+}

@@ -1928,4 +1928,75 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/math_time_game.php';
     }
+
+    /**
+     * XÂY THÁP
+     */
+    public function showTowerGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Dữ liệu màn chơi
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Màn 1: Tháp Vươn Cao',
+                'desc' => 'Xây tháp cao để chạm vào mục tiêu tròn duy nhất.',
+                'config' => [
+                'targetPos' => ['x' => 750, 'y' => 450], // Vị trí mục tiêu
+                'anchors' => [ // Các điểm móng cố định dưới đất
+                    ['x' => 660, 'y' => 750],
+                    ['x' => 840, 'y' => 750]
+                ],
+                'freeNodes' => 15, // Số lượng khớp nối cho sẵn
+                'connectDistance' => 120 // Khoảng cách tối đa để tạo liên kết
+                ]
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Màn 2: Cầu Treo Thách Thức',
+                'desc' => 'Xây dựng kết cấu chia làm 2 nhánh để chạm cả 2 mục tiêu cùng lúc.',
+                'config' => [
+                    // Hai mục tiêu
+                    'targets' => [ 
+                        ['x' => 450, 'y' => 350], // Mục tiêu trái
+                        ['x' => 1050, 'y' => 350]  // Mục tiêu phải
+                    ], 
+                    // Tọa độ móng
+                    'anchors' => [ 
+                        ['x' => 660, 'y' => 750],
+                        ['x' => 840, 'y' => 750]
+                    ],
+                    'freeNodes' => 20, // Cho nhiều khớp nối hơn để xây to
+                    'connectDistance' => 130
+                ]
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Màn 3: ',
+                'desc' => 'Xây dựng kết cấu chia làm 2 nhánh để chạm cả 2 mục tiêu cùng lúc.',
+                'config' => [
+                    // Hai mục tiêu
+                    'targets' => [ 
+                        ['x' => 450, 'y' => 450], // Mục tiêu trái
+                        ['x' => 900, 'y' => 250]  // Mục tiêu phải
+                    ], 
+                    // Tọa độ móng
+                    'anchors' => [ 
+                        ['x' => 660, 'y' => 750],
+                        ['x' => 840, 'y' => 750]
+                    ],
+                    'freeNodes' => 25,
+                    'connectDistance' => 130
+                ]
+            ]
+        ];
+        
+        $currentId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentId] ?? $levels[1];
+
+        require_once __DIR__ . '/../views/lessons/engineering_tower_game.php';
+    }
 }
