@@ -1874,4 +1874,58 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/engineering_water_filter.php';
     }
+
+    /**
+     * Bây giờ là mấy giờ
+     */
+    public function showTimeGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Dữ liệu Game: Các bài tập
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Cấp độ 1: Giờ Chẵn',
+                'desc' => 'Kéo kim giờ và kim phút đúng vị trí nhé!',
+                'questions' => [
+                    ['h' => 3, 'm' => 0],
+                    ['h' => 9, 'm' => 0],
+                    ['h' => 12, 'm' => 0],
+                    ['h' => 6, 'm' => 0],
+                    ['h' => 1, 'm' => 0]
+                ]
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Cấp độ 2: Giờ Rưỡi',
+                'desc' => 'Lưu ý kim giờ sẽ nằm giữa 2 số khi ở 30 phút đấy!',
+                'questions' => [
+                    ['h' => 2, 'm' => 30],
+                    ['h' => 8, 'm' => 30],
+                    ['h' => 10, 'm' => 30],
+                    ['h' => 5, 'm' => 30]
+                ]
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Cấp độ 3: Phút Lẻ',
+                'desc' => 'Thử thách khó hơn với các phút bất kỳ.',
+                'questions' => [
+                    ['h' => 4, 'm' => 15],
+                    ['h' => 7, 'm' => 45],
+                    ['h' => 11, 'm' => 20],
+                    ['h' => 6, 'm' => 10]
+                ]
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/math_time_game.php';
+    }
 }

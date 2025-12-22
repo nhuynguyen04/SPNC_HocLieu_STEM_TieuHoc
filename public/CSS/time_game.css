@@ -1,0 +1,76 @@
+.time-game {
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 20px; box-sizing: border-box;
+}
+
+.header-game {
+    display: flex; align-items: center; justify-content: space-between;
+    background: white; padding: 15px 30px; border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.header-game h1 { margin: 0; color: #ff9f43; font-size: 1.8em; }
+.subtitle { margin: 0; color: #8395a7; }
+.score-board { font-size: 1.5em; font-weight: bold; color: #54a0ff; }
+
+.game-container {
+    flex: 1; display: flex; justify-content: center; align-items: center; gap: 50px;
+}
+
+/* Đồng hồ điện tử */
+.digital-clock-panel {
+    background: #2f3640; color: #00d2d3;
+    padding: 30px; border-radius: 20px;
+    text-align: center; border: 5px solid #576574;
+    box-shadow: 0 10px 0 #222f3e;
+    min-width: 250px;
+}
+.digital-clock-panel h3 { color: #c8d6e5; margin-top: 0; }
+
+.digital-display {
+    font-family: 'Courier New', monospace;
+    font-size: 4em; font-weight: bold;
+    background: #000; padding: 10px 20px;
+    border-radius: 10px; border: 2px solid #555;
+    letter-spacing: 5px;
+}
+.colon { animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.mascot { font-size: 4em; margin-top: 20px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Đồng hồ kim */
+.analog-clock-panel {
+    position: relative;
+    padding: 20px; background: white;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+#clockCanvas { cursor: pointer; border-radius: 50%; }
+
+/* Controls */
+.controls { text-align: center; margin-top: 20px; }
+.game-btn {
+    padding: 15px 40px; font-size: 1.5em; border: none; border-radius: 50px;
+    cursor: pointer; color: white; font-weight: bold;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.2); transition: transform 0.1s;
+}
+.check { background: #1dd1a1; }
+.check:hover { background: #10ac84; }
+.check:active { transform: translateY(4px); box-shadow: none; }
+
+/* Modal */
+.modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    justify-content: center; align-items: center; z-index: 100;
+}
+.modal-content {
+    background: white; padding: 40px; border-radius: 30px;
+    text-align: center; border: 5px solid #ff9f43;
+    min-width: 400px;
+}
+.modal h2 { font-size: 2.5em; margin: 0 0 10px; }
+.modal p { font-size: 1.2em; color: #555; }

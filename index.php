@@ -176,6 +176,10 @@ switch ($route) {
         $lessonController->showTangramGame();
         break;
 
+    case '/views/lessons/math_time_game':
+        $lessonController->showTimeGame();
+        break;
+
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly
