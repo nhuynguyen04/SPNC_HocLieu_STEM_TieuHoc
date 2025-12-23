@@ -29,37 +29,64 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("📦 Found", foodItems.length, "food items");
     console.log("🏗️ Found", pyramidLevels.length, "pyramid levels");
 
-    // *** Background Music ***
-    const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_4037f3a03c.mp3');
-    bgMusic.loop = true;
-    bgMusic.volume = 0.3;
+    // *** Tạo âm thanh (sử dụng Web Audio API) ***
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // *** Background Music using Web Audio API ***
+    let bgMusicInterval = null;
     let isMusicPlaying = false;
+    // 8-bit game style melody - upbeat and fun!
+    const cheerfulNotes = [
+        659.25, 659.25, 659.25, 523.25, 659.25, 783.99, 392.00, // Classic game intro
+        523.25, 392.00, 329.63, 440.00, 493.88, 466.16, 440.00, // Bouncy melody
+        392.00, 659.25, 783.99, 880.00, 698.46, 783.99, 659.25, 523.25, 587.33, 493.88 // Fun progression
+    ];
+    let currentNoteIndex = 0;
+    
+    function playBackgroundMusic() {
+        if (!isMusicPlaying) return;
+        
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.value = cheerfulNotes[currentNoteIndex];
+        osc.type = 'square'; // 8-bit retro game sound
+        
+        gain.gain.setValueAtTime(0.08, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+        
+        osc.start(audioContext.currentTime);
+        osc.stop(audioContext.currentTime + 0.2);
+        
+        currentNoteIndex = (currentNoteIndex + 1) % cheerfulNotes.length;
+    }
 
     // Tạo nút music toggle
     const musicToggle = document.createElement('button');
     musicToggle.className = 'music-toggle';
     musicToggle.innerHTML = '🔇'; // Muted speaker
-    musicToggle.title = 'Bật nhạc nền';
+    musicToggle.title = 'Click để bật nhạc nền vui nhộn!';
     gameWrapper.appendChild(musicToggle);
 
     musicToggle.addEventListener('click', () => {
         if (isMusicPlaying) {
-            bgMusic.pause();
+            clearInterval(bgMusicInterval);
             musicToggle.innerHTML = '🔇'; // Muted speaker
             musicToggle.title = 'Bật nhạc nền';
             musicToggle.classList.add('muted');
             isMusicPlaying = false;
         } else {
-            bgMusic.play().catch(err => console.log('Cannot play music:', err));
+            isMusicPlaying = true;
+            bgMusicInterval = setInterval(playBackgroundMusic, 250); // Faster tempo for game feel
+            playBackgroundMusic(); // Start immediately
             musicToggle.innerHTML = '🔊'; // Speaker on
             musicToggle.title = 'Tắt nhạc nền';
             musicToggle.classList.remove('muted');
-            isMusicPlaying = true;
         }
     });
-
-    // *** Tạo âm thanh (sử dụng Web Audio API) ***
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     
     function playSuccessSound() {
         const oscillator = audioContext.createOscillator();

@@ -137,7 +137,7 @@ body:has(.game-wrapper.game-fullscreen) {
     margin: 0 0 8px 0;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #555;
+    color: #4CAF50;
     font-family: 'Nunito', 'Arial Black', sans-serif;
 }
 
@@ -243,7 +243,11 @@ body:has(.game-wrapper.game-fullscreen) {
     transition: transform 0.2s, box-shadow 0.2s;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     width: 140px;
+    min-width: 140px;
+    max-width: 140px;
+    height: 45px;
     order: 2;
+    box-sizing: border-box;
 }
 .game-wrapper #resetButton:hover {
     transform: translateY(-2px);
@@ -310,7 +314,11 @@ body:has(.game-wrapper.game-fullscreen) {
     transition: transform 0.2s, box-shadow 0.2s;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     width: 140px;
+    min-width: 140px;
+    max-width: 140px;
+    height: 45px;
     order: 3;
+    box-sizing: border-box;
 }
 .game-wrapper .finish-btn:hover {
     transform: translateY(-2px);
@@ -339,7 +347,7 @@ body:has(.game-wrapper.game-fullscreen) {
 /* 1. Hàng chờ đồ ăn */
 .game-wrapper #foodBank {
     width: 100%; 
-    flex: 0 0 280px;
+    flex: 0 0 350px;
     border: none;
     border-radius: 20px;
     padding: 15px;
@@ -405,8 +413,12 @@ body:has(.game-wrapper.game-fullscreen) {
     transition: transform 0.2s, box-shadow 0.2s;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     width: 140px;
+    min-width: 140px;
+    max-width: 140px;
+    height: 45px;
     border: none;
     order: 1;
+    box-sizing: border-box;
 }
 
 .game-wrapper .menu-btn:hover {
@@ -480,6 +492,7 @@ body:has(.game-wrapper.game-fullscreen) {
     max-height: 500px;
     padding: 15px;
     gap: 8px;
+    overflow: hidden;
 }
 
 .game-wrapper.game-fullscreen #pyramid {
@@ -661,18 +674,18 @@ body:has(.game-wrapper.game-fullscreen) {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 24px;
+    padding: 10px 20px;
     border: none;
     border-radius: 25px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    min-width: 140px;
-    background: #ff6b6b;
+    width: 140px;
+    background: #F44336;
     color: #fff;
-    box-shadow: 0 3px 10px rgba(255,107,107,0.3);
+    box-shadow: 0 3px 10px rgba(244,67,54,0.3);
 }
 
 .toast-menu-btn {
@@ -680,23 +693,23 @@ body:has(.game-wrapper.game-fullscreen) {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 24px;
+    padding: 10px 20px;
     border: none;
     border-radius: 25px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    min-width: 140px;
-    background: #51cf66;
+    width: 140px;
+    background: #2196F3;
     color: #fff;
-    box-shadow: 0 3px 10px rgba(81,207,102,0.3);
+    box-shadow: 0 3px 10px rgba(33,150,243,0.3);
 }
 
 .toast-replay-btn:hover, .toast-menu-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
 }
 
 .toast-replay-btn span:first-child,
