@@ -12,6 +12,76 @@ document.addEventListener("DOMContentLoaded", () => {
     const tamDialogueBox = document.getElementById("tam-dialogue-box");
     const tamDialogueText = document.getElementById("tam-dialogue-text");
     
+    // *** Tạo âm thanh (sử dụng Web Audio API) ***
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSuccessSound() {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 523.25; // Note C5
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+        
+        // Thêm note thứ 2 để tạo âm thanh vui hơn
+        setTimeout(() => {
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.frequency.value = 659.25; // Note E5
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            osc2.start(audioContext.currentTime);
+            osc2.stop(audioContext.currentTime + 0.3);
+        }, 100);
+    }
+
+    function playErrorSound() {
+        // Âm thanh "oop" nhẹ nhàng hơn với 2 notes xuống dần
+        const osc1 = audioContext.createOscillator();
+        const gain1 = audioContext.createGain();
+        
+        osc1.connect(gain1);
+        gain1.connect(audioContext.destination);
+        
+        osc1.frequency.value = 440; // A4
+        osc1.type = 'sine';
+        
+        gain1.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+        
+        osc1.start(audioContext.currentTime);
+        osc1.stop(audioContext.currentTime + 0.15);
+        
+        // Note thứ 2 thấp hơn
+        setTimeout(() => {
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            
+            osc2.frequency.value = 330; // E4
+            osc2.type = 'sine';
+            
+            gain2.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            osc2.start(audioContext.currentTime);
+            osc2.stop(audioContext.currentTime + 0.2);
+        }, 100);
+    }
+    
     // Biến 'baseUrl' đã được nạp từ thẻ <script>
     let draggedItem = null;
     let correctDrops = 0;
@@ -68,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // KIỂM TRA ĐÁP ÁN
             if (itemGroup === binType) {
                 // ĐÚNG
+                playSuccessSound(); // Play success sound
                 droppedItem.classList.add("dropped");
                 correctDrops++;
                 let points = 0;
@@ -138,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
             } else {
                 // SAI
+                playErrorSound(); // Play error sound
                 droppedItem.dataset.attempt = attempt + 1;
                 
                 let correctBinName = "";

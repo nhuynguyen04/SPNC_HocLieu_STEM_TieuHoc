@@ -16,18 +16,20 @@ require_once __DIR__ . '/../template/header.php';
     </div>
 </div>
 
-<div class="game-wrapper trash-game">
-    <h1>Giúp Tấm dọn nhà 🧹</h1>
-    <p>Trời ơi! Đồ đạc bừa bộn quá. Bạn hãy giúp Tấm nhặt và phân loại rác vào đúng 3 thùng nhé!</p>
-    
-    <div class="score-board">Điểm: <span id="score"><?= $_SESSION['trash_score'] ?></span></div>
-    
-    <div class="game-actions">
-        <button id="trashResetButton" class="reset-button">Chơi lại</button>
-        <button id="trashCompleteButton" class="complete-button">Hoàn thành</button>
-        <a href="<?= $base_url ?>/views/lessons/science.php" class="back-button" id="trashBackButton">Quay lại</a>
+<div class="game-wrapper trash-game game-fullscreen">
+    <div class="game-header">
+        <div class="center-info">
+            <h1>GIÚP TẤM DỌN NHÀ 🧹</h1>
+            <p>Trời ơi! Đồ đạc bừa bộn quá. Bạn hãy giúp Tấm nhặt và phân loại rác vào đúng 3 thùng nhé!</p>
+            <div class="score-board">Diểm: <span id="score"><?= $_SESSION['trash_score'] ?></span></div>
+        </div>
     </div>
-    <hr>
+    
+    <div class="top-buttons">
+        <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn" id="trashBackButton">Menu</a>
+        <button id="trashResetButton" class="reset-button">Chơi lại</button>
+        <button id="trashCompleteButton" class="complete-button">Kết thúc</button>
+    </div>
 
     <div id="trashGameContainer">
         
