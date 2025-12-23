@@ -1945,13 +1945,16 @@ class LessonController {
                 'title' => 'Màn 1: Tháp Vươn Cao',
                 'desc' => 'Xây tháp cao để chạm vào mục tiêu tròn duy nhất.',
                 'config' => [
-                'targetPos' => ['x' => 750, 'y' => 450], // Vị trí mục tiêu
-                'anchors' => [ // Các điểm móng cố định dưới đất
-                    ['x' => 660, 'y' => 750],
-                    ['x' => 840, 'y' => 750]
-                ],
-                'freeNodes' => 15, // Số lượng khớp nối cho sẵn
-                'connectDistance' => 120 // Khoảng cách tối đa để tạo liên kết
+                    // Mục tiêu nằm chính giữa
+                    'targets' => [ 
+                        ['x' => '50%', 'y' => '50%'] 
+                    ],
+                    'anchors' => [ 
+                        ['x' => '44%', 'y' => '96%'],
+                        ['x' => '56%', 'y' => '96%']
+                    ],
+                    'freeNodes' => 15,
+                    'connectDistance' => 130
                 ]
             ],
             2 => [
@@ -1959,34 +1962,31 @@ class LessonController {
                 'title' => 'Màn 2: Cầu Treo Thách Thức',
                 'desc' => 'Xây dựng kết cấu chia làm 2 nhánh để chạm cả 2 mục tiêu cùng lúc.',
                 'config' => [
-                    // Hai mục tiêu
+                    // Hai mục tiêu treo lơ lửng 2 bên
                     'targets' => [ 
-                        ['x' => 450, 'y' => 350], // Mục tiêu trái
-                        ['x' => 1050, 'y' => 350]  // Mục tiêu phải
+                        ['x' => '30%', 'y' => '45%'], // Trái
+                        ['x' => '70%', 'y' => '45%']  // Phải
                     ], 
-                    // Tọa độ móng
                     'anchors' => [ 
-                        ['x' => 660, 'y' => 750],
-                        ['x' => 840, 'y' => 750]
+                        ['x' => '44%', 'y' => '96%'],
+                        ['x' => '56%', 'y' => '96%']
                     ],
-                    'freeNodes' => 20, // Cho nhiều khớp nối hơn để xây to
+                    'freeNodes' => 25,
                     'connectDistance' => 130
                 ]
             ],
             3 => [
                 'id' => 3,
-                'title' => 'Màn 3: ',
-                'desc' => 'Xây dựng kết cấu chia làm 2 nhánh để chạm cả 2 mục tiêu cùng lúc.',
+                'title' => 'Màn 3: Thử Thách Bất Đối Xứng',
+                'desc' => 'Một mục tiêu cao, một mục tiêu thấp.',
                 'config' => [
-                    // Hai mục tiêu
                     'targets' => [ 
-                        ['x' => 450, 'y' => 450], // Mục tiêu trái
-                        ['x' => 900, 'y' => 250]  // Mục tiêu phải
+                        ['x' => '30%', 'y' => '55%'], // Trái thấp
+                        ['x' => '60%', 'y' => '30%']  // Phải cao
                     ], 
-                    // Tọa độ móng
                     'anchors' => [ 
-                        ['x' => 660, 'y' => 750],
-                        ['x' => 840, 'y' => 750]
+                        ['x' => '44%', 'y' => '96%'],
+                        ['x' => '56%', 'y' => '96%']
                     ],
                     'freeNodes' => 25,
                     'connectDistance' => 130
