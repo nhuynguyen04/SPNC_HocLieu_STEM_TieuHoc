@@ -42,6 +42,13 @@ header {
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.02);
+    opacity: 0.85;
 }
 
 .logo-icon {

@@ -64,7 +64,7 @@ if (!empty($_SESSION['user_id'])) {
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <div class="logo" onclick="window.history.back()">
                     <div class="logo-icon">🌟</div>
                     <div class="logo-text">
                         <h1>STEM Universe</h1>
