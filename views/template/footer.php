@@ -1,40 +1,43 @@
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <div class="logo-icon">🌟</div>
-                        <span>STEM Universe</span>
-                    </div>
-                    <p>Nền tảng học liệu STEM cho học sinh tiểu học Việt Nam</p>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <div class="logo-icon">⚡</div>
+                    <span>STEM Universe</span>
                 </div>
-                <div class="footer-section">
-                    <h4>Liên kết nhanh</h4>
-                    <a href="#">Về chúng tôi</a>
-                    <a href="#">Đội ngũ giáo viên</a>
-                    <a href="#">Phụ huynh</a>
-                    <a href="#">Hỗ trợ</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Theo dõi chúng tôi</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-link" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
+                <p>Khám phá thế giới STEM đầy sáng tạo. Nền tảng học liệu tương tác cho học sinh tiểu học Việt Nam.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 STEM Universe. Tất cả các quyền được bảo lưu.</p>
+            <div class="footer-section">
+                <h4>Khám phá</h4>
+                <a href="#">Tất cả bài học</a>
+                <a href="#">Thử thách STEM</a>
+                <a href="#">Dự án sáng tạo</a>
+                <a href="#">Tài nguyên giáo viên</a>
+            </div>
+            <div class="footer-section">
+                <h4>Kết nối</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <p>&copy; 2024 STEM Universe. Được phát triển với ❤️ dành cho giáo dục STEM Việt Nam.</p>
+        </div>
+    </div>
+</footer>
 
     <?php if (!isset($base_url)) {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';

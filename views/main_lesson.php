@@ -4,7 +4,7 @@ $skill_trees = [
     'khoa_hoc' => [
         'name' => 'Khoa học',
         'color' => '#4CAF50',
-        'gradient' => 'linear-gradient(135deg, #4CAF50 0%, #81C784 100%)',
+        'gradient' => 'linear-gradient(135deg, #2d7a3e 0%, #4a9d5f 100%)',
         'icon' => '🔬',
         'description' => 'Khám phá thế giới tự nhiên kỳ diệu',
         'page' => 'science', 
@@ -43,7 +43,7 @@ $skill_trees = [
     'cong_nghe' => [
         'name' => 'Công nghệ',
         'color' => '#2196F3',
-        'gradient' => 'linear-gradient(135deg, #2196F3 0%, #64B5F6 100%)',
+        'gradient' => 'linear-gradient(135deg, #0d5a7d 0%, #1a7db0 100%)',
         'icon' => '💻',
         'description' => 'Làm chủ công nghệ trong thời đại số',
         'page' => 'technology', 
@@ -80,7 +80,7 @@ $skill_trees = [
     'ky_thuat' => [
         'name' => 'Kỹ thuật',
         'color' => '#FF9800',
-        'gradient' => 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
+        'gradient' => 'linear-gradient(135deg, #b8620e 0%, #d9792e 100%)',
         'icon' => '⚙️',
         'description' => 'Sáng tạo và xây dựng những điều tuyệt vời',
         'page' => 'engineering', 
@@ -117,7 +117,7 @@ $skill_trees = [
     'toan' => [
         'name' => 'Toán học',
         'color' => '#9C27B0',
-        'gradient' => 'linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%)',
+        'gradient' => 'linear-gradient(135deg, #5a1f72 0%, #7a389a 100%)',
         'icon' => '🔢',
         'description' => 'Khám phá vẻ đẹp của những con số',
         'page' => 'math', 
@@ -181,8 +181,8 @@ require_once './template/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bài học - STEM Universe</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/main_lesson.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/home.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/main_lesson.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/home.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -283,7 +283,7 @@ require_once './template/header.php';
 
     <?php require_once './template/footer.php'; ?>
 
-    <script src="<?php echo $base_url; ?>/public/JS/main_lesson.js"></script>
+    <script src="<?php echo $base_url; ?>/public/JS/main_lesson.js?v=<?php echo time(); ?>"></script>
  
 </body>
 </html>

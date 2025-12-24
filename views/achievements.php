@@ -10,8 +10,8 @@ require_once './template/header.php';
     <title>Thành Tích - STEM Universe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/home.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/achievements.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/home.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/achievements.css?v=<?php echo time(); ?>   ">
 </head>
 <body>
     <div class="bg-elements">
@@ -103,7 +103,7 @@ require_once './template/header.php';
 
     <?php require_once './template/footer.php'; ?>
 
-    <script src="<?php echo $base_url; ?>/public/JS/achievements.js"></script>
+    <script src="<?php echo $base_url; ?>/public/JS/achievements.js?v=<?php echo time(); ?>"></script>
 
 </body>
 </html>

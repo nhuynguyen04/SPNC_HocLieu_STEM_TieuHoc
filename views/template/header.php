@@ -48,7 +48,7 @@ if (!empty($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM Universe - Học liệu STEM Tiểu học</title>
-    <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/header.css">
+    <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/header.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -122,7 +122,7 @@ if (!empty($_SESSION['user_id'])) {
     <script>
         const baseUrl = '<?= $base_url ?>';
     </script>
-    <script src="<?= $base_url ?>/public/JS/header.js"></script>
+    <script src="<?= $base_url ?>/public/JS/header.js?v=<?php echo time(); ?>"></script>
 
 </body>
 </html>

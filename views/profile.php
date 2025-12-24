@@ -70,7 +70,7 @@ $avgScore = isset($stats['avg_score']) ? $stats['avg_score'] : 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ sơ - STEM Universe</title>
 
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/profile.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/public/CSS/profile.css?v=<?php echo time(); ?>">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -293,6 +293,6 @@ $avgScore = isset($stats['avg_score']) ? $stats['avg_score'] : 0;
         </div>
     </div>
 
-    <script src="<?php echo $base_url; ?>/public/JS/profile.js"></script>
+    <script src="<?php echo $base_url; ?>/public/JS/profile.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
