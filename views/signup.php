@@ -18,6 +18,7 @@ try {
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
         $class = isset($_POST['class']) ? trim($_POST['class']) : null;
+        $phone = isset($_POST['phone']) ? trim($_POST['phone']) : null;
         
         $error = '';
         if (empty($fullname) || empty($username) || empty($email) || empty($password)) {
@@ -33,7 +34,7 @@ try {
         }
         
         if (empty($error)) {
-             if ($authController->register($fullname, $username, $email, $password, $class)) {
+             if ($authController->register($fullname, $username, $email, $password, $class, $phone)) {
         $_SESSION['success'] = "Đăng ký thành công! Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra hộp thư và xác thực trước khi đăng nhập.";
         header('Location: signin.php');
         exit;
@@ -154,6 +155,16 @@ try {
                     <input type="text" id="class" name="class" 
                            placeholder="Ví dụ: 10A1, 11B2..."
                            value="<?php echo isset($_POST['class']) ? htmlspecialchars($_POST['class']) : ''; ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">
+                        <i class="fas fa-phone"></i>
+                        Số điện thoại
+                    </label>
+                    <input type="tel" id="phone" name="phone" 
+                           placeholder="Nhập số điện thoại (tùy chọn)"
+                           value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
                 </div>
 
                 <div class="form-options">

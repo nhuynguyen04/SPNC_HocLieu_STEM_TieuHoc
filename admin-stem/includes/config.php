@@ -18,7 +18,8 @@ function getDBConnection() {
 function checkAdminLogin() {
     session_start();
     if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-        header('Location: login.php');
+        $base = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        header('Location: ' . $base . '/login.php');
         exit();
     }
 }

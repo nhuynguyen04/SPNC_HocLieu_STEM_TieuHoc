@@ -6,7 +6,7 @@ require_once __DIR__ . '/../models/User.php';
 
 class AuthController {
     private $userModel;
-    private $debugMode = true; // Set to false in production
+    private $debugMode = true; 
     
     public function __construct() {
         $database = new Database();
@@ -16,7 +16,6 @@ class AuthController {
     
     public function login($username, $password, $remember = false) {
         $res = $this->userModel->login($username, $password, $remember);
-        // userModel->login trả về true, false, hoặc string 'not_verified'
         if ($res === true) {
             $_SESSION['user_id'] = $this->userModel->id;
             $_SESSION['username'] = $this->userModel->username;
@@ -24,7 +23,7 @@ class AuthController {
             $_SESSION['full_name'] = $this->userModel->full_name;
             return true;
         }
-        return $res; // false hoặc 'not_verified'
+        return $res; 
     }
     
     public function checkRememberToken() {
@@ -41,12 +40,10 @@ class AuthController {
         return false;
     }
     
-    public function register($fullName, $username, $email, $password, $class) {
+    public function register($fullName, $username, $email, $password, $class, $phone = null) {
         try {
-            // Gọi method register trả về user id nếu thành công
-            $userId = $this->userModel->register($username, $email, $password, $fullName, $class);
+            $userId = $this->userModel->register($username, $email, $password, $fullName, $class, $phone);
             if ($userId) {
-                // Tạo mã xác thực và lưu vào DB
                 $code = $this->userModel->addVerification($userId);
                 if ($code) {
                     // Tạo nội dung email
@@ -57,7 +54,6 @@ class AuthController {
                                "{$verificationLink}\n\n" .
                                "Mã này có hiệu lực trong 60 phút.";
 
-                    // Đọc cấu hình SMTP từ config/mail.php
                     $configPath = __DIR__ . '/../config/mail.php';
                     if (!file_exists($configPath)) {
                         throw new Exception("Mail configuration file not found at: " . $configPath);
@@ -68,7 +64,6 @@ class AuthController {
                         throw new Exception("Invalid mail configuration format");
                     }
 
-                    // Check required SMTP config
                     $required = ['host', 'username', 'password', 'port'];
                     foreach ($required as $field) {
                         if (empty($smtpConfig[$field])) {
@@ -76,7 +71,6 @@ class AuthController {
                         }
                     }
 
-                    // Kiểm tra Composer autoload và PHPMailer
                     $vendorAutoload = __DIR__ . '/../vendor/autoload.php';
                     if (!file_exists($vendorAutoload)) {
                         throw new Exception("Composer autoload not found. Please run: composer require phpmailer/phpmailer");
@@ -91,7 +85,6 @@ class AuthController {
                     try {
                         $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
                         
-                        // Debug mode - remove in production
                         if ($this->debugMode) {
                             $mail->SMTPDebug = 2;
                             $mail->Debugoutput = function($str, $level) {
@@ -99,7 +92,6 @@ class AuthController {
                             };
                         }
 
-                        // Cấu hình SMTP
                         $mail->isSMTP();
                         $mail->Host = $smtpConfig['host'];
                         $mail->SMTPAuth = true;
@@ -111,7 +103,6 @@ class AuthController {
                             $mail->SMTPSecure = $smtpConfig['secure'];
                         }
 
-                        // Fix SSL/TLS issues with Gmail
                         $mail->SMTPOptions = array(
                             'ssl' => array(
                                 'verify_peer' => false,
@@ -120,7 +111,6 @@ class AuthController {
                             )
                         );
 
-                        // Cấu hình email
                         $mail->CharSet = 'UTF-8';
                         $mail->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
                         $mail->addAddress($email, $fullName);
@@ -128,7 +118,6 @@ class AuthController {
                         $mail->Subject = $subject;
                         $mail->Body = $message;
 
-                        // Gửi email và kiểm tra
                         if (!$mail->send()) {
                             throw new Exception('Mailer Error: ' . $mail->ErrorInfo);
                         }
@@ -146,12 +135,12 @@ class AuthController {
                         throw new Exception($errorMsg);
                     }
                 }
-                return true; // User registered but email might have failed
+                return true; 
             }
             return false;
         } catch (Exception $e) {
             error_log("Register error in AuthController: " . $e->getMessage() . "\n" . $e->getTraceAsString());
-            throw $e; // Re-throw to be handled by signup.php
+            throw $e; 
         }
     }
 
@@ -170,29 +159,24 @@ class AuthController {
                 throw new Exception('Vui lòng nhập email');
             }
 
-            // Tạo mã xác nhận (lưu vào DB)
             $resetCode = $this->userModel->createResetCode($email);
             if (!$resetCode) {
                 throw new Exception('Email không tồn tại trong hệ thống');
             }
 
-            // Read SMTP config
             $configPath = __DIR__ . '/../config/mail.php';
             if (!file_exists($configPath)) {
                 throw new Exception('Mail configuration file not found');
             }
             $smtpConfig = require $configPath;
 
-            // Ensure composer autoload and PHPMailer available
             $vendorAutoload = __DIR__ . '/../vendor/autoload.php';
             if (!file_exists($vendorAutoload)) {
                 throw new Exception('Composer autoload not found. Please run: composer require phpmailer/phpmailer');
             }
             require_once $vendorAutoload;
 
-            // Use PHPMailer
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-            // Minimal required config, reuse same SSL options as register
             if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
                 $mail->SMTPDebug = 0;
                 $mail->Debugoutput = function($str, $level) {
@@ -305,7 +289,7 @@ class AuthController {
     private function buildVerifyLink($email, $code) {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        $basePath = "/SPNC_HocLieu_STEM_TieuHoc"; // Thay đổi này nếu đường dẫn cơ sở khác
+        $basePath = "/SPNC_HocLieu_STEM_TieuHoc"; 
         $link = "{$protocol}://{$host}{$basePath}/verify.php?email=" . urlencode($email) . "&code=" . urlencode($code);
         return $link;
     }

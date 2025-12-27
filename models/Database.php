@@ -16,6 +16,8 @@ class Database {
             );
             $this->conn->exec("set names utf8");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Ensure user table columns are as expected (remove status/last_active, add notes)
+            $this->ensureUserNotes();
            
             
            
@@ -28,6 +30,63 @@ class Database {
             }
         }
         return $this->conn;
+    }
+
+    // Ensure users table schema: remove status/last_active (if present) and add notes column
+    private function ensureUserNotes() {
+        if (!$this->conn) return;
+        try {
+            // Drop status column if exists
+            $c = $this->conn->query("SHOW COLUMNS FROM users LIKE 'status'")->fetch();
+            if ($c) {
+                try { $this->conn->exec("ALTER TABLE users DROP COLUMN `status`"); } catch (Exception $e) { error_log('drop status failed: '.$e->getMessage()); }
+            }
+        } catch (Exception $e) {
+            // ignore
+        }
+
+        try {
+            // Drop last_active column if exists
+            $c2 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'last_active'")->fetch();
+            if ($c2) {
+                try { $this->conn->exec("ALTER TABLE users DROP COLUMN `last_active`"); } catch (Exception $e) { error_log('drop last_active failed: '.$e->getMessage()); }
+            }
+        } catch (Exception $e) {
+            // ignore
+        }
+
+        try {
+            // Add notes column if missing
+            $c3 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'notes'")->fetch();
+            if (!$c3) {
+                $this->conn->exec("ALTER TABLE users ADD COLUMN `notes` TEXT NULL DEFAULT ''");
+            }
+        } catch (Exception $e) {
+            try {
+                $c3b = $this->conn->query("SHOW COLUMNS FROM users LIKE 'notes'")->fetch();
+                if (!$c3b) {
+                    $this->conn->exec("ALTER TABLE users ADD COLUMN `notes` TEXT NULL DEFAULT ''");
+                }
+            } catch (Exception $e2) {
+                error_log(' ensureUserNotes notes error: ' . $e2->getMessage());
+            }
+        }
+        // Ensure phone column exists
+        try {
+            $c4 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'phone'")->fetch();
+            if (!$c4) {
+                $this->conn->exec("ALTER TABLE users ADD COLUMN `phone` VARCHAR(25) DEFAULT NULL");
+            }
+        } catch (Exception $e) {
+            try {
+                $c4b = $this->conn->query("SHOW COLUMNS FROM users LIKE 'phone'")->fetch();
+                if (!$c4b) {
+                    $this->conn->exec("ALTER TABLE users ADD COLUMN `phone` VARCHAR(25) DEFAULT NULL");
+                }
+            } catch (Exception $e3) {
+                error_log(' ensureUserNotes phone error: ' . $e3->getMessage());
+            }
+        }
     }
 
     // Tạo database mới
@@ -50,6 +109,8 @@ class Database {
             
             // Tạo các bảng
             $this->createTables();
+            // Ensure columns exist after initial creation
+            $this->ensureUserNotes();
             
             echo "✅ Đã tạo database '" . $this->db_name . "' thành công!";
             
@@ -71,7 +132,9 @@ class Database {
                 password VARCHAR(255) NOT NULL,
                 first_name VARCHAR(100),
                 last_name VARCHAR(100),
-                class VARCHAR(10),
+                class VARCHAR(50),
+                phone VARCHAR(25) DEFAULT NULL,
+                notes TEXT NULL DEFAULT '',
                 role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
                 avatar VARCHAR(255),
                 email_verified TINYINT(1) DEFAULT 0,
