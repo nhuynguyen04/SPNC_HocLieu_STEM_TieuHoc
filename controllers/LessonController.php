@@ -1999,4 +1999,102 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/engineering_tower_game.php';
     }
+
+    /**
+     * TRANG TRÍ PHÒNG
+     */
+    public function showRoomDecorGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        $gameData = [
+            'title' => 'Kiến Trúc Sư Nhí: Thiết Kế Phòng Ngủ',
+            
+            // DANH MỤC ĐỒ NỘI THẤT
+            'categories' => [
+                'room_type' => [
+                    'label' => 'Chọn Phòng',
+                    'icon' => 'fa-home', // Đổi icon ngôi nhà
+                    'items' => [
+                        ['id' => 'room_1', 'name' => 'Phòng Rừng Xanh', 'type' => 'room', 'img' => 'room_1.png'],
+                        ['id' => 'room_2', 'name' => 'Phòng Mộng Mơ', 'type' => 'room', 'img' => 'room_2.png'],
+                        ['id' => 'room_3', 'name' => 'Phòng Dơi', 'type' => 'room', 'img' => 'room_3.png'],
+                        ['id' => 'room_4', 'name' => 'Phòng Cơ Bản', 'type' => 'room', 'img' => 'room_4.png'],
+                    ]
+                ],
+                'bed' => [
+                    'label' => 'Giường',
+                    'icon' => 'fa-bed',
+                    'items' => [
+                        ['id' => 'bed_1', 'img' => 'bed_1.png', 'w' => 200, 'name' => 'Giường Gỗ'],
+                        ['id' => 'bed_2', 'img' => 'bed_2.png', 'w' => 200, 'name' => 'Giường Hồng'],
+                        
+                    ]
+                ],
+                'storage' => [
+                    'label' => 'Tủ & Kệ',
+                    'icon' => 'fa-door-closed',
+                    'items' => [
+                        ['id' => 'wardrobe_1', 'img' => 'wardrobe_1.png', 'w' => 125, 'name' => 'Tủ Áo'],
+                        ['id' => 'bookshelf_1', 'img' => 'bookshelf_1.png', 'w' => 80, 'name' => 'Giá Sách'],
+                        ['id' => 'cabinet_1', 'img' => 'cabinet_1.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                        ['id' => 'cabinet_2', 'img' => 'cabinet_2.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                        ['id' => 'cabinet_3', 'img' => 'cabinet_3.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                    ]
+                ],
+                'study' => [
+                    'label' => 'Bàn & Ghế',
+                    'icon' => 'fa-book-reader',
+                    'items' => [
+                        ['id' => 'desk_1', 'img' => 'desk_1.png', 'w' => 140, 'name' => 'Bàn Học'],
+                        ['id' => 'chair_1', 'img' => 'chair_1.png', 'w' => 60, 'name' => 'Ghế Xoay'],
+                        ['id' => 'chair_2', 'img' => 'chair_2.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_3', 'img' => 'chair_3.png', 'w' => 80, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_4', 'img' => 'chair_4.png', 'w' => 140, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_5', 'img' => 'chair_5.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_6', 'img' => 'chair_6.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                    ]
+                ],
+                'rug' => [
+                    'label' => 'Thảm Sàn',
+                    'icon' => 'fa-rug', // Icon thảm
+                    'items' => [
+                        ['id' => 'rug_1', 'img' => 'rug_1.png', 'w' => 240, 'name' => 'Thảm Tròn'],
+                        ['id' => 'rug_2', 'img' => 'rug_2.png', 'w' => 240, 'name' => 'Thảm Vuông'],
+                        ['id' => 'rug_3', 'img' => 'rug_3.png', 'w' => 160, 'name' => 'Thảm Lông'],
+                    ]
+                ],
+                'decor' => [
+                    'label' => 'Trang Trí',
+                    'icon' => 'fa-shapes',
+                    'items' => [
+                        ['id' => 'window_1', 'img' => 'window_1.png', 'w' => 100, 'name' => 'Cửa Sổ'],
+                        ['id' => 'poster_1', 'img' => 'poster_1.png', 'w' => 60, 'name' => 'Tranh'],
+                        ['id' => 'clock_1', 'img' => 'clock_1.png', 'w' => 40, 'name' => 'Đồng Hồ'],
+                        ['id' => 'clock_2', 'img' => 'clock_2.png', 'w' => 40, 'name' => 'Đồng Hồ'],
+                    ]
+                ],
+                'misc' => [
+                    'label' => 'Đồ Khác',
+                    'icon' => 'fa-gamepad',
+                    'items' => [
+                        ['id' => 'plant_1', 'img' => 'plant_1.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'plant_2', 'img' => 'plant_2.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'plant_3', 'img' => 'plant_3.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'lamp_1', 'img' => 'lamp_1.png', 'w' => 50, 'name' => 'Đèn'],
+                        ['id' => 'lamp_2', 'img' => 'lamp_2.png', 'w' => 50, 'name' => 'Đèn'],
+                        ['id' => 'toy_1', 'img' => 'toy_1.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_2', 'img' => 'toy_2.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_3', 'img' => 'toy_3.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_4', 'img' => 'toy_4.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_5', 'img' => 'toy_5.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                    ]
+                ]
+            ]
+        ];
+
+        require_once __DIR__ . '/../views/lessons/engineering_room_decor.php';
+    }
 }
