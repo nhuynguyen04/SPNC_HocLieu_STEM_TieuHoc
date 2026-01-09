@@ -36,8 +36,13 @@ if (resetGameButton) {
 }
 if (completeButton) {
     completeButton.addEventListener("click", () => {
+        console.log('Complete button clicked');
         const currentScore = parseInt(totalScoreSpan.innerText) || 0;
+        console.log('Current score:', currentScore);
         showFinishModal(currentScore);
+        
+        completeButton.disabled = true;
+        completeButton.innerHTML = 'Đang lưu...';
     });
 }
 canvas.addEventListener("mousedown", startDrawing);
@@ -50,6 +55,11 @@ function selectColor(colorName) {
     if (selectedColors.length < 2 && !selectedColors.includes(colorName)) {
         selectedColors.push(colorName);
         updateCanvasAndSwatches();
+        
+        // Kiểm tra kết quả ngay khi chọn đủ 2 màu
+        if (selectedColors.length === 2) {
+            checkResult();
+        }
     }
 }
 
@@ -252,15 +262,15 @@ function showFinishModal(score) {
     toast.className = 'toast-notification';
     toast.innerHTML = `
         <div class="toast-content">
-            <h2>KẾT THÚC!</h2>
+            <h2>KẾT THÚC</h2>
             <p class="toast-score">Điểm của bạn: <strong>${score}</strong></p>
             <p class="toast-message">${getFinishMessage(score)}</p>
             <div class="toast-buttons">
-                <button class="toast-replay-btn">
-                    <span>🔄</span><span>Chơi lại</span>
-                </button>
                 <button class="toast-menu-btn">
-                    <span>🏠</span><span>Menu</span>
+                    <span>Menu</span>
+                </button>
+                <button class="toast-replay-btn">
+                    <span>Chơi lại</span>
                 </button>
             </div>
         </div>
@@ -274,21 +284,25 @@ function showFinishModal(score) {
     
     if (replayBtn) {
         replayBtn.addEventListener('click', () => {
-            window.location.href = baseUrl + '/science/color-game?next=1';
+            toast.remove();
+            if (completeButton) {
+                completeButton.disabled = false;
+                completeButton.innerHTML = 'Kết thúc';
+            }
         });
     }
     
     if (menuBtn) {
         menuBtn.addEventListener('click', () => {
-            window.location.href = baseUrl + '/views/lessons/science.php';
+            window.location.href = (window.baseUrl || '') + '/views/lessons/science.php';
         });
     }
 }
 
 function getFinishMessage(score) {
-    if (score >= 40) return '🏆 Hoàn hảo! Bạn đã nắm vững kiến thức về pha màu!';
-    if (score >= 30) return '🌟 Giỏi lắm! Bạn hiểu rõ cách pha màu!';
-    if (score >= 20) return '👍 Tốt lắm! Tiếp tục cố gắng nhé!';
-    if (score >= 10) return '😊 Khá ổn! Hãy thử lại để đạt điểm cao hơn!';
-    return '💪 Cố gắng thêm nhé! Hãy chơi lại để học hỏi thêm!';
+    if (score >= 40) return 'Hoàn hảo! Bạn đã nắm vững kiến thức về pha màu!';
+    if (score >= 30) return 'Giỏi lắm! Bạn hiểu rõ cách pha màu!';
+    if (score >= 20) return 'Tốt lắm! Tiếp tục cố gắng nhé!';
+    if (score >= 10) return 'Khá ổn! Hãy thử lại để đạt điểm cao hơn!';
+    return 'Cố gắng thêm nhé! Hãy chơi lại để học hỏi thêm!';
 }

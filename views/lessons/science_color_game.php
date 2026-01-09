@@ -12,7 +12,7 @@
         <div class="button-row">
             <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn">Menu</a>
             <button id="resetGameButton" class="reset-btn">Chơi lại</button>
-            <button id="completeButton" class="complete-btn">Hoàn thành</button>
+            <button id="completeButton" class="complete-btn">Kết thúc</button>
         </div>
     </div>
 

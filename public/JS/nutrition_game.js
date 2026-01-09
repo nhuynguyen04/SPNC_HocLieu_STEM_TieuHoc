@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Lỗi reset:', error));
     });
 
-    // --- 5. Nút Hoàn thành (Finish) - tổng kết và lưu điểm ---
+    // --- 5. Nút Kết thúc (Finish) - tổng kết và lưu điểm ---
     if (finishButton) {
         finishButton.addEventListener('click', async () => {
             const currentScore = parseInt(scoreDisplay.textContent || '0', 10);
