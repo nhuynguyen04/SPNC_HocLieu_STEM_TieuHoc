@@ -189,27 +189,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showFormError(message) {
-        let errorAlert = document.querySelector('.alert-error');
+        let errorAlert = document.querySelector('.alert.alert-error');
         if (!errorAlert) {
             errorAlert = document.createElement('div');
             errorAlert.className = 'alert alert-error';
-            
+
             const alertIcon = document.createElement('i');
             alertIcon.className = 'fas fa-exclamation-triangle';
-            
-            const alertContent = document.createElement('div');
-            alertContent.className = 'alert-content';
+
             const alertParagraph = document.createElement('p');
-            alertContent.appendChild(alertParagraph);
-            
             errorAlert.appendChild(alertIcon);
-            errorAlert.appendChild(alertContent);
-            
+            errorAlert.appendChild(alertParagraph);
+
             const form = document.querySelector('.form');
             form.parentNode.insertBefore(errorAlert, form);
         }
-        
-        errorAlert.querySelector('.alert-content p').textContent = message;
+
+        errorAlert.querySelector('p').textContent = message;
+    }
+
+    function clearFormError() {
+        const errorAlert = document.querySelector('.alert.alert-error');
+        if (errorAlert) errorAlert.remove();
     }
     
     const inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
@@ -250,6 +251,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (confirmPasswordInput) {
         confirmPasswordInput.addEventListener('blur', function() {
             validatePasswordMatch();
+        });
+    }
+
+    // Clear form error when user checks the agree box
+    const agreeCheckbox = document.querySelector('input[name="agree_terms"]');
+    if (agreeCheckbox) {
+        agreeCheckbox.addEventListener('change', function() {
+            if (this.checked) clearFormError();
+        });
+    }
+
+    // Intercept form submit to run validations
+    const formEl = document.querySelector('.form');
+    if (formEl) {
+        formEl.addEventListener('submit', function(e) {
+            clearAllErrors();
+            clearFormError();
+            if (!validateForm()) {
+                e.preventDefault();
+            }
         });
     }
 });

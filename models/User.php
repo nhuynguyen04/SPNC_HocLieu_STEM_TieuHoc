@@ -181,11 +181,12 @@ class User {
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             $params[':password'] = $password_hash;
 
-            // Execute
-            $stmt->execute($params);
+            // Execute once and return new user ID on success
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $params[':password'] = $password_hash;
 
-            if ($stmt->execute()) {
-                // Trả về ID user mới (để controller có thể tạo mã xác thực và gửi email)
+            $success = $stmt->execute($params);
+            if ($success) {
                 return (int)$this->conn->lastInsertId();
             }
         } catch(PDOException $e) {

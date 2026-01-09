@@ -40,8 +40,27 @@ class AuthController {
         return false;
     }
     
-    public function register($fullName, $username, $email, $password, $class, $phone = null) {
+    public function register($fullName, $username, $email, $password, $class, $phone = null, $agreeTerms = false) {
         try {
+            // Server-side validation: require agreement to terms
+            if (!$agreeTerms) {
+                throw new Exception('Bạn phải đồng ý với điều khoản sử dụng');
+            }
+
+            // Password complexity: at least 6 chars, one uppercase, one digit, one special char
+            if (empty($password) || strlen($password) < 6) {
+                throw new Exception('Mật khẩu phải có ít nhất 6 ký tự');
+            }
+            if (!preg_match('/[A-Z]/', $password)) {
+                throw new Exception('Mật khẩu phải chứa ít nhất một chữ cái in hoa');
+            }
+            if (!preg_match('/[0-9]/', $password)) {
+                throw new Exception('Mật khẩu phải chứa ít nhất một chữ số');
+            }
+            if (!preg_match('/[!@#$%^&*()_+\-=\[\]{};:\"\\|,.<>\/?~`]/', $password)) {
+                throw new Exception('Mật khẩu phải chứa ít nhất một ký tự đặc biệt');
+            }
+
             $userId = $this->userModel->register($username, $email, $password, $fullName, $class, $phone);
             if ($userId) {
                 $code = $this->userModel->addVerification($userId);

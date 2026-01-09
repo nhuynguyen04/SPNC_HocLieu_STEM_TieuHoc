@@ -33,8 +33,11 @@ try {
             $error = "Email không hợp lệ";
         }
         
-        if (empty($error)) {
-             if ($authController->register($fullname, $username, $email, $password, $class, $phone)) {
+           // Ensure user agreed to terms on server-side as well
+           $agree = isset($_POST['agree_terms']) && $_POST['agree_terms'] ? true : false;
+
+           if (empty($error)) {
+               if ($authController->register($fullname, $username, $email, $password, $class, $phone, $agree)) {
         $_SESSION['success'] = "Đăng ký thành công! Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra hộp thư và xác thực trước khi đăng nhập.";
         header('Location: signin.php');
         exit;
@@ -169,7 +172,7 @@ try {
 
                 <div class="form-options">
                     <label class="checkbox">
-                        <input type="checkbox" name="agree_terms" required>
+                        <input type="checkbox" name="agree_terms">
                         <span class="checkmark"></span>
                         Tôi đồng ý với <a href="terms.php" class="terms-link">điều khoản sử dụng</a>
                     </label>
