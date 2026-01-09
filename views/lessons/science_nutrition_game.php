@@ -57,7 +57,7 @@ shuffle($foodItems);
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css?v=<?= time() . rand(1000,9999) ?>"> 
 <script src="https://unpkg.com/kaboom@3000.0.1/dist/kaboom.js"></script>
 
-<div class="game-wrapper game-fullscreen"> 
+<div class="game-wrapper"> 
     <div class="game-header">
         <div class="center-info">
             <h1>SẮP XẾP THÁP DINH DƯỠNG PYRAMID</h1>
@@ -65,16 +65,18 @@ shuffle($foodItems);
         </div>
     </div>
 
-    <div class="top-buttons">
-        <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn">Menu</a>
-        <button id="resetButton">Chơi lại</button>
-        <button id="finishButton" class="finish-btn">Kết thúc</button>
+    <div class="controls-section">
+        <div class="score-board">
+            Điểm của bạn: <span id="score">0</span>
+        </div>
+
+        <div class="top-buttons">
+            <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn">Menu</a>
+            <button id="resetButton">Chơi lại</button>
+            <button id="finishButton" class="finish-btn">Kết thúc</button>
+        </div>
     </div>
     
-    <div class="score-board">
-        Điểm của bạn: <span id="score">0</span>
-    </div>
-
     <div id="gameContainer">
         <div id="foodBank">
             <h3>Hãy kéo các món ăn vào đúng nhóm của chúng trên tháp.</h3>

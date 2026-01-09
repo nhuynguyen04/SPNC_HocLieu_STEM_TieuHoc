@@ -1,11 +1,30 @@
 /* Import font */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
 
+:root {
+    --bg-color: #1a2f4a;
+    --surface-color: #0f2344;
+    --text-primary: #e0e8f0;
+    --text-secondary: #a0b0c0;
+    --text-muted: #7a8a9a;
+    --primary: #2563eb;
+    --secondary: #4361ee;
+    --success: #10b981;
+    --border: #1e3a5f;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
 /* Background cho body */
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-color);
     background-attachment: fixed;
     min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .game-wrapper {
@@ -23,31 +42,16 @@ body {
 
 /* Full screen mode */
 .game-wrapper.game-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    max-width: none;
-    border-radius: 0;
-    overflow: hidden;
-    z-index: 99999;
-    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-    padding: 15px;
+    position: relative;
+    width: 95%;
+    max-width: 1200px;
+    margin: 110px auto 100px auto;
+    padding: 25px;
     box-sizing: border-box;
-    border: none;
-}
-
-/* Ẩn header và footer khi ở chế độ full screen */
-body:has(.game-wrapper.game-fullscreen) header,
-body:has(.game-wrapper.game-fullscreen) footer,
-body:has(.game-wrapper.game-fullscreen) .bg-elements {
-    display: none !important;
-}
-
-body:has(.game-wrapper.game-fullscreen) {
-    overflow: hidden;
+    border-radius: 20px;
+    border: 5px solid #fff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
 }
 
 .game-wrapper h1, .game-wrapper p { 
@@ -84,16 +88,25 @@ body:has(.game-wrapper.game-fullscreen) {
     position: relative;
 }
 
+.game-wrapper .controls-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 5px auto;
+    padding: 15px;
+}
+
 .game-wrapper .top-buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     padding: 0;
-    position: absolute;
-    left: 50%;
-    top: 105px;
-    transform: translateX(-50%);
+    position: relative;
+    margin: 0;
     z-index: 100;
 }
 
@@ -103,23 +116,7 @@ body:has(.game-wrapper.game-fullscreen) {
 }
 
 .game-wrapper .music-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #3498db;
-    border: 3px solid #fff;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-    transition: all 0.3s;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
 }
 
 .game-wrapper .music-toggle:hover {
@@ -154,10 +151,8 @@ body:has(.game-wrapper.game-fullscreen) {
     font-size: 20px;
     font-weight: 700;
     color: #3498db;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 65px;
+    position: relative;
+    margin: 0;
     background: transparent;
     padding: 0;
     border-radius: 0;
@@ -330,7 +325,7 @@ body:has(.game-wrapper.game-fullscreen) {
 .game-wrapper #gameContainer {
     display: flex;
     justify-content: space-between; 
-    margin-top: 105px;
+    margin-top: 40px;
     align-items: flex-start;
     flex-wrap: nowrap;
     gap: 20px;
@@ -340,8 +335,9 @@ body:has(.game-wrapper.game-fullscreen) {
 
 /* Full screen adjustments */
 .game-wrapper.game-fullscreen #gameContainer {
-    height: calc(100vh - 260px);
-    overflow: hidden;
+    height: auto;
+    min-height: calc(100vh - 100px);
+    overflow: visible;
 }
 
 /* 1. Hàng chờ đồ ăn */
@@ -803,7 +799,7 @@ body:has(.game-wrapper.game-fullscreen) {
     
     .game-wrapper h1 {
         font-size: 1.5em;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
         letter-spacing: 1px;
     }
     
