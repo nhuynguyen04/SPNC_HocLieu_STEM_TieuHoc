@@ -19,11 +19,11 @@ require_once __DIR__ . '/../template/header.php';
 <div class="game-wrapper trash-game game-fullscreen">
     <div class="game-header">
         <div class="center-info">
-            <h1>GIÚP TẤM DỌN NHÀ 🧹</h1>
-            <p>Trời ơi! Đồ đạc bừa bộn quá. Bạn hãy giúp Tấm nhặt và phân loại rác vào đúng 3 thùng nhé!</p>
-            <div class="score-board">Diểm: <span id="score"><?= $_SESSION['trash_score'] ?></span></div>
+            <h1>GIÚP TẤM DỌN NHÀ</h1>
         </div>
     </div>
+    
+    <div class="score-board">Điểm của bạn: <span id="score"><?= $_SESSION['trash_score'] ?></span></div>
     
     <div class="top-buttons">
         <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn" id="trashBackButton">Menu</a>

@@ -1,4 +1,7 @@
-/* CSS cho game phân loại rác */
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
+
+/* CSS cho game phân loại rác - Updated */
 .trash-game {
     width: 95%;
     max-width: 1200px;
@@ -22,7 +25,7 @@
     overflow: hidden;
     z-index: 99999;
     background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
     border: none;
 }
@@ -44,27 +47,34 @@ body:has(.trash-game.game-fullscreen) {
     align-items: flex-start;
     margin-bottom: 10px;
     gap: 20px;
+    background: transparent;
+    position: relative;
+    z-index: 100;
 }
 
 .trash-game .center-info {
     flex: 1;
     text-align: center;
     position: relative;
+    background: transparent;
 }
 
 .trash-game h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: 700;
-    margin: 0 0 8px 0;
+    margin: 15px 0 5px 0;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #4CAF50;
     font-family: 'Nunito', 'Arial Black', sans-serif;
-    text-align: center;
+    background: transparent;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 
+                 -1px -1px 2px rgba(255, 255, 255, 0.9),
+                 1px -1px 2px rgba(255, 255, 255, 0.9),
+                 -1px 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .trash-game p {
-    text-align: center;
     margin: 0 0 10px 0;
     font-size: 1em;
     font-weight: 500;
@@ -79,9 +89,10 @@ body:has(.trash-game.game-fullscreen) {
     padding: 0;
     position: absolute;
     left: 50%;
-    top: 105px;
+    top: 5px;
     transform: translateX(-50%);
     z-index: 100;
+    background: transparent;
 }
 
 .trash-game .score-board {
@@ -92,7 +103,7 @@ body:has(.trash-game.game-fullscreen) {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 65px;
+    top: 70px;
     background: transparent;
     padding: 0;
     border-radius: 0;
@@ -100,6 +111,10 @@ body:has(.trash-game.game-fullscreen) {
     width: fit-content;
     box-shadow: none;
     border: none;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 
+                 -1px -1px 2px rgba(255, 255, 255, 0.9),
+                 1px -1px 2px rgba(255, 255, 255, 0.9),
+                 -1px 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .trash-game .score-board #score {
@@ -114,6 +129,10 @@ body:has(.trash-game.game-fullscreen) {
 }
 
 .trash-game .menu-btn {
+    position: absolute !important;
+    top: 15px;
+    left: 20px;
+    transform: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,13 +152,14 @@ body:has(.trash-game.game-fullscreen) {
     max-width: 140px;
     height: 45px;
     border: none;
-    order: 1;
+    order: 0;
     box-sizing: border-box;
+    z-index: 200;
 }
 
 .trash-game .menu-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(81,207,102,0.4);
+    transform: scale(1.1) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .trash-game .reset-button {
@@ -205,20 +225,24 @@ body:has(.trash-game.game-fullscreen) {
 }
 
 #trashGameContainer {
-    position: relative;
-    width: 100%;
-    height: 600px;
-    border: 2px solid #bdc3c7;
-    border-radius: 8px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
     overflow: hidden;
-    background-color: #fdfaf4;
+    background-color: transparent;
+    margin-top: 0;
+    z-index: 1;
 }
 
 .game-background {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center bottom;
+    object-fit: contain;
+    object-position: center center;
     position: absolute;
     top: 0;
     left: 0;
@@ -236,8 +260,8 @@ body:has(.trash-game.game-fullscreen) {
 }
 
 .trash-bin {
-    width: 100px;
-    height: 120px;
+    width: 120px;
+    height: 140px;
     border-radius: 10px;
     padding-bottom: 0;
     background: none;
@@ -249,8 +273,8 @@ body:has(.trash-game.game-fullscreen) {
     object-position: center top;
 }
 .trash-bin img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     pointer-events: none;
 }
@@ -267,8 +291,8 @@ body:has(.trash-game.game-fullscreen) {
 
 .trash-item {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
     cursor: grab;
     transition: transform 0.2s;
@@ -292,18 +316,20 @@ body:has(.trash-game.game-fullscreen) {
 
 #character-area {
     position: absolute;
-    bottom: -25px;
+    bottom: 0px;
     right: 5px;
     width: 400px;
     height: 200px;
     z-index: 20;
     display: flex;
     align-items: flex-end;
+    overflow: visible;
 }
 
 #tam-character {
-    width: 130px;
+    width: 150px;
     height: auto;
+    max-height: none;
     position: absolute;
     bottom: 0;
     right: 0;
