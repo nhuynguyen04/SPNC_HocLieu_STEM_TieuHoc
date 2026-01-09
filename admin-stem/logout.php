@@ -28,8 +28,8 @@ session_destroy();
         </div>
         
         <div class="btn-group">
-            <a href="login.php" class="btn btn-primary">
-                <i class="fas fa-sign-in-alt"></i> Đăng nhập lại
+            <a href="../index.php" class="btn btn-primary">
+                <i class="fas fa-home"></i> Về trang chủ
             </a>
             <a href="../" class="btn btn-secondary">
                 <i class="fas fa-home"></i> Về trang chủ
@@ -37,7 +37,7 @@ session_destroy();
         </div>
         
         <div class="countdown" id="countdown">
-            Tự động chuyển hướng về trang đăng nhập sau <span id="seconds">10</span> giây...
+            Tự động chuyển hướng về trang chủ sau <span id="seconds">10</span> giây...
         </div>
     </div>
 

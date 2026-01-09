@@ -158,20 +158,46 @@ $earned_xp = 0;
 $total_lessons = 0;
 $completed_lessons = 0;
 
-foreach ($skill_trees as $subject) {
-    foreach ($subject['skills'] as $skill) {
-        foreach ($skill['lessons'] as $lesson) {
-            $total_xp += $lesson['xp'];
-            $total_lessons++;
-            if ($lesson['completed']) {
-                $earned_xp += $lesson['xp'];
-                $completed_lessons++;
-            }
+// Setup DB connection for computing real counts from `games` and `scores`.
+if (session_status() === PHP_SESSION_NONE) session_start();
+$currentUserId = $_SESSION['user_id'] ?? null;
+$db = null;
+try {
+    require_once __DIR__ . '/../models/Database.php';
+    $database = new Database();
+    $db = $database->getConnection();
+} catch (Exception $e) {
+    error_log('main_lesson: DB connect error: ' . $e->getMessage());
+    $db = null;
+}
+
+// Helper: resolve topic id from stem_fields by subject name (best-effort)
+$topicIds = [];
+if ($db) {
+    $fetchTopic = $db->prepare('SELECT id FROM stem_fields WHERE name LIKE :name LIMIT 1');
+    foreach ($skill_trees as $subject_id => $subject) {
+        try {
+            $fetchTopic->execute([':name' => '%' . $subject['name'] . '%']);
+            $r = $fetchTopic->fetch(PDO::FETCH_ASSOC);
+            $topicIds[$subject_id] = $r ? (int)$r['id'] : null;
+        } catch (Exception $e) {
+            $topicIds[$subject_id] = null;
         }
     }
 }
 
-$progress_percentage = $total_lessons > 0 ? round(($completed_lessons / $total_lessons) * 100) : 0;
+// Prefer explicit mapping if app uses fixed topic ids
+$explicitTopicMap = [
+    'toan' => 1,
+    'khoa_hoc' => 2,
+    'cong_nghe' => 3,
+    'ky_thuat' => 4
+];
+foreach ($explicitTopicMap as $k => $v) {
+    $topicIds[$k] = $v;
+}
+
+$progress_percentage = 0; // will compute after accumulating totals
 require_once './template/header.php';
 ?>
 
@@ -205,23 +231,67 @@ require_once './template/header.php';
             <div class="subjects-grid">
                 <?php foreach ($skill_trees as $subject_id => $subject): ?>
                     <?php 
-                    $subject_lessons = 0;
-                    $subject_completed = 0;
-                    $subject_xp = 0;
-                    $subject_earned_xp = 0;
-                    
-                    foreach ($subject['skills'] as $skill) {
-                        foreach ($skill['lessons'] as $lesson) {
-                            $subject_lessons++;
-                            $subject_xp += $lesson['xp'];
-                            if ($lesson['completed']) {
-                                $subject_completed++;
-                                $subject_earned_xp += $lesson['xp'];
+                        $subject_lessons = 0;
+                        $subject_completed = 0;
+                        $subject_xp = 0;
+                        $subject_earned_xp = 0;
+
+                        $topicId = $topicIds[$subject_id] ?? null;
+                        if ($db && $topicId) {
+                            try {
+                                // total games in this topic
+                                $tstmt = $db->prepare('SELECT COUNT(*) AS cnt FROM games WHERE topic_id = :tid');
+                                $tstmt->execute([':tid' => $topicId]);
+                                $tc = $tstmt->fetch(PDO::FETCH_ASSOC);
+                                $subject_lessons = (int)($tc['cnt'] ?? 0);
+
+                                // distinct games played by the user in this topic
+                                if (!empty($currentUserId)) {
+                                    $cstmt = $db->prepare('SELECT COUNT(DISTINCT s.game_id) AS cnt FROM scores s JOIN games g ON s.game_id = g.id WHERE s.user_id = :uid AND g.topic_id = :tid');
+                                    $cstmt->execute([':uid' => $currentUserId, ':tid' => $topicId]);
+                                    $cc = $cstmt->fetch(PDO::FETCH_ASSOC);
+                                    $subject_completed = (int)($cc['cnt'] ?? 0);
+                                }
+
+                                // XP estimate (optional): assume 10 XP per game
+                                $subject_earned_xp = $subject_completed * 10;
+                                $subject_xp = $subject_lessons * 10;
+                            } catch (Exception $e) {
+                                error_log('main_lesson: error fetching subject stats: ' . $e->getMessage());
+                                // fallback to static
+                                foreach ($subject['skills'] as $skill) {
+                                    foreach ($skill['lessons'] as $lesson) {
+                                        $subject_lessons++;
+                                        $subject_xp += $lesson['xp'];
+                                        if ($lesson['completed']) {
+                                            $subject_completed++;
+                                            $subject_earned_xp += $lesson['xp'];
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            // fallback to static sample data when DB or topic mapping not available
+                            foreach ($subject['skills'] as $skill) {
+                                foreach ($skill['lessons'] as $lesson) {
+                                    $subject_lessons++;
+                                    $subject_xp += $lesson['xp'];
+                                    if ($lesson['completed']) {
+                                        $subject_completed++;
+                                        $subject_earned_xp += $lesson['xp'];
+                                    }
+                                }
                             }
                         }
-                    }
-                    $subject_progress = $subject_lessons > 0 ? round(($subject_completed / $subject_lessons) * 100) : 0;
-                    ?>
+
+                        $subject_progress = $subject_lessons > 0 ? round(($subject_completed / $subject_lessons) * 100) : 0;
+
+                        // accumulate global totals
+                        $total_lessons += $subject_lessons;
+                        $completed_lessons += $subject_completed;
+                        $total_xp += $subject_xp;
+                        $earned_xp += $subject_earned_xp;
+                        ?>
                     
                     <div class="subject-card" 
                          data-subject-id="<?php echo $subject_id; ?>" 

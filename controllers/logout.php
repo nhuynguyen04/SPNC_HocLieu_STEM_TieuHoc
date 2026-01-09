@@ -32,9 +32,9 @@ if (ini_get("session.use_cookies")) {
 
 session_destroy();
 
-error_log("Session destroyed, redirecting to login");
+error_log("Session destroyed, redirecting to site index");
 
-// Chuyển hướng - DÙNG ĐƯỜNG DẪN TUYỆT ĐỐI
-header("Location: " . $base_url . "/views/signin.php");
+// Chuyển hướng về trang index của dự án
+header("Location: " . $base_url . "/index.php");
 exit;
 ?>
