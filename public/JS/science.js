@@ -47,25 +47,25 @@ const planets = {
     4: {
         name: "THÙNG RÁC THÂN THIỆN",
         icon: "🗑️",
-        status: "locked",
+        status: "current",
         description: "Học cách phân loại rác bảo vệ môi trường",
         time: "16 phút",
         xp: "50 XP",
         activities: [
             { type: "game", name: "Trò chơi phân loại rác", icon: "♻️", xp: "30 XP",
-                link: baseUrl + '/views/lessons/science_trash_game', status: "locked" }
+                link: baseUrl + '/views/lessons/science_trash_game', status: "current" }
         ]
     },
     5: {
         name: "CÁC BỘ PHẬN CỦA CÂY",
         icon: "🌱",
-        status: "locked",
+        status: "current",
         description: "Học cách nhận biết các bộ phận của cây",
         time: "10 phút",
         xp: "30 XP",
         activities: [
             { type: "game", name: "Trò chơi lắp ghép", icon: "🌿", xp: "30 XP",
-              link: baseUrl + '/views/lessons/science_plant_game', status: "locked" }
+              link: baseUrl + '/views/lessons/science_plant_game', status: "current" }
         ]
     }
 };
@@ -173,8 +173,6 @@ function initScienceSystem() {
                     statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
                 } else if (activity.status === 'current') {
                     statusBadge = '<div class="activity-status-badge current-badge">●</div>';
-                } else if (activity.status === 'locked') {
-                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `
@@ -187,7 +185,7 @@ function initScienceSystem() {
                     <div class="activity-xp">${activity.xp}</div>
                 `;
                 
-                if (activity.link && activity.status !== 'locked') {
+                if (activity.link) {
                     activityElement.addEventListener('click', function(e) {
                         e.stopPropagation();
                         console.log(`🎮 Navigating to: ${activity.link}`);

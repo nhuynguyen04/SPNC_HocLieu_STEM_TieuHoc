@@ -76,7 +76,7 @@ $math_data = [
                     'title' => 'GIỚI THIỆU TANGRAM 3D',
                     'icon' => '🎮',
                     'description' => 'Trò chơi làm quen với tangram 3D',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ],
                 [
@@ -84,7 +84,7 @@ $math_data = [
                     'title' => 'GHÉP HÌNH TANGRAM 3D',
                     'icon' => '🔷',
                     'description' => 'Thử thách ghép hình với tangram 3D',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 40
                 ]
             ]
@@ -122,7 +122,7 @@ $math_data = [
                     'title' => 'TRÒ CHƠI ĐỒNG HỒ',
                     'icon' => '🕹️',
                     'description' => 'Trò chơi học xem giờ và đặt đồng hồ',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ],
                 [
@@ -130,7 +130,7 @@ $math_data = [
                     'title' => 'QUẢN LÝ THỜI GIAN',
                     'icon' => '⏳',
                     'description' => 'Trò chơi thực hành quản lý thời gian hàng ngày',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 45
                 ]
             ]

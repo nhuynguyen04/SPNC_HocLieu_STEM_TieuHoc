@@ -65,7 +65,7 @@ $technology_data = [
                     'title' => 'CHIA SẺ TÁC PHẨM',
                     'icon' => '🖼️',
                     'description' => 'Chia sẻ bức vẽ của bạn với mọi người',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 20
                 ]
             ]
@@ -84,7 +84,7 @@ $technology_data = [
                     'title' => 'QUY TẮC INTERNET',
                     'icon' => '📺',
                     'description' => 'Xem video về an toàn trên mạng',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
                 ],
                 [
@@ -92,7 +92,7 @@ $technology_data = [
                     'title' => 'TRẢ LỜI CÂU HỎI',
                     'icon' => '❓',
                     'description' => 'Kiểm tra kiến thức an toàn mạng',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
                 ]
             ]
@@ -111,7 +111,7 @@ $technology_data = [
                     'title' => 'GIỚI THIỆU SCRATCH',
                     'icon' => '📺',
                     'description' => 'Xem video giới thiệu về Scratch',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ],
                 [
@@ -119,7 +119,7 @@ $technology_data = [
                     'title' => 'THỰC HÀNH SCRATCH',
                     'icon' => '🎮',
                     'description' => 'Thực hành lập trình đơn giản',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 40
                 ]
             ]
@@ -138,7 +138,7 @@ $technology_data = [
                     'title' => 'GIỚI THIỆU BỘ PHẬN MÁY TÍNH',
                     'icon' => '📺',
                     'description' => 'Xem video về các bộ phận máy tính',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
                 ],
                 [
@@ -146,7 +146,7 @@ $technology_data = [
                     'title' => 'GHÉP BỘ PHẬN MÁY TÍNH',
                     'icon' => '🧩',
                     'description' => 'Trò chơi ghép các bộ phận máy tính',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 35
                 ]
             ]
@@ -165,7 +165,7 @@ $technology_data = [
                     'title' => 'THIẾT KẾ THIỆP',
                     'icon' => '🎨',
                     'description' => 'Học cách thiết kế thiệp điện tử',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ],
                 [
@@ -173,7 +173,7 @@ $technology_data = [
                     'title' => 'CHIA SẺ TÁC PHẨM',
                     'icon' => '📤',
                     'description' => 'Chia sẻ thiệp với bạn bè',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
                 ]
             ]
@@ -192,7 +192,7 @@ $technology_data = [
                     'title' => 'TRÒ CHƠI ĐÁNH MÁY',
                     'icon' => '🎮',
                     'description' => 'Luyện tập đánh máy qua trò chơi',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 40
                 ],
                 [
@@ -200,7 +200,7 @@ $technology_data = [
                     'title' => 'THỰC HÀNH TỐC KÝ',
                     'icon' => '⚡',
                     'description' => 'Luyện tập tốc độ đánh máy',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 35
                 ]
             ]
@@ -219,7 +219,7 @@ $technology_data = [
                     'title' => 'KỸ NĂNG TÌM KIẾM',
                     'icon' => '📚',
                     'description' => 'Học cách tìm kiếm hiệu quả',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 35
                 ],
                 [
@@ -227,7 +227,7 @@ $technology_data = [
                     'title' => 'THỰC HÀNH TÌM KIẾM',
                     'icon' => '🔎',
                     'description' => 'Thực hành tìm kiếm thông tin',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ]
             ]
@@ -246,7 +246,7 @@ $technology_data = [
                     'title' => 'KHÁM PHÁ BẢN ĐỒ',
                     'icon' => '🌍',
                     'description' => 'Khám phá thế giới qua bản đồ số',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ],
                 [
@@ -254,7 +254,7 @@ $technology_data = [
                     'title' => 'TRÒ CHƠI ĐỊA LÝ',
                     'icon' => '🎯',
                     'description' => 'Trò chơi tìm hiểu địa lý',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 25
                 ]
             ]

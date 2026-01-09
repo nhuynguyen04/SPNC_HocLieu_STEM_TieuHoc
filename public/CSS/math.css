@@ -656,7 +656,7 @@ body {
     background: #6B7280;
     color: white;
     font-size: 0.6rem;
-}
+ display: none; }
 
 @keyframes pulse-badge {
     0%, 100% { transform: scale(1); }
@@ -724,24 +724,6 @@ body {
 .planet[data-planet="3"], .planet[data-planet="4"], .planet[data-planet="5"] {
     opacity: 0.6;
     filter: grayscale(0.7);
-}
-
-.planet[data-planet="3"]::before,
-.planet[data-planet="4"]::before,
-.planet[data-planet="5"]::before {
-    content: '🔒';
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 0.8rem;
-    z-index: 10;
-    background: rgba(0,0,0,0.7);
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 @media (max-width: 768px) {

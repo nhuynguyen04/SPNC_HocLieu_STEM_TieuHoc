@@ -76,7 +76,7 @@ $engineering_data = [
                     'title' => 'THỬ THÁCH CẦU GIẤY',
                     'icon' => '🏗️',
                     'description' => 'Xây cầu chịu được trọng lượng lớn nhất',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 35
                 ]
             ]
@@ -95,7 +95,7 @@ $engineering_data = [
                     'title' => 'TRÒ CHƠI CHẾ TẠO XE',
                     'icon' => '🧪',
                     'description' => 'Chế tạo và thử nghiệm xe bong bóng',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 40
                 ]
             ]
@@ -114,7 +114,7 @@ $engineering_data = [
                     'title' => 'CHẾ TẠO BỘ LỌC',
                     'icon' => '🧪',
                     'description' => 'Tự làm hệ thống lọc nước từ vật liệu đơn giản',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 40
                 ]
             ]
