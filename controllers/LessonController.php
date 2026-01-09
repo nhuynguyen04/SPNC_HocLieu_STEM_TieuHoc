@@ -2097,4 +2097,86 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/engineering_room_decor.php';
     }
+
+    public function showPipeGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Cấu hình các màn chơi
+        // Grid: 0=Rỗng, S=Nguồn, E=Đích (Cây), I=Thẳng, L=Cong, T=Ba ngã, X=Bốn ngã
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Cấp độ 1: Làm quen',
+                'desc' => 'Xoay các ống thẳng để dẫn nước tưới cây.',
+                'grid_size' => 3, // 3x3
+                // Map layout (Mảng 1 chiều, sẽ render thành lưới)
+                // S: Nguồn, E: Cây, I: Ống thẳng
+                'layout' => [
+                    '0', '0', '0',
+                    'S', 'I', 'E',
+                    '0', '0', '0'
+                ]
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Cấp độ 2: Rẽ hướng',
+                'desc' => 'Sử dụng ống cong để thay đổi dòng chảy.',
+                'grid_size' => 4,
+                'layout' => [
+                    'S', 'L', '0', '0',
+                    '0', 'I', 'L', 'E',
+                    '0', 'L', 'L', '0', // Đường giả để đánh lạc hướng
+                    '0', '0', '0', '0'
+                ]
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Cấp độ 3: Tránh rò rỉ',
+                'desc' => 'Cẩn thận! Nếu đầu ống bị hở, nước sẽ tràn ra ngoài.',
+                'grid_size' => 4,
+                'layout' => [
+                    '0', 'L', 'I', 'E',
+                    'S', 'L', '0', '0',
+                    '0', '0', '0', '0',
+                    '0', '0', '0', '0'
+                ]
+            ],
+            4 => [
+                'id' => 4,
+                'title' => 'Cấp độ 4: Đường dài',
+                'desc' => 'Lập kế hoạch cho đường ống dài ngoằn ngoèo.',
+                'grid_size' => 5,
+                // SỬA LẠI LAYOUT NÀY
+                'layout' => [
+                    'S', 'I', 'I', 'L', '0',
+                    '0', '', '0', 'I', '0',
+                    '0', 'L', 'I', 'L', '0',
+                    '0', 'L', 'I', 'L', '0',
+                    '0', '0', '0', 'L', 'E' 
+                ]
+            ],
+            5 => [
+                'id' => 5,
+                'title' => 'Cấp độ 5: Khu vườn lớn',
+                'desc' => 'Dùng ống chia nhánh (T) để tưới cho 2 cây cùng lúc.',
+                'grid_size' => 5,
+                'layout' => [
+                    'S', 'I', 'T', 'I', 'E', // Cây 1
+                    '0', '0', 'I', '0', '0',
+                    '0', '0', 'L', 'I', 'E', // Cây 2
+                    '0', '0', '0', '0', '0',
+                    '0', '0', '0', '0', '0'
+                ]
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/engineering_water_pipe.php';
+    }
 }

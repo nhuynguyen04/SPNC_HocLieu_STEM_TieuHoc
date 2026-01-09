@@ -188,6 +188,10 @@ switch ($route) {
         $lessonController->showRoomDecorGame();
         break;
 
+    case '/views/lessons/engineering_water_pipe':
+        $lessonController->showPipeGame();
+        break;
+
     // --- FORGOT PASSWORD VIEW ---
     case '/forgot-password':
         // serve view directly
