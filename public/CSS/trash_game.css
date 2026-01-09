@@ -1,6 +1,23 @@
 /* Import font */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
 
+:root {
+    --bg-color: #1a2f4a;
+    --surface-color: #0f2344;
+    --text-primary: #e0e8f0;
+    --text-secondary: #a0b0c0;
+    --text-muted: #7a8a9a;
+    --primary: #2563eb;
+    --secondary: #4361ee;
+    --success: #10b981;
+    --border: #1e3a5f;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
 /* CSS cho game phân loại rác - Updated */
 .trash-game {
     width: 95%;
@@ -24,7 +41,7 @@
     border-radius: 0;
     overflow: hidden;
     z-index: 99999;
-    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+    background: var(--bg-color);
     padding: 10px;
     box-sizing: border-box;
     border: none;
