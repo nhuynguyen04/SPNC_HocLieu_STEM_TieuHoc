@@ -1,32 +1,50 @@
 <?php require_once __DIR__ . '/../template/header.php'; ?>
 
-<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/color_mixing_game.css"> 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/color_mixing_game.css?v=<?php echo time(); ?>"> 
 
 <div class="color-game-wrapper"> 
-    <h1>Trò chơi pha màu</h1>
-    <div class="score-box">Điểm: <span id="totalScore"><?= $_SESSION['total_score'] ?></span></div>
+    <h1>TRÒ CHƠI PHA MÀU</h1>
+    
+    <div class="controls-section">
+        <div class="score-box">Điểm của bạn: <span id="totalScore"><?= $_SESSION['total_score'] ?></span></div>
+        
+        <div class="button-row">
+            <a href="<?= $base_url ?>/views/lessons/science.php" class="menu-btn">Menu</a>
+            <button id="resetGameButton" class="reset-btn">Chơi lại</button>
+            <button id="completeButton" class="complete-btn">Hoàn thành</button>
+        </div>
+    </div>
 
     <?php if ($target): ?>
         <p class="question"><?= $target['text'] ?></p>
-        <div class="target">
-            <span>Màu cần pha:</span>
-            <div class="color-target" style="background-color: rgb(<?= implode(',', $target['rgb']) ?>);"></div>
-        </div>
-        <div class="palette">
-            <div class="color" data-color="red" style="background:red;"></div>
-            <div class="color" data-color="yellow" style="background:yellow;"></div>
-            <div class="color" data-color="blue" style="background:blue;"></div>
-            <div class="color" data-color="white" style="background:white;"></div>
-            <div class="color" data-color="black" style="background:black;"></div>
-        </div>
         <div class="selected"><p>Màu đã chọn:</p><div id="selectedColors"></div></div>
+        
+        <div class="game-layout">
+            <!-- Bên trái: Màu cần pha và bảng màu -->
+            <div class="palette-section">
+                <div class="target">
+                    <span>Màu cần pha:</span>
+                    <div class="color-target" style="background-color: rgb(<?= implode(',', $target['rgb']) ?>);"></div>
+                </div>
+                <div class="palette">
+                    <div class="color" data-color="red" style="background:red;"></div>
+                    <div class="color" data-color="yellow" style="background:yellow;"></div>
+                    <div class="color" data-color="blue" style="background:blue;"></div>
+                    <div class="color" data-color="white" style="background:white;"></div>
+                    <div class="color" data-color="black" style="background:black;"></div>
+                </div>
+            </div>
+            
+            <!-- Bên phải: Khung pha màu -->
+            <div class="canvas-section">
+                <canvas id="mixCanvas" width="400" height="250"></canvas>
+            </div>
+        </div>
+        
         <div id="hintBox"></div>
-        <canvas id="mixCanvas" width="400" height="250"></canvas>
         <div id="result"></div>
         <div class="controls">
-            <button id="clearButton">Làm lại</button>
-            
             <a href="<?= $base_url ?>/science/color-game?next=1" id="nextButton" style="display:none;">Câu hỏi tiếp theo ➡️</a>
         </div>
 
