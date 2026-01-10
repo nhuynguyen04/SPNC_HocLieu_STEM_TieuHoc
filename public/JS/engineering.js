@@ -87,7 +87,7 @@ const planets = {
                 name: "Chế tạo bộ lọc", 
                 icon: "🧪", 
                 xp: "40 XP",
-                link: baseUrl + '/views/lessons/engineering_water_filter_experiment', 
+                link: baseUrl + '/views/lessons/engineering_water_filter', 
                 status: "current" 
             }
         ]

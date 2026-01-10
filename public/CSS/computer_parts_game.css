@@ -4,6 +4,20 @@
 }
 .computer-game h1, .computer-game p { text-align: center; }
 
+.computer-game h1 {
+    color: #3498db;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.computer-game p {
+    color: #2c3e50;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
 #game-feedback {
     text-align: center; font-size: 1.2em; font-weight: bold;
     min-height: 25px; margin: 10px 0;

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/main.css">
-    <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/time_game.css">
+    <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/time_game.css?v=<?php echo time(); ?>">
     
     <style>
         body { background: #ffecd2; overflow: hidden; font-family: 'Fredoka', sans-serif; }

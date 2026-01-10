@@ -3,7 +3,7 @@ $page_title = "Hoa Yêu Thương Nở Rộ - Thí Nghiệm STEM";
 require_once __DIR__ . '/../template/header.php'; 
 ?>
 
-<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/flower_mechanism.css">
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/flower_mechanism.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
 
 <div class="stem-experiment-container">

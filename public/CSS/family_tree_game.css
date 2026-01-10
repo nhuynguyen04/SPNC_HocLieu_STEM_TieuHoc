@@ -21,11 +21,12 @@
 }
 
 .header-game h1 {
-    color: #2c3e50;
+    color: #3498db;
     font-size: 1.8em;
     margin: 0;
     text-align: center;
     flex-grow: 1;
+    font-weight: bold;
 }
 
 .header-game .home-btn {

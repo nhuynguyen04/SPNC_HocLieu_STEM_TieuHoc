@@ -10,7 +10,7 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
-.header-game h1 { margin: 0; color: #ff9f43; font-size: 1.8em; }
+.header-game h1 { margin: 0; color: #9b59b6; font-size: 1.8em; }
 .subtitle { margin: 0; color: #8395a7; }
 .score-board { font-size: 1.5em; font-weight: bold; color: #54a0ff; }
 
@@ -69,7 +69,7 @@
 }
 .modal-content {
     background: white; padding: 40px; border-radius: 30px;
-    text-align: center; border: 5px solid #ff9f43;
+    text-align: center; border: 5px solid #9b59b6;
     min-width: 400px;
 }
 .modal h2 { font-size: 2.5em; margin: 0 0 10px; }

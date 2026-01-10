@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . '/../template/header.php'; ?>
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css">
-<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/family_tree_game.css">
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/family_tree_game.css?v=<?php echo time(); ?>">
 
 <div class="game-wrapper family-tree-game">
     <div class="header-game">

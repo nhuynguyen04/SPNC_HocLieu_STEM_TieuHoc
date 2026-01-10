@@ -3,9 +3,9 @@
     --primary: #F26E50;
     --primary-light: #F28C76;
     --primary-dark: #D45A3D;
-    --secondary: #5E96AE;
-    --secondary-light: #7EB0C6;
-    --secondary-dark: #4A7A8C;
+    --secondary: #F39C12;
+    --secondary-light: #F5B041;
+    --secondary-dark: #D68910;
     --accent: #FFC0CB;
     --background: #F2E9E9;
     --card-bg: #FFFFFF;
@@ -70,16 +70,23 @@ body {
 }
 
 .experiment-panel h2 {
-    color: var(--secondary);
+    color: var(--secondary) !important;
     margin-bottom: 20px;
     font-size: 1.3rem;
-    font-weight: 700;
+    font-weight: 700 !important;
     text-align: center;
 }
 
 /* Vật liệu - Dạng button */
 .material-section {
     margin-bottom: 25px;
+}
+
+.material-section h2,
+.prediction-section h2,
+.results-section h2 {
+    color: #F39C12 !important;
+    font-weight: bold !important;
 }
 
 .material-buttons {
@@ -114,8 +121,8 @@ body {
 }
 
 .btn-text {
-    font-weight: 700;
-    color: var(--primary);
+    font-weight: 700 !important;
+    color: #F39C12 !important;
     font-size: 1.1rem;
 }
 
@@ -159,7 +166,7 @@ body {
 .radio-custom {
     width: 18px;
     height: 18px;
-    border: 2px solid var(--border);
+    border: 2px solid #FFE4B5;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -169,8 +176,8 @@ body {
 }
 
 .prediction-option input[type="radio"]:checked + .radio-custom {
-    border-color: var(--secondary);
-    background: var(--secondary);
+    border-color: #F39C12 !important;
+    background: #F39C12 !important;
 }
 
 .prediction-option input[type="radio"]:checked + .radio-custom::after {
@@ -220,22 +227,22 @@ body {
 
 .experiment-btn:not(:disabled):hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(94, 150, 174, 0.3);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3) !important;
 }
 
 .experiment-btn.primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
+    background: linear-gradient(135deg, #F39C12 0%, #D68910 100%) !important;
+    color: white !important;
 }
 
 .experiment-btn.secondary {
-    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-    color: white;
+    background: linear-gradient(135deg, #E67E22 0%, #BA6608 100%) !important;
+    color: white !important;
 }
 
 .experiment-btn.next-game {
-    background: linear-gradient(135deg, var(--success-light) 0%, var(--success) 100%);
-    color: white;
+    background: linear-gradient(135deg, #F5B041 0%, #F39C12 100%) !important;
+    color: white !important;
 }
 
 /* Action buttons */
@@ -252,10 +259,10 @@ body {
 
 /* Kết quả */
 .results-section {
-    background: linear-gradient(135deg, #F8FDFA 0%, #F0FAF5 100%);
+    background: linear-gradient(135deg, #FFFBF0 0%, #FFF8E6 100%);
     border-radius: 12px;
     padding: 20px;
-    border: 2px solid var(--success);
+    border: 2px solid #F39C12 !important;
     margin-top: auto;
 }
 
@@ -286,7 +293,7 @@ body {
 
 .stat-value {
     font-weight: 700;
-    color: var(--primary);
+    color: #F39C12 !important;
 }
 
 .result-message {
@@ -294,7 +301,7 @@ body {
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 15px;
-    border-left: 3px solid var(--primary);
+    border-left: 3px solid #F39C12 !important;
     font-weight: 600;
     font-size: 0.9rem;
     line-height: 1.4;
@@ -325,8 +332,8 @@ body {
 .game-title {
     font-size: 2.8rem;
     font-weight: 700;
-    color: var(--primary);
-    text-shadow: 2px 2px 0px rgba(242, 110, 80, 0.2);
+    color: #F39C12 !important;
+    text-shadow: 2px 2px 0px rgba(243, 156, 18, 0.2);
     margin-bottom: 8px;
     letter-spacing: 1px;
 }
@@ -489,7 +496,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
+    background: linear-gradient(90deg, #F39C12 0%, #F5B041 100%) !important;
     border-radius: 7px;
     width: 0%;
     transition: width 0.3s ease;

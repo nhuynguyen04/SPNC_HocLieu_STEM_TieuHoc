@@ -18,8 +18,9 @@
 }
 .level-info h1 {
     margin: 0;
-    color: #2c3e50;
+    color: #3498db;
     font-size: 1.8em;
+    font-weight: bold;
 }
 .mission-badge {
     background: #f1c40f;
@@ -79,7 +80,13 @@
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
     overflow-y: auto;
 }
-#block-sidebar h3 { color: #8e44ad; margin-top: 0; text-align: center;}
+#block-sidebar h3 { 
+    color: #2c3e50 !important; 
+    margin-top: 0; 
+    text-align: center;
+    font-weight: bold !important;
+    font-size: 1.2em !important;
+}
 .block-category {
     font-size: 0.9em;
     color: #7f8c8d;
@@ -121,6 +128,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.coding-header h3 {
+    color: #2c3e50 !important;
+    font-weight: bold !important;
+    font-size: 1.1em !important;
+    margin: 0;
 }
 #program-list {
     flex-grow: 1;
@@ -249,5 +263,20 @@
     max-width: 500px;
     border: 5px solid #f1c40f;
 }
+
+.modal-content h2 {
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #2c3e50;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
 .story-avatar { width: 100px; }
 .star-rating { color: #f1c40f; font-size: 2em; margin: 10px 0; }

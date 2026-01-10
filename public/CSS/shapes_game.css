@@ -1,8 +1,8 @@
 :root {
-    --primary-blue: #4285f4;
-    --light-blue: #e8f0fe;
-    --pastel-blue: #d2e3fc;
-    --soft-blue: #f0f7ff;
+    --primary-blue: #9b59b6;
+    --light-blue: #f4ecf7;
+    --pastel-blue: #e8daef;
+    --soft-blue: #f8f3fb;
     --white: #ffffff;
     --off-white: #f8f9fa;
     --light-gray: #e9ecef;
@@ -225,10 +225,10 @@ body {
 .hint-content {
     margin-top: 15px;
     padding: 15px;
-    background: #fff3cd;
+    background: #f4ecf7;
     border-radius: var(--border-radius-sm);
-    border-left: 4px solid var(--warning);
-    color: #856404;
+    border-left: 4px solid var(--primary-blue);
+    color: #6c3483;
     font-size: 0.9em;
     line-height: 1.5;
     display: none;
@@ -287,7 +287,7 @@ body {
 .fun-fact {
     margin-top: 15px;
     padding: 15px;
-    background: #e8f4fd;
+    background: #f4ecf7;
     border-radius: var(--border-radius-sm);
     border-left: 4px solid var(--primary-blue);
     color: var(--dark-gray);
@@ -390,7 +390,7 @@ body {
 .point-circle {
     width: 20px;    
     height: 20px;   
-    background: linear-gradient(135deg, var(--primary-blue), #3367d6);
+    background: linear-gradient(135deg, var(--primary-blue), #8e44ad);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -412,7 +412,7 @@ body {
     display: block;
     width: 100%;
     height: 100%;
-    background: #fafcff;
+    background: #faf9fc;
 }
 
 .controls {
@@ -442,7 +442,7 @@ body {
 }
 
 .primary-btn {
-    background: linear-gradient(135deg, var(--primary-blue), #3367d6);
+    background: linear-gradient(135deg, var(--primary-blue), #8e44ad);
     color: white;
 }
 
@@ -502,17 +502,30 @@ body {
     border-radius: var(--border-radius);
     padding: 20px;
     box-shadow: var(--shadow-medium);
-    border: 2px solid var(--pastel-blue);
+    border: 2px solid #e8daef !important;
 }
 
 .next-challenge-card h2, .shape-progress h2, .shape-tips h2 {
-    color: var(--primary-blue);
+    color: #9b59b6 !important;
     font-size: 1.4em;
     font-weight: 700;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.shape-tips {
+    border: 2px solid #9b59b6 !important;
+    background: #f8f3fb !important;
+}
+
+.shape-tips h2 {
+    color: #9b59b6 !important;
+}
+
+.shape-tips ul li {
+    color: #6c3483 !important;
 }
 
 .next-challenge-info {
@@ -553,7 +566,7 @@ body {
 .next-challenge-btn {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, var(--primary-blue), #3367d6);
+    background: linear-gradient(135deg, var(--primary-blue), #8e44ad);
     color: white;
     border: none;
     border-radius: var(--border-radius-sm);
@@ -628,26 +641,27 @@ body {
 
 .tips-content {
     padding: 15px;
-    background: var(--off-white);
+    background: #f8f3fb !important;
     border-radius: var(--border-radius-sm);
-    border-left: 4px solid var(--warning);
+    border-left: 4px solid #9b59b6 !important;
 }
 
 .tips-content p {
-    color: var(--dark-gray);
+    color: #6c3483 !important;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
 .tips-content ul {
     margin-left: 20px;
-    color: var(--dark-gray);
+    color: #6c3483 !important;
     font-size: 0.9em;
     line-height: 1.5;
 }
 
 .tips-content li {
     margin-bottom: 8px;
+    color: #6c3483 !important;
 }
 
 @media (max-width: 1200px) {

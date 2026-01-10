@@ -95,7 +95,7 @@ const planets = {
                 name: "Quản lý thời gian", 
                 icon: "⏳", 
                 xp: "45 XP",
-                link: baseUrl + '/views/lessons/math_time_management', 
+                link: baseUrl + '/views/lessons/math_time_game', 
                 status: "current" 
             }
         ]

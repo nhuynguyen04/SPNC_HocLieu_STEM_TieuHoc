@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . '/../template/header.php'; ?>
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css">
-<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/computer_parts_game.css">
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/computer_parts_game.css?v=<?php echo time(); ?>">
 
 <div class="game-wrapper computer-game">
     <h1>Trò chơi: Các bộ phận của máy tính</h1>
