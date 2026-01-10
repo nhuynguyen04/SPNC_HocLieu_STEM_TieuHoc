@@ -314,14 +314,12 @@ require_once './template/header.php';
                         <div class="subject-card-content">
                             <div class="subject-stats">
                                 <div class="stat">
-                                    <span class="stat-icon">📚</span>
                                     <div class="stat-info">
                                         <span class="stat-number"><?php echo $subject_completed; ?>/<?php echo $subject_lessons; ?></span>
                                         <span class="stat-label">Bài học</span>
                                     </div>
                                 </div>
                                 <div class="stat">
-                                    <span class="stat-icon">⭐</span>
                                     <div class="stat-info">
                                         <span class="stat-number"><?php echo $subject_earned_xp; ?> XP</span>
                                         <span class="stat-label">Điểm kinh nghiệm</span>
