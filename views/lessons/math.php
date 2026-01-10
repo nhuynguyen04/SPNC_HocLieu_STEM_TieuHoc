@@ -179,10 +179,6 @@ $_SESSION['math_visited'] = true;
                         <div class="stat-value">80</div>
                         <div class="stat-label">XP</div>
                     </div>
-                    <div class="stat-orb streak-orb">
-                        <div class="stat-value">6</div>
-                        <div class="stat-label">NGÀY</div>
-                    </div>
                 </div>
             </div>
         </header>

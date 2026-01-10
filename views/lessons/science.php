@@ -137,10 +137,6 @@ $_SESSION['science_visited'] = true;
                         <div class="stat-value">100</div>
                         <div class="stat-label">XP</div>
                     </div>
-                    <div class="stat-orb streak-orb">
-                        <div class="stat-value">7</div>
-                        <div class="stat-label">NGÀY</div>
-                    </div>
                 </div>
             </div>
         </header>

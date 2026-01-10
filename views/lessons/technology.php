@@ -303,10 +303,6 @@ $_SESSION['technology_visited'] = true;
                         <div class="stat-value">75</div>
                         <div class="stat-label">XP</div>
                     </div>
-                    <div class="stat-orb streak-orb">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">NGÀY</div>
-                    </div>
                 </div>
             </div>
         </header>
