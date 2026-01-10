@@ -170,16 +170,6 @@ $avgScore = isset($stats['avg_score']) ? $stats['avg_score'] : 0;
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="info-section">
-                                <h3 class="section-header"><i class="fas fa-star"></i> Sở thích</h3>
-                                <div class="interests-section">
-                                    <span class="interest-tag">Kỹ thuật</span>
-                                    <span class="interest-tag">Công nghệ</span>
-                                    <span class="interest-tag">Khoa học</span>
-                                    <span class="interest-tag">Toán học</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

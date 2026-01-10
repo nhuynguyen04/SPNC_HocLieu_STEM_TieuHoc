@@ -257,13 +257,6 @@ require_once './template/header.php';
                                         <span class="stat-label">Điểm kinh nghiệm</span>
                                     </div>
                                 </div>
-                                <div class="stat">
-                                    <span class="stat-icon">🎯</span>
-                                    <div class="stat-info">
-                                        <span class="stat-number"><?php echo count($subject['skills']); ?></span>
-                                        <span class="stat-label">Chủ đề</span>
-                                    </div>
-                                </div>
                             </div>
                             
                             <button class="continue-btn" 
