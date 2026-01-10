@@ -41,7 +41,7 @@ const planets = {
     3: {
         name: "TANGRAM 3D", 
         icon: "🧩",
-        status: "locked",
+        status: "current",
         description: "Trò chơi tangram không gian 3 chiều thú vị",
         time: "25 phút", 
         xp: "70 XP",
@@ -52,7 +52,7 @@ const planets = {
                 icon: "🔷", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/math_tangram_3d', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
@@ -77,7 +77,7 @@ const planets = {
     5: {
         name: "ĐỒNG HỒ THỜI GIAN",
         icon: "⏰",
-        status: "locked",
+        status: "current",
         description: "Trò chơi học xem đồng hồ và quản lý thời gian",
         time: "28 phút",
         xp: "75 XP",
@@ -88,7 +88,7 @@ const planets = {
                 icon: "🕹️", 
                 xp: "30 XP",
                 link: baseUrl + '/views/lessons/math_clock_game', 
-                status: "locked" 
+                status: "current" 
             },
             { 
                 type: "game", 
@@ -96,7 +96,7 @@ const planets = {
                 icon: "⏳", 
                 xp: "45 XP",
                 link: baseUrl + '/views/lessons/math_time_management', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     }
@@ -176,11 +176,9 @@ function initMathSystem() {
                     activityElement.classList.add('activity-completed');
                 } else if (activity.status === 'current') {
                     activityElement.classList.add('activity-current');
-                } else if (activity.status === 'locked') {
-                    activityElement.classList.add('activity-locked');
                 }
                 
-                if (activity.link && activity.status !== 'locked') {
+                if (activity.link) {
                     activityElement.classList.add('activity-clickable');
                     activityElement.style.cursor = 'pointer';
                 } else {
@@ -192,8 +190,6 @@ function initMathSystem() {
                     statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
                 } else if (activity.status === 'current') {
                     statusBadge = '<div class="activity-status-badge current-badge">●</div>';
-                } else if (activity.status === 'locked') {
-                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `

@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const avatarPreview = document.getElementById('avatarPreview');
-                    avatarPreview.innerHTML = `<img src="${event.target.result}" alt="Avatar preview">`;
+                    avatarPreview.innerHTML = `<img src="${event.target.result}" alt="Avatar preview" class="avatar-img">`;
                 };
                 reader.readAsDataURL(selectedAvatarFile);
             }
@@ -104,9 +104,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     const currentAvatar = document.getElementById('currentAvatar');
                     if (data.avatar_url) {
-                        currentAvatar.innerHTML = `<img src="${data.avatar_url}" alt="User avatar">`;
+                        currentAvatar.innerHTML = `<img src="${data.avatar_url}" alt="User avatar" class="avatar-img">`;
                         const avatarPreview = document.getElementById('avatarPreview');
-                        if (avatarPreview) avatarPreview.innerHTML = `<img src="${data.avatar_url}" alt="Avatar preview">`;
+                        if (avatarPreview) avatarPreview.innerHTML = `<img src="${data.avatar_url}" alt="Avatar preview" class="avatar-img">`;
                     }
                     alert('Ảnh đại diện đã được cập nhật!');
                     editAvatarModal.classList.remove('active');

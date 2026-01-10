@@ -1,25 +1,48 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../controllers/AuthController.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
-    
-    $admin_username = 'admin';
-    $admin_password = '123456'; 
-    
-    if ($username === $admin_username && $password === $admin_password) {
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_username'] = $username;
-        header('Location: index.php');
-        exit();
+
+    $auth = new AuthController();
+    $res = $auth->login($username, $password);
+
+    if ($res === true) {
+        $role = $_SESSION['role'] ?? '';
+        if ($role === 'admin' || $role === 'administrator') {
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_username'] = $_SESSION['username'] ?? $username;
+            $base = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            header('Location: ' . $base . '/index.php');
+            exit();
+        } else {
+            $error = "Tài khoản không có quyền truy cập quản trị.";
+        }
     } else {
-        $error = "Tên đăng nhập hoặc mật khẩu không chính xác!";
+        // allow legacy hardcoded admin fallback
+        $admin_username = 'admin';
+        $admin_password = '123456';
+        if ($username === $admin_username && $password === $admin_password) {
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_username'] = $username;
+            $base = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            header('Location: ' . $base . '/index.php');
+            exit();
+        }
+        if ($res === 'not_verified') {
+            $error = 'Tài khoản chưa xác thực.';
+        } else {
+            $error = 'Tên đăng nhập hoặc mật khẩu không chính xác!';
+        }
     }
 }
 
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header('Location: index.php');
+    $base = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+    header('Location: ' . $base . '/index.php');
     exit();
 }
 ?>

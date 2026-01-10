@@ -41,7 +41,7 @@ const planets = {
     3: {
         name: "XÂY CẦU", 
         icon: "🌉",
-        status: "locked",
+        status: "current",
         description: "Thiết kế và xây dựng cầu",
         time: "35 phút", 
         xp: "75 XP",
@@ -52,14 +52,14 @@ const planets = {
                 icon: "🏗️", 
                 xp: "35 XP",
                 link: baseUrl + '/views/lessons/engineering_bridge_game', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
     4: {
         name: "CHẾ TẠO XE",
         icon: "🚗",
-        status: "locked",
+        status: "current",
         description: "Tạo xe chạy bằng lực đẩy từ bong bóng xà phòng",
         time: "28 phút",
         xp: "70 XP",
@@ -70,14 +70,14 @@ const planets = {
                 icon: "🧪", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/engineering_car_builder', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
     5: {
         name: "HỆ THỐNG LỌC NƯỚC CƠ BẢN",
         icon: "💧",
-        status: "locked",
+        status: "current",
         description: "Tìm hiểu và chế tạo hệ thống lọc nước đơn giản từ vật liệu dễ kiếm",
         time: "40 phút",
         xp: "75 XP",
@@ -88,7 +88,7 @@ const planets = {
                 icon: "🧪", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/engineering_water_filter_experiment', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     }
@@ -168,11 +168,9 @@ function initEngineeringSystem() {
                     activityElement.classList.add('activity-completed');
                 } else if (activity.status === 'current') {
                     activityElement.classList.add('activity-current');
-                } else if (activity.status === 'locked') {
-                    activityElement.classList.add('activity-locked');
                 }
                 
-                if (activity.link && activity.status !== 'locked') {
+                if (activity.link) {
                     activityElement.classList.add('activity-clickable');
                     activityElement.style.cursor = 'pointer';
                 } else {
@@ -184,8 +182,6 @@ function initEngineeringSystem() {
                     statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
                 } else if (activity.status === 'current') {
                     statusBadge = '<div class="activity-status-badge current-badge">●</div>';
-                } else if (activity.status === 'locked') {
-                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `

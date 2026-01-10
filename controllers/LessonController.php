@@ -1999,4 +1999,184 @@ class LessonController {
 
         require_once __DIR__ . '/../views/lessons/engineering_tower_game.php';
     }
+
+    /**
+     * TRANG TRÍ PHÒNG
+     */
+    public function showRoomDecorGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        $gameData = [
+            'title' => 'Kiến Trúc Sư Nhí: Thiết Kế Phòng Ngủ',
+            
+            // DANH MỤC ĐỒ NỘI THẤT
+            'categories' => [
+                'room_type' => [
+                    'label' => 'Chọn Phòng',
+                    'icon' => 'fa-home', // Đổi icon ngôi nhà
+                    'items' => [
+                        ['id' => 'room_1', 'name' => 'Phòng Rừng Xanh', 'type' => 'room', 'img' => 'room_1.png'],
+                        ['id' => 'room_2', 'name' => 'Phòng Mộng Mơ', 'type' => 'room', 'img' => 'room_2.png'],
+                        ['id' => 'room_3', 'name' => 'Phòng Dơi', 'type' => 'room', 'img' => 'room_3.png'],
+                        ['id' => 'room_4', 'name' => 'Phòng Cơ Bản', 'type' => 'room', 'img' => 'room_4.png'],
+                    ]
+                ],
+                'bed' => [
+                    'label' => 'Giường',
+                    'icon' => 'fa-bed',
+                    'items' => [
+                        ['id' => 'bed_1', 'img' => 'bed_1.png', 'w' => 200, 'name' => 'Giường Gỗ'],
+                        ['id' => 'bed_2', 'img' => 'bed_2.png', 'w' => 200, 'name' => 'Giường Hồng'],
+                        
+                    ]
+                ],
+                'storage' => [
+                    'label' => 'Tủ & Kệ',
+                    'icon' => 'fa-door-closed',
+                    'items' => [
+                        ['id' => 'wardrobe_1', 'img' => 'wardrobe_1.png', 'w' => 125, 'name' => 'Tủ Áo'],
+                        ['id' => 'bookshelf_1', 'img' => 'bookshelf_1.png', 'w' => 80, 'name' => 'Giá Sách'],
+                        ['id' => 'cabinet_1', 'img' => 'cabinet_1.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                        ['id' => 'cabinet_2', 'img' => 'cabinet_2.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                        ['id' => 'cabinet_3', 'img' => 'cabinet_3.png', 'w' => 140, 'name' => 'Tủ Nhỏ'],
+                    ]
+                ],
+                'study' => [
+                    'label' => 'Bàn & Ghế',
+                    'icon' => 'fa-book-reader',
+                    'items' => [
+                        ['id' => 'desk_1', 'img' => 'desk_1.png', 'w' => 140, 'name' => 'Bàn Học'],
+                        ['id' => 'chair_1', 'img' => 'chair_1.png', 'w' => 60, 'name' => 'Ghế Xoay'],
+                        ['id' => 'chair_2', 'img' => 'chair_2.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_3', 'img' => 'chair_3.png', 'w' => 80, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_4', 'img' => 'chair_4.png', 'w' => 140, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_5', 'img' => 'chair_5.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                        ['id' => 'chair_6', 'img' => 'chair_6.png', 'w' => 60, 'name' => 'Ghế Gỗ'],
+                    ]
+                ],
+                'rug' => [
+                    'label' => 'Thảm Sàn',
+                    'icon' => 'fa-rug', // Icon thảm
+                    'items' => [
+                        ['id' => 'rug_1', 'img' => 'rug_1.png', 'w' => 240, 'name' => 'Thảm Tròn'],
+                        ['id' => 'rug_2', 'img' => 'rug_2.png', 'w' => 240, 'name' => 'Thảm Vuông'],
+                        ['id' => 'rug_3', 'img' => 'rug_3.png', 'w' => 160, 'name' => 'Thảm Lông'],
+                    ]
+                ],
+                'decor' => [
+                    'label' => 'Trang Trí',
+                    'icon' => 'fa-shapes',
+                    'items' => [
+                        ['id' => 'window_1', 'img' => 'window_1.png', 'w' => 100, 'name' => 'Cửa Sổ'],
+                        ['id' => 'poster_1', 'img' => 'poster_1.png', 'w' => 60, 'name' => 'Tranh'],
+                        ['id' => 'clock_1', 'img' => 'clock_1.png', 'w' => 40, 'name' => 'Đồng Hồ'],
+                        ['id' => 'clock_2', 'img' => 'clock_2.png', 'w' => 40, 'name' => 'Đồng Hồ'],
+                    ]
+                ],
+                'misc' => [
+                    'label' => 'Đồ Khác',
+                    'icon' => 'fa-gamepad',
+                    'items' => [
+                        ['id' => 'plant_1', 'img' => 'plant_1.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'plant_2', 'img' => 'plant_2.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'plant_3', 'img' => 'plant_3.png', 'w' => 60, 'name' => 'Cây Cảnh'],
+                        ['id' => 'lamp_1', 'img' => 'lamp_1.png', 'w' => 50, 'name' => 'Đèn'],
+                        ['id' => 'lamp_2', 'img' => 'lamp_2.png', 'w' => 50, 'name' => 'Đèn'],
+                        ['id' => 'toy_1', 'img' => 'toy_1.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_2', 'img' => 'toy_2.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_3', 'img' => 'toy_3.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_4', 'img' => 'toy_4.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                        ['id' => 'toy_5', 'img' => 'toy_5.png', 'w' => 50, 'name' => 'Đồ Chơi'],
+                    ]
+                ]
+            ]
+        ];
+
+        require_once __DIR__ . '/../views/lessons/engineering_room_decor.php';
+    }
+
+    public function showPipeGame() {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        
+        $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        $base_url = str_replace('\\', '/', $base_url);
+
+        // Cấu hình các màn chơi
+        // Grid: 0=Rỗng, S=Nguồn, E=Đích (Cây), I=Thẳng, L=Cong, T=Ba ngã, X=Bốn ngã
+        $levels = [
+            1 => [
+                'id' => 1,
+                'title' => 'Cấp độ 1: Làm quen',
+                'desc' => 'Xoay các ống thẳng để dẫn nước tưới cây.',
+                'grid_size' => 3, // 3x3
+                // Map layout (Mảng 1 chiều, sẽ render thành lưới)
+                // S: Nguồn, E: Cây, I: Ống thẳng
+                'layout' => [
+                    '0', '0', '0',
+                    'S', 'I', 'E',
+                    '0', '0', '0'
+                ]
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Cấp độ 2: Rẽ hướng',
+                'desc' => 'Sử dụng ống cong để thay đổi dòng chảy.',
+                'grid_size' => 4,
+                'layout' => [
+                    'S', 'L', '0', '0',
+                    '0', 'I', 'L', 'E',
+                    '0', 'L', 'L', '0', // Đường giả để đánh lạc hướng
+                    '0', '0', '0', '0'
+                ]
+            ],
+            3 => [
+                'id' => 3,
+                'title' => 'Cấp độ 3: Tránh rò rỉ',
+                'desc' => 'Cẩn thận! Nếu đầu ống bị hở, nước sẽ tràn ra ngoài.',
+                'grid_size' => 4,
+                'layout' => [
+                    '0', 'L', 'I', 'E',
+                    'S', 'L', '0', '0',
+                    '0', '0', '0', '0',
+                    '0', '0', '0', '0'
+                ]
+            ],
+            4 => [
+                'id' => 4,
+                'title' => 'Cấp độ 4: Đường dài',
+                'desc' => 'Lập kế hoạch cho đường ống dài ngoằn ngoèo.',
+                'grid_size' => 5,
+                // SỬA LẠI LAYOUT NÀY
+                'layout' => [
+                    'S', 'I', 'I', 'L', '0',
+                    '0', '', '0', 'I', '0',
+                    '0', 'L', 'I', 'L', '0',
+                    '0', 'L', 'I', 'L', '0',
+                    '0', '0', '0', 'L', 'E' 
+                ]
+            ],
+            5 => [
+                'id' => 5,
+                'title' => 'Cấp độ 5: Khu vườn lớn',
+                'desc' => 'Dùng ống chia nhánh (T) để tưới cho 2 cây cùng lúc.',
+                'grid_size' => 5,
+                'layout' => [
+                    'S', 'I', 'T', 'I', 'E', // Cây 1
+                    '0', '0', 'I', '0', '0',
+                    '0', '0', 'L', 'I', 'E', // Cây 2
+                    '0', '0', '0', '0', '0',
+                    '0', '0', '0', '0', '0'
+                ]
+            ]
+        ];
+
+        $currentLevelId = isset($_GET['level']) ? (int)$_GET['level'] : 1;
+        $currentLevel = $levels[$currentLevelId] ?? $levels[1];
+        $totalLevels = count($levels);
+
+        require_once __DIR__ . '/../views/lessons/engineering_water_pipe.php';
+    }
 }

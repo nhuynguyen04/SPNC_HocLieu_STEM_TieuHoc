@@ -4,7 +4,8 @@ const ctx = canvas.getContext("2d");
 const resultBox = document.getElementById("result");
 const selectedContainer = document.getElementById("selectedColors");
 const paletteColors = document.querySelectorAll(".color");
-const clearButton = document.getElementById("clearButton");
+const resetGameButton = document.getElementById("resetGameButton");
+const completeButton = document.getElementById("completeButton");
 const nextButton = document.getElementById("nextButton");
 const hintBox = document.getElementById("hintBox"); 
 const totalScoreSpan = document.getElementById("totalScore"); 
@@ -28,7 +29,22 @@ paletteColors.forEach(c => {
     c.addEventListener("click", () => selectColor(c.getAttribute("data-color")));
 });
 
-clearButton.addEventListener("click", clearMix);
+if (resetGameButton) {
+    resetGameButton.addEventListener("click", () => {
+        location.reload();
+    });
+}
+if (completeButton) {
+    completeButton.addEventListener("click", () => {
+        console.log('Complete button clicked');
+        const currentScore = parseInt(totalScoreSpan.innerText) || 0;
+        console.log('Current score:', currentScore);
+        showFinishModal(currentScore);
+        
+        completeButton.disabled = true;
+        completeButton.innerHTML = 'Đang lưu...';
+    });
+}
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mousemove", draw);
@@ -39,6 +55,11 @@ function selectColor(colorName) {
     if (selectedColors.length < 2 && !selectedColors.includes(colorName)) {
         selectedColors.push(colorName);
         updateCanvasAndSwatches();
+        
+        // Kiểm tra kết quả ngay khi chọn đủ 2 màu
+        if (selectedColors.length === 2) {
+            checkResult();
+        }
     }
 }
 
@@ -169,9 +190,8 @@ function handleCorrectAnswer() {
     // Đường dẫn route đúng (router defines /science/color-game)
     nextButton.href = `${baseUrl}/science/color-game?next=1&points=${points}`;
     
-    // Hiển thị/ẩn nút
+    // Hiển thị nút next
     nextButton.style.display = "inline-block";
-    clearButton.style.display = "none";
     
     // Vô hiệu hóa game
     togglePalette(false);
@@ -232,4 +252,57 @@ function togglePalette(enabled) {
             c.classList.add("disabled");
         }
     });
+}
+
+/**
+ * Hiển thị popup kết thúc
+ */
+function showFinishModal(score) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <h2>KẾT THÚC</h2>
+            <p class="toast-score">Điểm của bạn: <strong>${score}</strong></p>
+            <p class="toast-message">${getFinishMessage(score)}</p>
+            <div class="toast-buttons">
+                <button class="toast-menu-btn">
+                    <span>Menu</span>
+                </button>
+                <button class="toast-replay-btn">
+                    <span>Chơi lại</span>
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    const replayBtn = toast.querySelector('.toast-replay-btn');
+    const menuBtn = toast.querySelector('.toast-menu-btn');
+    
+    if (replayBtn) {
+        replayBtn.addEventListener('click', () => {
+            toast.remove();
+            if (completeButton) {
+                completeButton.disabled = false;
+                completeButton.innerHTML = 'Kết thúc';
+            }
+        });
+    }
+    
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            window.location.href = (window.baseUrl || '') + '/views/lessons/science.php';
+        });
+    }
+}
+
+function getFinishMessage(score) {
+    if (score >= 40) return 'Hoàn hảo! Bạn đã nắm vững kiến thức về pha màu!';
+    if (score >= 30) return 'Giỏi lắm! Bạn hiểu rõ cách pha màu!';
+    if (score >= 20) return 'Tốt lắm! Tiếp tục cố gắng nhé!';
+    if (score >= 10) return 'Khá ổn! Hãy thử lại để đạt điểm cao hơn!';
+    return 'Cố gắng thêm nhé! Hãy chơi lại để học hỏi thêm!';
 }

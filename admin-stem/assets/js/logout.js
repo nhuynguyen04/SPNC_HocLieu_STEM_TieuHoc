@@ -7,7 +7,7 @@ const countdown = setInterval(() => {
     
     if (seconds <= 0) {
         clearInterval(countdown);
-        window.location.href = 'login.php';
+        window.location.href = '../index.php';
     }
 }, 1000);
 

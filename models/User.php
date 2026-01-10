@@ -52,6 +52,7 @@ class User {
                     if ($remember) {
                         $this->createRememberToken();
                     }
+                    // last_active removed — no update here
                     
                     return true;
                 }
@@ -125,7 +126,7 @@ class User {
 }
 
 
-    public function register($username, $email, $password, $fullName, $class = null) {
+    public function register($username, $email, $password, $fullName, $class = null, $phone = null) {
         try {
             // Kiểm tra username đã tồn tại
             $stmt = $this->conn->prepare("SELECT id FROM " . $this->table_name . " WHERE username = :username");
@@ -148,27 +149,44 @@ class User {
             $lastName = array_pop($nameParts);
             $firstName = implode(" ", $nameParts);
 
-            // Thêm user mới
-            $query = "INSERT INTO " . $this->table_name . " 
-                    (username, email, password, first_name, last_name, class, role) 
-                    VALUES 
-                    (:username, :email, :password, :first_name, :last_name, :class, 'user')";
+            // Thêm user mới (bao gồm phone nếu cột tồn tại)
+            // Detect columns
+            $existing = [];
+            try {
+                $colStmt = $this->conn->query("SHOW COLUMNS FROM " . $this->table_name);
+                while ($c = $colStmt->fetch(PDO::FETCH_ASSOC)) $existing[] = $c['Field'];
+            } catch (Exception $e) { $existing = []; }
 
-            $stmt = $this->conn->prepare($query);
+            $cols = ['username','email','password','first_name','last_name','class','role'];
+            $placeholders = [':username',':email',':password',':first_name',':last_name',':class',"'user'"];
+            $params = [
+                ':username' => $username,
+                ':email' => $email,
+                ':password' => null, // will bind after hash
+                ':first_name' => $firstName,
+                ':last_name' => $lastName,
+                ':class' => $class
+            ];
+
+            if (in_array('phone', $existing)) {
+                $cols[] = 'phone';
+                $placeholders[] = ':phone';
+                $params[':phone'] = $phone;
+            }
+
+            $sql = 'INSERT INTO ' . $this->table_name . ' (' . implode(', ', $cols) . ') VALUES (' . implode(', ', $placeholders) . ')';
+            $stmt = $this->conn->prepare($sql);
 
             // Hash password
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $params[':password'] = $password_hash;
 
-            // Bind các giá trị
-            $stmt->bindParam(":username", $username);
-            $stmt->bindParam(":email", $email);
-            $stmt->bindParam(":password", $password_hash);
-            $stmt->bindParam(":first_name", $firstName);
-            $stmt->bindParam(":last_name", $lastName);
-            $stmt->bindParam(":class", $class);
+            // Execute once and return new user ID on success
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $params[':password'] = $password_hash;
 
-            if ($stmt->execute()) {
-                // Trả về ID user mới (để controller có thể tạo mã xác thực và gửi email)
+            $success = $stmt->execute($params);
+            if ($success) {
                 return (int)$this->conn->lastInsertId();
             }
         } catch(PDOException $e) {

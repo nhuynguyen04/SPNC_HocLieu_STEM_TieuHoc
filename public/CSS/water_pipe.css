@@ -1,0 +1,224 @@
+/* --- 1. CẤU HÌNH CHUNG --- */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    
+    background-size: cover;
+    
+    /* Sửa lỗi Footer: Xếp dọc các thành phần */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* KHUNG GAME (WRAPPER) */
+.pipe-game {
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
+    
+    /* Margin: Cách trên 110px (né Header), Cách dưới 50px (né Footer) */
+    margin: 110px auto 50px auto; 
+    background: url('../images/water_pipe/ground_stage.png') no-repeat bottom center;
+    background-size: cover;
+    
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* Màu nền phụ nếu ảnh lỗi */
+    background-color: #87CEEB;
+    
+    /* Đảm bảo khung không bị co lại */
+    flex-shrink: 0;
+}
+
+/* --- 2. HUD (HEADER GAME) --- */
+.game-hud {
+    position: absolute;
+    top: 15px; left: 15px; right: 15px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    z-index: 100;
+    pointer-events: none; /* Để chuột bấm xuyên qua vùng trống */
+}
+
+/* Các phần tử con của HUD nhận sự kiện chuột */
+.game-hud > * { pointer-events: auto; }
+
+.score-box {
+    background: rgba(0, 0, 0, 0.6);
+    color: #f1c40f;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 1.2em; font-weight: bold;
+    border: 2px solid #f1c40f;
+    display: flex; align-items: center;
+}
+
+.exit-btn {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #c0392b;
+    font-weight: bold;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.exit-btn:hover { transform: scale(1.05); }
+
+.hud-controls { display: flex; gap: 10px; }
+
+/* Nút bấm */
+.game-btn {
+    padding: 10px 20px; font-size: 1em; border: none; border-radius: 10px;
+    cursor: pointer; font-weight: bold; color: white;
+    transition: transform 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.run { background: #3498db; }
+.run:hover { background: #2980b9; }
+.reset { background: #e67e22; }
+.reset:hover { background: #d35400; }
+.lvl-btn { background: #2ecc71; font-size: 1.2em; padding: 12px 30px; }
+.game-btn:active { transform: translateY(3px); box-shadow: none; }
+
+
+/* --- 3. GAME STAGE (KHU VỰC CHƠI) --- */
+#game-stage {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10;
+}
+
+.game-board-container {
+    background-size: cover;
+    
+    padding: 25px;
+    border-radius: 15px;
+    border: 4px solid rgba(93, 64, 55, 0.8); /* Viền nâu đất */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    margin-top: 40px; /* Đẩy xuống một chút tránh HUD */
+    background-color: #fdd769;
+}
+
+.pipe-grid {
+    display: grid; gap: 0; /* Không khoảng cách để ống liền mạch */
+    width: 450px; height: 450px;
+    /* Nền lưới hơi tối để làm nổi ống */
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+/* --- 4. VẼ ỐNG NƯỚC (KHÔNG VIỀN, KHÔNG KHỚP NỐI) --- */
+.cell { position: relative; cursor: pointer; }
+.cell:hover { background: rgba(255,255,255,0.2); }
+
+.pipe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Ẩn khớp nối tròn */
+.joint { display: none !important; }
+
+/* Style Ống không viền, đổ bóng trong để tạo khối 3D */
+.pipe::before, .pipe::after {
+    background: #7f8c8d; /* Màu xám kim loại */
+    box-shadow: inset 2px 2px 5px rgba(255,255,255,0.3), inset -2px -2px 5px rgba(0,0,0,0.3);
+    border: none;
+}
+
+/* HÌNH DẠNG ỐNG (Tinh chỉnh overlap để liền mạch) */
+/* I: Thẳng */
+.pipe-I::before { content: ''; position: absolute; top: 0; left: 32%; width: 36%; height: 100%; }
+
+/* L: Cong (Góc dưới phải) */
+.pipe-L::before { content: ''; position: absolute; top: 0; left: 32%; width: 36%; height: 68%; }
+.pipe-L::after { content: ''; position: absolute; top: 32%; left: 32%; width: 68%; height: 36%; }
+
+/* T: Ba ngã */
+.pipe-T::before { content: ''; position: absolute; top: 32%; left: 0; width: 100%; height: 36%; }
+.pipe-T::after { content: ''; position: absolute; top: 32%; left: 32%; width: 36%; height: 68%; }
+
+
+/* --- 5. ĐIỂM ĐẦU & CUỐI (DÙNG ẢNH) --- */
+/* S: Nguồn (Vòi nước) */
+.pipe-S { 
+    background: transparent; 
+    cursor: default;
+    transform: none; /* Reset transform */
+}
+.pipe-S::after {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('../images/water_pipe/tap_icon.png') no-repeat center center;
+    background-size: contain;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+    z-index: 5;
+}
+
+/* E: Đích (Cây) */
+.pipe-E { 
+    background: transparent; 
+    cursor: default;
+    transform: none;
+}
+.pipe-E::after {
+    content: ''; position: absolute;
+    /* Cây to hơn ô một chút cho đẹp */
+    bottom: 0; left: 0; width: 100%; height: 100%;
+    background: url('../images/water_pipe/tree_icon.png') no-repeat bottom center;
+    background-size: contain;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+    z-index: 10; /* Cây nằm đè lên mọi thứ */
+}
+
+/* --- 6. HIỆU ỨNG NƯỚC CHẢY --- */
+/* Chỉ đổi màu ống dẫn, KHÔNG đổi màu Vòi nước (S) và Cây (E) */
+.pipe.water-filled:not(.pipe-S):not(.pipe-E)::before, 
+.pipe.water-filled:not(.pipe-S):not(.pipe-E)::after {
+    background: #3498db !important; /* Xanh dương */
+    transition: background 0.4s ease-in-out;
+    box-shadow: inset 2px 2px 5px rgba(255,255,255,0.4), inset -2px -2px 5px rgba(0,0,0,0.2), 0 0 10px #3498db;
+}
+
+/* Rò rỉ */
+.leak-spot::after {
+    content: ''; position: absolute;
+    width: 25px; height: 25px; background: #3498db;
+    border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    animation: leakPulse 0.6s infinite; z-index: 20;
+    box-shadow: 0 0 15px #3498db;
+}
+@keyframes leakPulse { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.5); } }
+
+/* --- 7. MODAL --- */
+.modal {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    /* Mặc định flex để căn giữa, JS sẽ chỉnh display */
+    display: flex; justify-content: center; align-items: center;
+}
+
+.modal-content {
+    background: white; padding: 40px; border-radius: 20px;
+    text-align: center; max-width: 500px; 
+    border: 5px solid #3498db;
+    box-shadow: 0 0 30px rgba(52, 152, 219, 0.6);
+}
+.modal-content h2 { color: #2980b9; font-size: 2em; margin-top: 0; }
+
+.instruction { 
+    background: #eaf2f8; padding: 15px; border-radius: 10px; 
+    text-align: left; margin: 20px 0; color: #333;
+    border-left: 5px solid #3498db;
+}
+
+.level-select, .modal-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }

@@ -16,6 +16,8 @@ class Database {
             );
             $this->conn->exec("set names utf8");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Ensure user table columns are as expected (remove status/last_active, add notes)
+            $this->ensureUserNotes();
            
             
            
@@ -28,6 +30,63 @@ class Database {
             }
         }
         return $this->conn;
+    }
+
+    // Ensure users table schema: remove status/last_active (if present) and add notes column
+    private function ensureUserNotes() {
+        if (!$this->conn) return;
+        try {
+            // Drop status column if exists
+            $c = $this->conn->query("SHOW COLUMNS FROM users LIKE 'status'")->fetch();
+            if ($c) {
+                try { $this->conn->exec("ALTER TABLE users DROP COLUMN `status`"); } catch (Exception $e) { error_log('drop status failed: '.$e->getMessage()); }
+            }
+        } catch (Exception $e) {
+            // ignore
+        }
+
+        try {
+            // Drop last_active column if exists
+            $c2 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'last_active'")->fetch();
+            if ($c2) {
+                try { $this->conn->exec("ALTER TABLE users DROP COLUMN `last_active`"); } catch (Exception $e) { error_log('drop last_active failed: '.$e->getMessage()); }
+            }
+        } catch (Exception $e) {
+            // ignore
+        }
+
+        try {
+            // Add notes column if missing
+            $c3 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'notes'")->fetch();
+            if (!$c3) {
+                $this->conn->exec("ALTER TABLE users ADD COLUMN `notes` TEXT NULL DEFAULT ''");
+            }
+        } catch (Exception $e) {
+            try {
+                $c3b = $this->conn->query("SHOW COLUMNS FROM users LIKE 'notes'")->fetch();
+                if (!$c3b) {
+                    $this->conn->exec("ALTER TABLE users ADD COLUMN `notes` TEXT NULL DEFAULT ''");
+                }
+            } catch (Exception $e2) {
+                error_log(' ensureUserNotes notes error: ' . $e2->getMessage());
+            }
+        }
+        // Ensure phone column exists
+        try {
+            $c4 = $this->conn->query("SHOW COLUMNS FROM users LIKE 'phone'")->fetch();
+            if (!$c4) {
+                $this->conn->exec("ALTER TABLE users ADD COLUMN `phone` VARCHAR(25) DEFAULT NULL");
+            }
+        } catch (Exception $e) {
+            try {
+                $c4b = $this->conn->query("SHOW COLUMNS FROM users LIKE 'phone'")->fetch();
+                if (!$c4b) {
+                    $this->conn->exec("ALTER TABLE users ADD COLUMN `phone` VARCHAR(25) DEFAULT NULL");
+                }
+            } catch (Exception $e3) {
+                error_log(' ensureUserNotes phone error: ' . $e3->getMessage());
+            }
+        }
     }
 
     // Tạo database mới
@@ -50,6 +109,8 @@ class Database {
             
             // Tạo các bảng
             $this->createTables();
+            // Ensure columns exist after initial creation
+            $this->ensureUserNotes();
             
             echo "✅ Đã tạo database '" . $this->db_name . "' thành công!";
             
@@ -71,7 +132,9 @@ class Database {
                 password VARCHAR(255) NOT NULL,
                 first_name VARCHAR(100),
                 last_name VARCHAR(100),
-                class VARCHAR(10),
+                class VARCHAR(50),
+                phone VARCHAR(25) DEFAULT NULL,
+                notes TEXT NULL DEFAULT '',
                 role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
                 avatar VARCHAR(255),
                 email_verified TINYINT(1) DEFAULT 0,
@@ -210,16 +273,34 @@ class Database {
                 ('Kỹ thuật', 'Xây dựng và sáng tạo', '⚙️', '#FFD166')");
 
                 $this->conn->exec("INSERT INTO games (topic_id, game_name, description, passing_score) VALUES 
+                -- Toán học (topic_id = 1)
+                (1, 'Trò chơi Hình dạng', 'Bài tập nhận diện và sắp xếp hình học', 50),
+                (1, 'Trò chơi Số học', 'Các bài tập về số và tính toán', 50),
+                (1, 'Trò chơi Góc và đo lường', 'Bài toán liên quan đến góc và đo lường', 50),
+                (1, 'Tangram', 'Xếp hình tangram để tạo hình', 50),
+                (1, 'Trò chơi Thời gian', 'Bài luyện đọc đồng hồ và giờ', 50),
+
+                -- Khoa học (topic_id = 2)
                 (2, 'Tháp dinh dưỡng', 'Sắp xếp các nhóm thực phẩm theo tháp dinh dưỡng', 50),
-                (2, 'Pha màu', 'Pha màu đúng tỉ lệ', 20),
-                (2, 'Ngày và đêm', 'Trả lời các câu hỏi', 20),
+                (2, 'Pha màu', 'Pha màu đúng tỉ lệ', 50),
+                (2, 'Ngày và đêm', 'Trả lời các câu hỏi về ngày và đêm', 50),
                 (2, 'Thùng rác thân thiện', 'Phân loại rác đúng cách', 50),
                 (2, 'Lắp ghép bộ phận', 'Lắp ghép các bộ phận của cây', 50),
-                (4, 'Hoa yêu thương nở rộ', 'Thiết kế hoa giấy cơ học nở rộ khi kéo dây', 50),
+
+                -- Công nghệ (topic_id = 3)
                 (3, 'Cây gia đình', 'Tìm hiểu về các mối quan hệ gia đình qua cây phả hệ', 50),
+                (3, 'Trò chơi Lập trình (Coding)', 'Các thử thách lập trình cơ bản', 50),
                 (3, 'Em làm họa sĩ máy tính', 'Khám phá các công cụ vẽ đơn giản trên máy tính', 50),
                 (3, 'Các bộ phận của máy tính', 'Tìm hiểu các thành phần cơ bản của máy tính', 50),
-                (3, 'Em là người đánh máy', 'Rèn luyện kỹ năng đánh máy nhanh và chính xác',50)
+                (3, 'Em là người đánh máy', 'Rèn luyện kỹ năng đánh máy nhanh và chính xác', 50),
+
+                -- Kỹ thuật (topic_id = 4)
+                (4, 'Hoa yêu thương nở rộ', 'Thiết kế hoa giấy cơ học nở rộ khi kéo dây', 50),
+                (4, 'Cầu kỹ thuật (Bridge)', 'Thiết kế cầu và thử tải', 50),
+                (4, 'Chế tạo xe (Car Builder)', 'Lắp ráp và tối ưu xe cho bài toán', 50),
+                (4, 'Bộ lọc nước', 'Thiết kế bộ lọc đơn giản để làm sạch nước', 50),
+                (4, 'Trò chơi Tháp', 'Thử thách xây tháp bền vững', 50),
+                (4, 'Trang trí phòng (Room Decor)', 'Thiết kế trang trí phòng sáng tạo', 50)
                 ");
 
 

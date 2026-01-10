@@ -65,12 +65,12 @@ $science_data = [
             'id' => 4,
             'title' => 'THÙNG RÁC THÂN THIỆN',
             'icon' => '🗑️',
-            'status' => 'locked',
+            'status' => 'upcoming',
             'color' => '#84CC16',
             'description' => 'Học cách phân loại rác bảo vệ môi trường',
             'learning_time' => '16 phút',
             'activities' => [
-                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHÂN LOẠI RÁC', 'icon' => '♻️', 'status' => 'locked', 'xp' => 30 ]
+                [ 'type' => 'game', 'title' => 'TRÒ CHƠI PHÂN LOẠI RÁC', 'icon' => '♻️', 'status' => 'upcoming', 'xp' => 30 ]
             ]
         ],
 
@@ -78,7 +78,7 @@ $science_data = [
             'id' => 5,
             'title' => 'CÁC BỘ PHẬN CỦA CÂY',
             'icon' => '🌱',
-            'status' => 'locked',
+            'status' => 'upcoming',
             'color' => '#16a085',
             'description' => 'Học cách nhận biết các bộ phận của cây',
             'learning_time' => '10 phút',
@@ -88,7 +88,7 @@ $science_data = [
                     'title' => 'TRÒ CHƠI LẮP GHÉP',
                     'icon' => '🌿',
                     'description' => 'Lắp ghép các bộ phận của cây',
-                    'status' => 'locked',
+                    'status' => 'upcoming',
                     'xp' => 30
                 ]
             ]

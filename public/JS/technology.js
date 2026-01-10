@@ -35,14 +35,14 @@ const planets = {
                 icon: "🖼️", 
                 xp: "20 XP",
                 link: baseUrl + '/views/lessons/technology_painter_game', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
     3: {
         name: "EM LÀ NGƯỜI ĐÁNH MÁY",
         icon: "⌨️",
-        status: "locked",
+        status: "current",
         description: "Rèn luyện kỹ năng đánh máy nhanh và chính xác",
         time: "35 phút",
         xp: "75 XP",
@@ -53,14 +53,14 @@ const planets = {
                 icon: "🎮", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/technology_typing_thach_sanh', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
     4: {
         name: "SƠN TINH (LẬP TRÌNH KHỐI)",
         icon: "🧩",
-        status: "locked",
+        status: "current",
         description: "Làm quen với lập trình các khối lệnh",
         time: "30 phút",
         xp: "70 XP",
@@ -71,14 +71,14 @@ const planets = {
                 icon: "🎮", 
                 xp: "40 XP",
                 link: baseUrl + '/views/lessons/technology_coding_game', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     },
     5: {
         name: "CÁC BỘ PHẬN CỦA MÁY TÍNH",
         icon: "💻",
-        status: "locked",
+        status: "current",
         description: "Tìm hiểu các thành phần cơ bản của máy tính",
         time: "22 phút",
         xp: "60 XP",
@@ -89,7 +89,7 @@ const planets = {
                 icon: "📺", 
                 xp: "25 XP",
                 link: baseUrl + '/views/lessons/technology_computer_parts_video', 
-                status: "locked" 
+                status: "current" 
             },
             { 
                 type: "game", 
@@ -97,7 +97,7 @@ const planets = {
                 icon: "🧩", 
                 xp: "35 XP",
                 link: baseUrl + '/views/lessons/technology_computer_parts', 
-                status: "locked" 
+                status: "current" 
             }
         ]
     }
@@ -177,11 +177,9 @@ function initTechnologySystem() {
                     activityElement.classList.add('activity-completed');
                 } else if (activity.status === 'current') {
                     activityElement.classList.add('activity-current');
-                } else if (activity.status === 'locked') {
-                    activityElement.classList.add('activity-locked');
                 }
 
-                if (activity.link && activity.status !== 'locked') {
+                if (activity.link) {
                     activityElement.classList.add('activity-clickable');
                     activityElement.style.cursor = 'pointer';
                 } else {
@@ -193,8 +191,6 @@ function initTechnologySystem() {
                     statusBadge = '<div class="activity-status-badge completed-badge">✓</div>';
                 } else if (activity.status === 'current') {
                     statusBadge = '<div class="activity-status-badge current-badge">●</div>';
-                } else if (activity.status === 'locked') {
-                    statusBadge = '<div class="activity-status-badge locked-badge">🔒</div>';
                 }
                 
                 activityElement.innerHTML = `

@@ -72,46 +72,9 @@
                 <div class="filter-header">
                     <div class="filter-title">Bộ lọc người dùng</div>
                     <div class="filter-controls">
-                        <select class="filter-select" id="roleFilter">
-                            <option value="">Tất cả vai trò</option>
-                            <option value="student">Học sinh</option>
-                            <option value="teacher">Giáo viên</option>
-                            <option value="parent">Phụ huynh</option>
-                            <option value="admin">Quản trị viên</option>
-                        </select>
-                        
-                        <select class="filter-select" id="statusFilter">
-                            <option value="">Tất cả trạng thái</option>
-                            <option value="active">Đang hoạt động</option>
-                            <option value="inactive">Không hoạt động</option>
-                            <option value="pending">Chờ xác nhận</option>
-                        </select>
-                        
-                        <select class="filter-select" id="gradeFilter">
-                            <option value="">Tất cả khối lớp</option>
-                            <option value="1">Lớp 1</option>
-                            <option value="2">Lớp 2</option>
-                            <option value="3">Lớp 3</option>
-                            <option value="4">Lớp 4</option>
-                            <option value="5">Lớp 5</option>
-                        </select>
+                        <input class="filter-input" id="searchInput" type="text" placeholder="Tìm kiếm người dùng — nhập tên hoặc gmail">
+                        <button class="clear-filters" id="clearFilters">Xóa tìm kiếm</button>
                     </div>
-                </div>
-                
-                <div class="filter-badges">
-                    <div class="filter-badge active" data-filter="all">
-                        <i class="fas fa-layer-group"></i>
-                        Tất cả
-                    </div>
-                    <div class="filter-badge" data-filter="new">
-                        <i class="fas fa-user-clock"></i>
-                        Người dùng mới
-                    </div>
-                    <div class="filter-badge" data-filter="premium">
-                        <i class="fas fa-crown"></i>
-                        Người dùng Premium
-                    </div>
-                    <button class="clear-filters" id="clearFilters">Xóa bộ lọc</button>
                 </div>
             </div>
 
@@ -135,9 +98,8 @@
                         <tr>
                             <th>STT</th>
                             <th>Thông tin người dùng</th>
-                            <th>Vai trò</th>
                             <th>Khối lớp</th>
-                            <th>Trạng thái</th>
+                            <th>Ghi chú</th>
                             <th>Ngày đăng ký</th>
                             <th>Thao tác</th>
                         </tr>
@@ -193,46 +155,13 @@
                             </div>
                             
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label for="userRole">Vai trò *</label>
-                                    <select id="userRole" name="role" required>
-                                        <option value="">Chọn vai trò</option>
-                                        <option value="student">Học sinh</option>
-                                        <option value="teacher">Giáo viên</option>
-                                        <option value="parent">Phụ huynh</option>
-                                        <option value="admin">Quản trị viên</option>
-                                    </select>
-                                </div>
                                 <div class="form-group" id="gradeField">
-                                    <label for="userGrade">Khối lớp</label>
-                                    <select id="userGrade" name="grade">
-                                        <option value="">Chọn khối lớp</option>
-                                        <option value="1">Lớp 1</option>
-                                        <option value="2">Lớp 2</option>
-                                        <option value="3">Lớp 3</option>
-                                        <option value="4">Lớp 4</option>
-                                        <option value="5">Lớp 5</option>
-                                    </select>
+                                    <label for="userGrade">Khối / Lớp</label>
+                                    <input type="text" id="userGrade" name="grade" placeholder="Nhập khối hoặc lớp (ví dụ: 5A1)">
                                 </div>
                             </div>
                             
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="userStatus">Trạng thái *</label>
-                                    <select id="userStatus" name="status" required>
-                                        <option value="active">Đang hoạt động</option>
-                                        <option value="inactive">Không hoạt động</option>
-                                        <option value="pending">Chờ xác nhận</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="userType">Loại tài khoản</label>
-                                    <select id="userType" name="accountType">
-                                        <option value="standard">Tiêu chuẩn</option>
-                                        <option value="premium">Premium</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <!-- status field removed; notes column displayed in table -->
                             
                             <div class="form-group">
                                 <label for="userNotes">Ghi chú</label>

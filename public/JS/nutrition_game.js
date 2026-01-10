@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         // Reset server score
-        fetch(`${baseUrl}/science/update-score`, {
+        fetch(`${window.baseUrl}/science/update-score`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'reset' })
@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Lỗi reset:', error));
     });
 
-    // --- 5. Nút Hoàn thành (Finish) - tổng kết và lưu điểm ---
+    // --- 5. Nút Kết thúc (Finish) - tổng kết và lưu điểm ---
     if (finishButton) {
         finishButton.addEventListener('click', async () => {
             const currentScore = parseInt(scoreDisplay.textContent || '0', 10);
@@ -405,10 +405,10 @@ document.addEventListener("DOMContentLoaded", () => {
             
             finishButton.disabled = true;
             const originalText = finishButton.innerHTML;
-            finishButton.innerHTML = '⏳ Đang lưu...';
+            finishButton.innerHTML = 'Đang lưu...';
             
             try {
-                const resp = await fetch(`${baseUrl}/science/update-score`, {
+                const resp = await fetch(`${window.baseUrl}/science/update-score`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'commit' })
@@ -428,8 +428,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (backBtn) {
         backBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            const href = backBtn.getAttribute('href') || `${baseUrl}/views/lessons/science.php`;
-            fetch(`${baseUrl}/science/update-score`, {
+            const href = backBtn.getAttribute('href') || `${window.baseUrl}/views/lessons/science.php`;
+            fetch(`${window.baseUrl}/science/update-score`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'reset' })
@@ -458,15 +458,15 @@ document.addEventListener("DOMContentLoaded", () => {
         toast.className = 'toast-notification';
         toast.innerHTML = `
             <div class="toast-content">
-                <h2>KẾT THÚC!</h2>
+                <h2>KẾT THÚC</h2>
                 <p class="toast-score">Điểm của bạn: <strong>${score}</strong></p>
                 <p class="toast-message">${getFinishMessage(score)}</p>
                 <div class="toast-buttons">
-                    <button class="toast-replay-btn">
-                        <span>🔄</span><span>Chơi lại</span>
-                    </button>
                     <button class="toast-menu-btn">
-                        <span>🏠</span><span>Menu</span>
+                        <span>Menu</span>
+                    </button>
+                    <button class="toast-replay-btn">
+                        <span>Chơi lại</span>
                     </button>
                 </div>
             </div>
@@ -479,32 +479,45 @@ document.addEventListener("DOMContentLoaded", () => {
         const replayBtn = toast.querySelector('.toast-replay-btn');
         const menuBtn = toast.querySelector('.toast-menu-btn');
         
+        console.log('Toast buttons:', { replayBtn, menuBtn });
+        
         if (replayBtn) {
             replayBtn.addEventListener('click', () => {
-                playClickSound();
-                setTimeout(() => location.reload(), 100);
+                console.log('Replay button clicked');
+                playSuccessSound();
+                setTimeout(() => {
+                    toast.remove();
+                    // Khôi phục nút Kết thúc
+                    if (finishButton) {
+                        finishButton.disabled = false;
+                        finishButton.innerHTML = 'Kết thúc';
+                    }
+                }, 100);
             });
         }
         
         if (menuBtn) {
             menuBtn.addEventListener('click', () => {
-                playClickSound();
-                setTimeout(() => window.location.href = `${baseUrl}/views/lessons/science.php`, 100);
+                console.log('Menu button clicked, navigating to:', `${window.baseUrl}/views/lessons/science.php`);
+                playSuccessSound();
+                setTimeout(() => {
+                    window.location.href = `${window.baseUrl}/views/lessons/science.php`;
+                }, 100);
             });
         }
     }
 
     function getFinishMessage(score) {
-        if (score === 100) return '🏆 Hoàn hảo! Bạn đã nắm vừng kiến thức về dinh dưỡng!';
-        if (score >= 90) return '🌟 Giỏi lắm! Bạn hiểu rõ về tháp dinh dưỡng!';
-        if (score >= 70) return '👍 Tốt lắm! Tiếp tục cố gắng nhé!';
-        if (score >= 50) return '😊 Khá ổn! Hãy thử lại để đạt điểm cao hơn!';
-        return '💪 Cố gắng thêm nhé! Hãy chơi lại để học hỏi thêm!';
+        if (score === 100) return 'Hoàn hảo! Bạn đã nắm vừng kiến thức về dinh dưỡng!';
+        if (score >= 90) return 'Giỏi lắm! Bạn hiểu rõ về tháp dinh dưỡng!';
+        if (score >= 70) return 'Tốt lắm! Tiếp tục cố gắng nhé!';
+        if (score >= 50) return 'Khá ổn! Hãy thử lại để đạt điểm cao hơn!';
+        return 'Cố gắng thêm nhé! Hãy chơi lại để học hỏi thêm!';
     }
 
     async function updateScore(points) {
         try {
-            const response = await fetch(`${baseUrl}/science/update-score`, {
+            const response = await fetch(`${window.baseUrl}/science/update-score`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'add_points', points: points })

@@ -188,6 +188,15 @@ header {
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
+/* Ensure any inserted avatar image fits the header avatar box */
+.user-avatar img, .user-avatar .avatar-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
 .user-dropdown-overlay {
     position: fixed;
     top: 0;
@@ -252,6 +261,15 @@ header {
     color: white;
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Ensure avatar inside dropdown is constrained and covers the circle */
+.avatar-large-dropdown img, .avatar-large-dropdown .avatar-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
 }
 
 .user-details {
