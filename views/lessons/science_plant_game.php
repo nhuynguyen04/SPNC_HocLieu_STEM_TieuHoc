@@ -4,7 +4,7 @@ require_once __DIR__ . '/../template/header.php';
 
 <link rel="stylesheet" href="<?= $base_url ?>/public/CSS/home.css"> 
 
-<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/plant_game.css">
+<link rel="stylesheet" href="<?= $base_url ?>/public/CSS/plant_game.css?v=<?php echo time(); ?>">
 
 <div class="game-wrapper plant-game">
     <h1>Trò chơi: Lắp ghép bộ phận (<?php echo $plantData['title']; ?>)</h1>
