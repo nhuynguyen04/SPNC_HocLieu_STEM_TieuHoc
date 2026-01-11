@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (levelData.id < totalLevels) {
             nextBtn.style.display = 'inline-block';
-            nextBtn.onclick = () => window.location.href = `${baseUrl}/views/lessons/coding-game?level=${levelData.id + 1}`;
+            nextBtn.onclick = () => window.location.href = `${baseUrl}/views/lessons/coding_game?level=${levelData.id + 1}`;
         } else {
             nextBtn.style.display = 'none';
             resultMsg.innerText += " Chúc mừng bạn đã hoàn thành tất cả thử thách!";
